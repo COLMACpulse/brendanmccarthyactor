@@ -1,220 +1,394 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Brendan McCarthy</title>
-<meta name="description" content="Actor. Television, film and independent work.">
-<meta property="og:title" content="Brendan McCarthy"><meta property="og:type" content="website">
-<meta property="og:image" content="media/headshot1.jpg">
-<link rel="icon" href="media/sigil.png">
+<title>Brendan McCarthy | Actor</title>
+<meta name="description" content="Brendan McCarthy — actor. SAG-AFTRA. 32 credits in television and film.">
+<link rel="canonical" href="https://brendanmccarthyactor.com">
+<meta property="og:type" content="profile">
+<meta property="og:title" content="Brendan McCarthy">
+<meta property="og:description" content="Actor. SAG-AFTRA. 32 credits in television and film.">
+<meta property="og:url" content="https://brendanmccarthyactor.com">
+<meta property="og:image" content="https://brendanmccarthyactor.com/media/headshot1.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="media/headshot1.jpg">
 <style>
-:root{--bg:#0d0f12;--p1:#14171c;--line:#2b3038;--line2:#3a414c;--ink:#ece7dc;--bone:#d8d2c6;
---mut:#9aa0a8;--faint:#646b75;--gold:#e0a23c;
---mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
---sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+:root{
+ --bond:#F2F0EA; --ink:#16161A; --blue:#1F3D63; --salmon:#D2694E;
+ --grey:#6E6A63; --hair:#D8D4CA; --black:#0C0C0E;
+ --disp:-apple-system,BlinkMacSystemFont,"Segoe UI Variable Display","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+ --body:Georgia,"Iowan Old Style","Times New Roman",serif;
+ --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;
--webkit-font-smoothing:antialiased}
-.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
-header{padding:34px 0 22px;border-bottom:1px solid var(--line)}
-.brand{display:flex;align-items:center;gap:16px}
-.brand img{width:54px;height:54px;flex:0 0 54px}
-h1{margin:0;font-size:clamp(26px,5vw,40px);font-weight:800;letter-spacing:-.02em}
-.tag{font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--gold);margin-top:5px}
-nav{display:flex;gap:26px;flex-wrap:wrap;padding:16px 0 0}
-nav a{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--mut);
-text-decoration:none;padding:8px 0;border-bottom:2px solid transparent}
-nav a:hover{color:var(--gold);border-bottom-color:var(--gold)}
-section{padding:54px 0;border-bottom:1px solid var(--line)}
-h2{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--gold);
-margin:0 0 26px;font-weight:500}
-.shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
-.shots img{width:100%;height:auto;display:block;border-radius:6px;background:var(--p1)}
-.credits{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:22px}
-.credit img,.noart{width:100%;aspect-ratio:2/3;object-fit:cover;display:block;border-radius:5px;
-background:var(--p1);border:1px solid var(--line)}
-.credit h3{margin:11px 0 3px;font-size:14.5px;font-weight:600;line-height:1.3}
-.role{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--gold)}
-.ch{font-size:12px;color:var(--mut);margin-top:3px}
-.dir{font-size:11.5px;color:var(--faint);margin-top:2px}
-.sub{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--faint);
-margin:34px 0 18px;padding-top:26px;border-top:1px solid var(--line)}
-.sub:first-of-type{margin-top:0;padding-top:0;border-top:0}
-.films{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
-.film{display:block;text-decoration:none;color:inherit;border:1px solid var(--line);
-border-radius:8px;padding:20px;transition:border-color .16s,background .16s}
-.film:hover{border-color:var(--gold);background:var(--p1)}
-.film h3{margin:0 0 5px;font-size:16px}
-.film p{margin:0;font-size:13px;color:var(--mut)}
-.film .go{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--gold);margin-top:12px}
-.lead{font-size:16px;color:var(--bone);max-width:56ch;margin:0 0 20px}
-.btn{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.12em;
-color:var(--gold);text-decoration:none;border:1px solid var(--gold);border-radius:22px;padding:12px 20px}
-.btn:hover{background:var(--gold);color:#12100c}
-footer{padding:34px 0 60px;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:var(--faint)}
-footer a{color:var(--mut)}
-.empty{font-size:14px;color:var(--faint);font-style:italic}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bond);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6}
+.sheet{max-width:960px;margin:0 auto;background:var(--bond);
+ box-shadow:0 0 0 1px var(--hair);min-height:100vh}
+.stripe{height:6px;background:var(--salmon)}
+.pad{padding:34px 38px}
+
+/* ---- slate: the thing every tape opens with ---- */
+.slate{display:grid;grid-template-columns:1fr 244px;gap:32px;align-items:start;padding:34px 38px 30px;border-bottom:1px solid var(--hair)}
+.name{font-family:var(--disp);font-weight:800;font-size:clamp(34px,6.2vw,62px);line-height:.94;
+ letter-spacing:-.035em;margin:0 0 4px;text-transform:uppercase}
+.who .lane{display:block;margin-bottom:0}
+.lane{font-family:var(--mono);font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--blue);margin-bottom:20px}
+.dl{display:grid;grid-template-columns:auto 1fr;gap:5px 16px;font-family:var(--mono);font-size:12px;line-height:1.5;max-width:430px}
+.dl dt{color:var(--grey);letter-spacing:.1em;text-transform:uppercase;font-size:10.5px;padding-top:2px}
+.dl dd{margin:0;color:var(--ink)}
+.hs{width:100%;aspect-ratio:4/5;object-fit:cover;background:var(--black);display:block;
+ box-shadow:0 1px 0 var(--hair),0 12px 26px rgba(20,18,14,.16)}
+.skills{margin-top:20px;padding-top:14px;border-top:1px solid var(--hair);font-family:var(--mono);font-size:11px;line-height:1.9;color:var(--grey);max-width:430px}
+.skills b{color:var(--ink);font-weight:400;white-space:nowrap}
+
+.note{margin:0;padding:18px 38px;background:#fff;border-bottom:1px solid var(--hair);
+ font-size:15.5px;font-style:italic;color:var(--blue)}
+
+/* ---- section rules: production-paperwork headers ---- */
+.rule{display:flex;align-items:center;gap:11px;margin:0 0 16px}
+.rule .lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);white-space:nowrap}
+.rule .ct{font-family:var(--mono);font-size:10.5px;color:var(--salmon)}
+.rule i{flex:1;height:1px;background:var(--hair)}
+section{padding:30px 38px;border-bottom:1px solid var(--hair)}
+section:last-of-type{border-bottom:0}
+
+/* ---- video wells: black plates on paper ---- */
+.well{margin:0;background:var(--black)}
+.well video{width:100%;display:block;aspect-ratio:16/9;max-height:62vh;object-fit:contain;background:var(--black)}
+.well figcaption{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:#C9C4BA;
+ padding:9px 12px;background:var(--black);border-top:1px solid #23232a}
+.well .as{color:var(--salmon)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.solo{max-width:100%}
+
+/* ---- credits: read like a resume, because that is what it is ---- */
+table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:12.5px}
+th{text-align:left;font-weight:400;font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+ color:var(--grey);padding:0 12px 8px 0;border-bottom:1px solid var(--hair)}
+td{padding:9px 12px 9px 0;border-bottom:1px solid var(--hair);vertical-align:top}
+td.t{color:var(--ink)}
+td.c{color:var(--blue)}
+td.n{color:var(--grey);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+.credlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px 26px}.crow{display:grid;grid-template-columns:74px 1fr;gap:14px;align-items:start}.cart{width:74px;aspect-ratio:2/3;background:var(--black);overflow:hidden;box-shadow:0 1px 5px rgba(20,18,14,.22)}.cart img{width:100%;height:100%;object-fit:cover;display:block}.cart .noart{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:15px;color:#5a5a62;letter-spacing:.05em}.cmeta b{display:block;font-size:15px;line-height:1.25;color:var(--ink)}.cmeta .cn{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);margin-top:3px}.cmeta .cbits{font-family:var(--mono);font-size:11px;color:var(--grey);margin-top:5px;line-height:1.6}.cbrk{margin:9px 0 0;font-size:13.5px;line-height:1.5;color:var(--ink);border-left:2px solid var(--salmon);padding-left:11px}
+.arts img{width:78px;aspect-ratio:2/3;object-fit:cover;background:var(--black);box-shadow:0 1px 5px rgba(20,18,14,.2)}
+
+.doc{width:100%;height:min(560px,96vw);border:0;background:#fff;box-shadow:0 0 0 1px var(--hair);display:block}object.doc{height:auto;min-height:0}object.doc:not(:has(*)){height:min(560px,96vw)}.nodoc{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:13px;background:#fff;color:var(--grey);font-family:var(--mono);font-size:12px;text-align:center;padding:34px 24px}.nodoc p{margin:0}.btn{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);border:1px solid var(--blue);padding:9px 16px;text-decoration:none;background:transparent}.btn:hover{background:var(--blue);color:var(--bond)}.docbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:14px}.dochint{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--grey)}.btn:focus-visible,video:focus-visible{outline:2px solid var(--salmon);outline-offset:3px}
+
+footer{padding:24px 38px 40px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+ color:var(--grey);display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+footer b{color:var(--ink);font-weight:400}
+footer .sp{flex:1}
+
+@media(max-width:720px){
+ .slate{grid-template-columns:1fr;gap:22px;padding:26px 22px}
+ .slate .port{order:-1;max-width:230px}
+ .pad,section,.note,footer{padding-left:22px;padding-right:22px}
+ .grid{grid-template-columns:1fr}
+}
+@media print{
+ body{background:#fff}.sheet{box-shadow:none}
+ .well,.doc{break-inside:avoid}
+ video{display:none}
+}
+@media(prefers-reduced-motion:no-preference){
+ .sheet>*{animation:rise .5s cubic-bezier(.2,.7,.3,1) both}
+ .sheet>*:nth-child(2){animation-delay:.05s}
+ .sheet>*:nth-child(3){animation-delay:.1s}
+ @keyframes rise{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+}
+.offlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1px;background:var(--line);border-top:1px solid var(--line);margin-top:11px}.offrow{text-align:left;background:var(--p1);border:0;color:var(--ink);font-family:inherit;font-size:13px;letter-spacing:.02em;padding:13px 15px;cursor:pointer;transition:background .12s,color .12s}.offrow:hover{background:rgba(224,162,60,.08);color:var(--tung)}.offreads{display:grid;gap:1px;background:var(--line);border-top:1px solid var(--line);max-height:440px;overflow:auto}.offread{display:grid;grid-template-columns:1fr 150px 108px auto;gap:12px;align-items:center;background:var(--p1);padding:10px 12px;font-size:12.5px}.orT{color:var(--ink);overflow:hidden;text-overflow:ellipsis}.orR{color:var(--tung);font-size:11.5px;overflow:hidden;text-overflow:ellipsis}.orW{color:var(--mut);font-size:11px;letter-spacing:.03em;white-space:nowrap}@media(max-width:640px){.offread{grid-template-columns:1fr auto}.orR,.orW{display:none}}
+/* ---- slate: name left, the facts right ---- */
+.slate{grid-template-columns:1fr auto;align-items:start}
+.facts{font-family:var(--mono);font-size:12px;line-height:1.9;text-align:right;white-space:nowrap}
+.facts .k{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--grey);display:block;margin-top:14px}
+.facts .k:first-child{margin-top:0}
+.facts a{color:var(--blue);text-decoration:none;border-bottom:1px solid var(--hair)}
+.facts a:hover{border-bottom-color:var(--blue)}
+.who{display:block}.who .name{margin-bottom:2px}.who .hs{max-width:214px;margin-top:22px}@media(max-width:720px){.who{grid-template-columns:1fr}.who .hs{max-width:280px}}
+
+/* ---- the wall of work ---- */
+.wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:20px}
+.pcard{display:block;background:none;border:0;padding:0;text-align:left;cursor:pointer;font:inherit;color:inherit}
+.part{position:relative;aspect-ratio:2/3;overflow:hidden;background:var(--black);
+ box-shadow:0 1px 0 var(--hair),0 8px 18px rgba(20,18,14,.14);transition:transform .18s,box-shadow .18s}
+.part img{width:100%;height:100%;object-fit:cover;display:block}
+.pcard:hover .part{transform:translateY(-3px);box-shadow:0 1px 0 var(--hair),0 14px 26px rgba(20,18,14,.22)}
+.playdot{position:absolute;right:9px;bottom:9px;width:28px;height:28px;border-radius:50%;
+ background:rgba(12,12,14,.72);color:#fff;font-size:10px;display:flex;align-items:center;
+ justify-content:center;opacity:0;transition:opacity .18s}
+.pcard:hover .playdot{opacity:1}
+.pmeta{padding-top:10px}
+.pmeta b{display:block;font-family:var(--disp);font-size:14.5px;line-height:1.28;letter-spacing:-.01em}
+.pch{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;color:var(--blue);margin-top:3px}
+.pbits{display:block;font-family:var(--mono);font-size:10.5px;color:var(--grey);margin-top:2px}
+
+/* ---- the viewer ---- */
+.viewer{position:fixed;inset:0;background:rgba(12,12,14,.94);z-index:900;display:none;
+ align-items:center;justify-content:center;padding:24px}
+.viewer.on{display:flex}
+.vbox{max-width:1020px;width:100%;max-height:100%;overflow:auto}
+.vbox video,.vbox img{width:100%;display:block;background:#000;max-height:70vh;object-fit:contain}
+.vhead{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;
+ color:var(--bond);padding:0 0 14px}
+.vhead h3{font-family:var(--disp);font-size:26px;margin:0 0 4px;letter-spacing:-.02em}
+.vhead .vs{font-family:var(--mono);font-size:11.5px;color:#b9b4a9;letter-spacing:.08em}
+.vhead .vch{font-family:var(--mono);font-size:11.5px;color:var(--salmon);letter-spacing:.1em;margin-bottom:4px}
+.vclose{background:none;border:1px solid #6b675f;color:var(--bond);font-family:var(--mono);
+ font-size:11px;letter-spacing:.14em;padding:11px 16px;cursor:pointer;flex:0 0 auto}
+.vclose:hover{border-color:var(--salmon);color:var(--salmon)}
+.vnone{font-family:var(--mono);font-size:12px;color:#b9b4a9;letter-spacing:.06em;
+ padding:16px 0 0;text-align:center}
+
+/* ---- short films ---- */
+.films{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1px;
+ background:var(--hair);border:1px solid var(--hair)}
+.film{display:block;background:var(--bond);padding:20px 22px;text-decoration:none;color:inherit}
+.film:hover{background:#fff}
+.film b{display:block;font-family:var(--disp);font-size:17px}
+.film span{display:block;font-family:var(--mono);font-size:11px;color:var(--grey);margin-top:5px}
+.film em{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;
+ text-transform:uppercase;color:var(--salmon);font-style:normal;margin-top:12px}
+.soon{font-family:var(--mono);font-size:11.5px;color:var(--grey)}
+@media(max-width:720px){
+ .slate{grid-template-columns:1fr;gap:20px}
+ .facts{text-align:left}
+ .hero{grid-template-columns:1fr}
+}
 </style></head><body>
-<div class="wrap">
-<header>
-  <div class="brand"><img src="media/sigil.png" alt="">
-    <div><h1>Brendan McCarthy</h1><div class="tag">ACTOR</div></div></div>
-  <nav><a href="#reel">REEL</a><a href="#credits">CREDITS</a><a href="#films">FILMS</a>
-    <a href="#writing">WRITING</a><a href="#shots">PHOTOS</a><a href="#contact">CONTACT</a></nav>
+<main class="sheet">
+<div class="stripe"></div>
+
+<header class="slate">
+ <div class="who"><h1 class="name">Brendan McCarthy</h1><div class="lane">Actor</div>
+  <img class="hs" src="media/headshot1.jpg" alt="Brendan McCarthy"></div>
+ <div class="facts">
+   <span class="k">Union</span>SAG-AFTRA
+   <span class="k">Management</span>SK Management
+   <span class="k">Email</span><a href="mailto:hello@brendanmccarthyactor.com">hello@brendanmccarthyactor.com</a>
+ </div>
 </header>
 
-<section id="reel"><h2>REEL</h2>
-  <p class="empty">Reel links go here.</p></section>
+<section class="pad"><div class="rule"><span class="lbl">Reel</span><i></i></div>
+ <p class="soon">Reel coming.</p></section>
 
-<section id="credits"><h2>CREDITS</h2>
-  <div class="sub">TELEVISION</div>
-  <div class="credits"><article class="credit">
-   <img loading="lazy" src="media/pasted-1782863080478.png" alt="Frisco King">
-   <div class="meta"><h3>Frisco King</h3>
-     <div class="role">Guest Star · Paramount+</div>
-     <div class="ch">OFFICER RAWLINS</div></div></article><article class="credit">
-   <img loading="lazy" src="media/pasted-1782858289716.png" alt="Grotesquerie">
-   <div class="meta"><h3>Grotesquerie</h3>
-     <div class="role">Guest Star · FX</div>
-     <div class="ch">NICK</div></div></article><article class="credit">
-   <img loading="lazy" src="media/pasted-1782859268251.png" alt="The Rookie: Feds">
-   <div class="meta"><h3>The Rookie: Feds</h3>
-     <div class="role">Guest Star · ABC</div>
-     <div class="ch">PAXTON</div></div></article><article class="credit">
-   <img loading="lazy" src="media/pasted-1782858149095.png" alt="911 - Lone Star">
-   <div class="meta"><h3>911 - Lone Star</h3>
-     <div class="role">Guest Star · FOX</div>
-     <div class="ch">CRAIG</div></div></article><article class="credit">
-   <img loading="lazy" src="media/pasted-1782858219172.png" alt="American Horror Story">
-   <div class="meta"><h3>American Horror Story</h3>
-     <div class="role">Guest Star · FX</div>
-     <div class="ch">DETECTIVE MONROE</div></div></article><article class="credit">
-   <img loading="lazy" src="media/pasted-1782858345971.png" alt="Shooter">
-   <div class="meta"><h3>Shooter</h3>
-     <div class="role">Recurring Guest Star (5 eps) · USA</div>
-     <div class="ch">BO WINNICK</div></div></article><article class="credit">
-   <img loading="lazy" src="media/pasted-1782858398591.png" alt="NCIS">
-   <div class="meta"><h3>NCIS</h3>
-     <div class="role">Guest Star · CBS</div>
-     <div class="ch">OWEN DIXON</div></div></article><article class="credit">
-   <img loading="lazy" src="media/pasted-1782859984205.png" alt="Chicago PD">
-   <div class="meta"><h3>Chicago PD</h3>
-     <div class="role">Guest Star · NBC</div>
-     <div class="ch">VINCE PARKER</div></div></article><article class="credit">
-   <img loading="lazy" src="media/pasted-1782860039775.png" alt="Legends (pilot)">
-   <div class="meta"><h3>Legends (pilot)</h3>
-     <div class="role">Guest Star · TNT</div>
-     <div class="ch">ELLROY STREETER</div></div></article><article class="credit">
-   <img loading="lazy" src="media/pasted-1782860089836.png" alt="Defiance">
-   <div class="meta"><h3>Defiance</h3>
-     <div class="role">Guest Star · Syfy</div>
-     <div class="ch">HUNTER BELL</div></div></article><article class="credit">
-   <img loading="lazy" src="media/pasted-1782860426261.png" alt="The Mentalist">
-   <div class="meta"><h3>The Mentalist</h3>
-     <div class="role">Guest Star · CBS</div>
-     <div class="ch">LANCE GLADSTONE</div></div></article><article class="credit">
-   <img loading="lazy" src="media/pasted-1782860362101.png" alt="Justified">
-   <div class="meta"><h3>Justified</h3>
-     <div class="role">Recurring Guest Star · FX</div>
-     <div class="ch">TANNER DODD</div></div></article><article class="credit">
-   <img loading="lazy" src="media/pasted-1782860315336.png" alt="True Blood">
-   <div class="meta"><h3>True Blood</h3>
-     <div class="role">Recurring · HBO</div>
-     <div class="ch">NATE</div></div></article><article class="credit">
-   <img loading="lazy" src="media/pasted-1782861854003.png" alt="Good Christian Belles">
-   <div class="meta"><h3>Good Christian Belles</h3>
-     <div class="role">Co-Star · ABC</div>
-     </div></article><article class="credit">
-   <img loading="lazy" src="media/pasted-1782862426719.png" alt="The Tunnel">
-   <div class="meta"><h3>The Tunnel</h3>
-     <div class="role">Lead · Commonwealth/KellyCo</div>
-     </div></article><article class="credit">
-   <img loading="lazy" src="media/pasted-1782861897230.png" alt="Rizzoli & Isles (pilot)">
-   <div class="meta"><h3>Rizzoli & Isles (pilot)</h3>
-     <div class="role">Guest Star · TNT</div>
-     <div class="ch">THE APPRENTICE</div></div></article></div>
-  <div class="sub">FILM</div>
-  <div class="credits"><article class="credit">
-   <img loading="lazy" src="media/pasted-1782863507297.png" alt="A GUNMAN'S HAND">
-   <div class="meta"><h3>A GUNMAN'S HAND</h3>
-     <div class="role">LEAD · NEW SKYLINE ENTERTAINMENT</div>
-     <div class="ch">JOHN WESLEY HARDIN</div></div></article><article class="credit">
-   <img loading="lazy" src="media/pasted-1782859664134.png" alt="Selfless">
-   <div class="meta"><h3>Selfless</h3>
-     <div class="role">Strong Supporting · Tarsem Singh, Dir.</div>
-     <div class="ch">ANTON 2</div></div></article><article class="credit">
-   <img loading="lazy" src="media/pasted-1782858474180.png" alt="Hidden Truth">
-   <div class="meta"><h3>Hidden Truth</h3>
-     <div class="role">Lead · Steven R. Monroe, Dir.</div>
-     <div class="ch">PACE</div></div></article><article class="credit">
-   <img loading="lazy" src="media/pasted-1782859612032.png" alt="A Life Lived">
-   <div class="meta"><h3>A Life Lived</h3>
-     <div class="role">Lead · Riley Wood, Dir.</div>
-     <div class="ch">ALEX</div></div></article><article class="credit">
-   <img loading="lazy" src="media/pasted-1782862683363.png" alt="Bacardi">
-   <div class="meta"><h3>Bacardi</h3>
-     <div class="role">Emilio Bacardi · Bacardi Ltd.</div>
-     <div class="ch">EMILIO BACARDI</div></div></article><article class="credit">
-   <img loading="lazy" src="media/pasted-1782862250813.png" alt="Demon Lake">
-   <div class="meta"><h3>Demon Lake</h3>
-     <div class="role">Lead · Dragon Eye Films</div>
-     <div class="ch">AUGGIE</div></div></article><article class="credit">
-   <img loading="lazy" src="media/pasted-1782860146370.png" alt="The Holy Ghost People">
-   <div class="meta"><h3>The Holy Ghost People</h3>
-     <div class="role">Lead · Mitchell Altieri, Dir.</div>
-     </div></article><article class="credit">
-   <img loading="lazy" src="media/pasted-1782860184185.png" alt="Glow">
-   <div class="meta"><h3>Glow</h3>
-     <div class="role">Lead · Douglas Jessup, Dir.</div>
-     <div class="ch">THORNE</div></div></article><article class="credit">
-   <img loading="lazy" src="media/pasted-1782862314703.png" alt="Twist of Fate">
-   <div class="meta"><h3>Twist of Fate</h3>
-     <div class="role">Lead · HD Motion Pictures</div>
-     </div></article><article class="credit">
-   <img loading="lazy" src="media/pasted-1782860503005.png" alt="2001 Maniacs">
-   <div class="meta"><h3>2001 Maniacs</h3>
-     <div class="role">Lead · Raw Nerve Prod.</div>
-     <div class="ch">RUFUS</div></div></article><article class="credit">
-   <img loading="lazy" src="media/pasted-1782860577159.png" alt="The Works">
-   <div class="meta"><h3>The Works</h3>
-     <div class="role">Co-Star · Gal Katzir, Dir.</div>
-     <div class="ch">RICK</div></div></article><article class="credit">
-   <img loading="lazy" src="media/pasted-1782860257491.png" alt="61*">
-   <div class="meta"><h3>61*</h3>
-     <div class="role">Co-Star · Billy Crystal, Dir./HBO</div>
-     <div class="ch">JOHNNY BLANCHARD</div></div></article><article class="credit">
-   <img loading="lazy" src="media/pasted-1782862172616.png" alt="Most Likely to Murder">
-   <div class="meta"><h3>Most Likely to Murder</h3>
-     <div class="role"> · Feature</div>
-     <div class="ch">HARLEN</div></div></article><article class="credit">
-   <img loading="lazy" src="media/pasted-1782862066449.png" alt="Earth Fall">
-   <div class="meta"><h3>Earth Fall</h3>
-     <div class="role"></div>
-     <div class="ch">CARL</div></div></article><article class="credit">
-   <img loading="lazy" src="media/pasted-1782862013464.png" alt="A Green Story">
-   <div class="meta"><h3>A Green Story</h3>
-     <div class="role"></div>
-     <div class="ch">THOMAS</div></div></article><article class="credit">
-   <img loading="lazy" src="media/pasted-1782861953819.png" alt="Poolboy: Drowning Out the Fury">
-   <div class="meta"><h3>Poolboy: Drowning Out the Fury</h3>
-     <div class="role"></div>
-     <div class="ch">PARAMEDIC SIR LARRY HAVERFORD</div></div></article></div>
-  <p style="margin-top:28px"><a class="btn" href="media/Brendan_McCarthy_Resume.pdf" target="_blank" rel="noopener">FULL RESUME (PDF)</a></p>
+<section class="pad"><div class="rule"><span class="lbl">Work</span><span class="ct">32</span><i></i></div>
+ <div class="wall"><button class="pcard" onclick="openCredit(0)" aria-label="A GUNMAN&#x27;S HAND">
+   <div class="part"><img src="media/pasted-1782863507297.png" alt="A GUNMAN&#x27;S HAND" loading="lazy"><span class="playdot">&#9654;</span></div>
+   <div class="pmeta"><b>A GUNMAN&#x27;S HAND</b>
+     <span class="pch">JOHN WESLEY HARDIN</span>
+     <span class="pbits">LEAD &middot; NEW SKYLINE ENTERTAINMENT</span></div>
+  </button><button class="pcard" onclick="openCredit(1)" aria-label="Frisco King">
+   <div class="part"><img src="media/pasted-1782863080478.png" alt="Frisco King" loading="lazy"><span class="playdot">&#9654;</span></div>
+   <div class="pmeta"><b>Frisco King</b>
+     <span class="pch">OFFICER RAWLINS</span>
+     <span class="pbits">Guest Star &middot; Paramount+</span></div>
+  </button><button class="pcard" onclick="openCredit(2)" aria-label="Grotesquerie">
+   <div class="part"><img src="media/pasted-1782858289716.png" alt="Grotesquerie" loading="lazy"><span class="playdot">&#9654;</span></div>
+   <div class="pmeta"><b>Grotesquerie</b>
+     <span class="pch">NICK</span>
+     <span class="pbits">Guest Star &middot; FX</span></div>
+  </button><button class="pcard" onclick="openCredit(3)" aria-label="The Rookie: Feds">
+   <div class="part"><img src="media/pasted-1782859268251.png" alt="The Rookie: Feds" loading="lazy"><span class="playdot">&#9654;</span></div>
+   <div class="pmeta"><b>The Rookie: Feds</b>
+     <span class="pch">PAXTON</span>
+     <span class="pbits">Guest Star &middot; ABC</span></div>
+  </button><button class="pcard" onclick="openCredit(4)" aria-label="911 - Lone Star">
+   <div class="part"><img src="media/pasted-1782858149095.png" alt="911 - Lone Star" loading="lazy"><span class="playdot">&#9654;</span></div>
+   <div class="pmeta"><b>911 - Lone Star</b>
+     <span class="pch">CRAIG</span>
+     <span class="pbits">Guest Star &middot; FOX</span></div>
+  </button><button class="pcard" onclick="openCredit(5)" aria-label="American Horror Story">
+   <div class="part"><img src="media/pasted-1782858219172.png" alt="American Horror Story" loading="lazy"><span class="playdot">&#9654;</span></div>
+   <div class="pmeta"><b>American Horror Story</b>
+     <span class="pch">DETECTIVE MONROE</span>
+     <span class="pbits">Guest Star &middot; FX</span></div>
+  </button><button class="pcard" onclick="openCredit(6)" aria-label="Shooter">
+   <div class="part"><img src="media/pasted-1782858345971.png" alt="Shooter" loading="lazy"><span class="playdot">&#9654;</span></div>
+   <div class="pmeta"><b>Shooter</b>
+     <span class="pch">BO WINNICK</span>
+     <span class="pbits">Recurring Guest Star (5 eps) &middot; USA</span></div>
+  </button><button class="pcard" onclick="openCredit(7)" aria-label="NCIS">
+   <div class="part"><img src="media/pasted-1782858398591.png" alt="NCIS" loading="lazy"><span class="playdot">&#9654;</span></div>
+   <div class="pmeta"><b>NCIS</b>
+     <span class="pch">OWEN DIXON</span>
+     <span class="pbits">Guest Star &middot; CBS</span></div>
+  </button><button class="pcard" onclick="openCredit(8)" aria-label="Chicago PD">
+   <div class="part"><img src="media/pasted-1782859984205.png" alt="Chicago PD" loading="lazy"><span class="playdot">&#9654;</span></div>
+   <div class="pmeta"><b>Chicago PD</b>
+     <span class="pch">VINCE PARKER</span>
+     <span class="pbits">Guest Star &middot; NBC</span></div>
+  </button><button class="pcard" onclick="openCredit(9)" aria-label="Legends (pilot)">
+   <div class="part"><img src="media/pasted-1782860039775.png" alt="Legends (pilot)" loading="lazy"><span class="playdot">&#9654;</span></div>
+   <div class="pmeta"><b>Legends (pilot)</b>
+     <span class="pch">ELLROY STREETER</span>
+     <span class="pbits">Guest Star &middot; TNT</span></div>
+  </button><button class="pcard" onclick="openCredit(10)" aria-label="Defiance">
+   <div class="part"><img src="media/pasted-1782860089836.png" alt="Defiance" loading="lazy"><span class="playdot">&#9654;</span></div>
+   <div class="pmeta"><b>Defiance</b>
+     <span class="pch">HUNTER BELL</span>
+     <span class="pbits">Guest Star &middot; Syfy</span></div>
+  </button><button class="pcard" onclick="openCredit(11)" aria-label="The Mentalist">
+   <div class="part"><img src="media/pasted-1782860426261.png" alt="The Mentalist" loading="lazy"><span class="playdot">&#9654;</span></div>
+   <div class="pmeta"><b>The Mentalist</b>
+     <span class="pch">LANCE GLADSTONE</span>
+     <span class="pbits">Guest Star &middot; CBS</span></div>
+  </button><button class="pcard" onclick="openCredit(12)" aria-label="Justified">
+   <div class="part"><img src="media/pasted-1782860362101.png" alt="Justified" loading="lazy"><span class="playdot">&#9654;</span></div>
+   <div class="pmeta"><b>Justified</b>
+     <span class="pch">TANNER DODD</span>
+     <span class="pbits">Recurring Guest Star &middot; FX</span></div>
+  </button><button class="pcard" onclick="openCredit(13)" aria-label="True Blood">
+   <div class="part"><img src="media/pasted-1782860315336.png" alt="True Blood" loading="lazy"><span class="playdot">&#9654;</span></div>
+   <div class="pmeta"><b>True Blood</b>
+     <span class="pch">NATE</span>
+     <span class="pbits">Recurring &middot; HBO</span></div>
+  </button><button class="pcard" onclick="openCredit(14)" aria-label="Good Christian Belles">
+   <div class="part"><img src="media/pasted-1782861854003.png" alt="Good Christian Belles" loading="lazy"><span class="playdot">&#9654;</span></div>
+   <div class="pmeta"><b>Good Christian Belles</b>
+     
+     <span class="pbits">Co-Star &middot; ABC</span></div>
+  </button><button class="pcard" onclick="openCredit(15)" aria-label="The Tunnel">
+   <div class="part"><img src="media/pasted-1782862426719.png" alt="The Tunnel" loading="lazy"><span class="playdot">&#9654;</span></div>
+   <div class="pmeta"><b>The Tunnel</b>
+     
+     <span class="pbits">Lead &middot; Commonwealth/KellyCo</span></div>
+  </button><button class="pcard" onclick="openCredit(16)" aria-label="Rizzoli &amp; Isles (pilot)">
+   <div class="part"><img src="media/pasted-1782861897230.png" alt="Rizzoli &amp; Isles (pilot)" loading="lazy"><span class="playdot">&#9654;</span></div>
+   <div class="pmeta"><b>Rizzoli &amp; Isles (pilot)</b>
+     <span class="pch">THE APPRENTICE</span>
+     <span class="pbits">Guest Star &middot; TNT</span></div>
+  </button><button class="pcard" onclick="openCredit(17)" aria-label="Selfless">
+   <div class="part"><img src="media/pasted-1782859664134.png" alt="Selfless" loading="lazy"><span class="playdot">&#9654;</span></div>
+   <div class="pmeta"><b>Selfless</b>
+     <span class="pch">ANTON 2</span>
+     <span class="pbits">Strong Supporting &middot; Tarsem Singh, Dir.</span></div>
+  </button><button class="pcard" onclick="openCredit(18)" aria-label="Hidden Truth">
+   <div class="part"><img src="media/pasted-1782858474180.png" alt="Hidden Truth" loading="lazy"><span class="playdot">&#9654;</span></div>
+   <div class="pmeta"><b>Hidden Truth</b>
+     <span class="pch">PACE</span>
+     <span class="pbits">Lead &middot; Steven R. Monroe, Dir.</span></div>
+  </button><button class="pcard" onclick="openCredit(19)" aria-label="A Life Lived">
+   <div class="part"><img src="media/pasted-1782859612032.png" alt="A Life Lived" loading="lazy"><span class="playdot">&#9654;</span></div>
+   <div class="pmeta"><b>A Life Lived</b>
+     <span class="pch">ALEX</span>
+     <span class="pbits">Lead &middot; Riley Wood, Dir.</span></div>
+  </button><button class="pcard" onclick="openCredit(20)" aria-label="Bacardi">
+   <div class="part"><img src="media/pasted-1782862683363.png" alt="Bacardi" loading="lazy"><span class="playdot">&#9654;</span></div>
+   <div class="pmeta"><b>Bacardi</b>
+     <span class="pch">EMILIO BACARDI</span>
+     <span class="pbits">Emilio Bacardi &middot; Bacardi Ltd.</span></div>
+  </button><button class="pcard" onclick="openCredit(21)" aria-label="Demon Lake">
+   <div class="part"><img src="media/pasted-1782862250813.png" alt="Demon Lake" loading="lazy"><span class="playdot">&#9654;</span></div>
+   <div class="pmeta"><b>Demon Lake</b>
+     <span class="pch">AUGGIE</span>
+     <span class="pbits">Lead &middot; Dragon Eye Films</span></div>
+  </button><button class="pcard" onclick="openCredit(22)" aria-label="The Holy Ghost People">
+   <div class="part"><img src="media/pasted-1782860146370.png" alt="The Holy Ghost People" loading="lazy"><span class="playdot">&#9654;</span></div>
+   <div class="pmeta"><b>The Holy Ghost People</b>
+     
+     <span class="pbits">Lead &middot; Mitchell Altieri, Dir.</span></div>
+  </button><button class="pcard" onclick="openCredit(23)" aria-label="Glow">
+   <div class="part"><img src="media/pasted-1782860184185.png" alt="Glow" loading="lazy"><span class="playdot">&#9654;</span></div>
+   <div class="pmeta"><b>Glow</b>
+     <span class="pch">THORNE</span>
+     <span class="pbits">Lead &middot; Douglas Jessup, Dir.</span></div>
+  </button><button class="pcard" onclick="openCredit(24)" aria-label="Twist of Fate">
+   <div class="part"><img src="media/pasted-1782862314703.png" alt="Twist of Fate" loading="lazy"><span class="playdot">&#9654;</span></div>
+   <div class="pmeta"><b>Twist of Fate</b>
+     
+     <span class="pbits">Lead &middot; HD Motion Pictures</span></div>
+  </button><button class="pcard" onclick="openCredit(25)" aria-label="2001 Maniacs">
+   <div class="part"><img src="media/pasted-1782860503005.png" alt="2001 Maniacs" loading="lazy"><span class="playdot">&#9654;</span></div>
+   <div class="pmeta"><b>2001 Maniacs</b>
+     <span class="pch">RUFUS</span>
+     <span class="pbits">Lead &middot; Raw Nerve Prod.</span></div>
+  </button><button class="pcard" onclick="openCredit(26)" aria-label="The Works">
+   <div class="part"><img src="media/pasted-1782860577159.png" alt="The Works" loading="lazy"><span class="playdot">&#9654;</span></div>
+   <div class="pmeta"><b>The Works</b>
+     <span class="pch">RICK</span>
+     <span class="pbits">Co-Star &middot; Gal Katzir, Dir.</span></div>
+  </button><button class="pcard" onclick="openCredit(27)" aria-label="61*">
+   <div class="part"><img src="media/pasted-1782860257491.png" alt="61*" loading="lazy"><span class="playdot">&#9654;</span></div>
+   <div class="pmeta"><b>61*</b>
+     <span class="pch">JOHNNY BLANCHARD</span>
+     <span class="pbits">Co-Star &middot; Billy Crystal, Dir./HBO</span></div>
+  </button><button class="pcard" onclick="openCredit(28)" aria-label="Most Likely to Murder">
+   <div class="part"><img src="media/pasted-1782862172616.png" alt="Most Likely to Murder" loading="lazy"><span class="playdot">&#9654;</span></div>
+   <div class="pmeta"><b>Most Likely to Murder</b>
+     <span class="pch">HARLEN</span>
+     <span class="pbits">Feature</span></div>
+  </button><button class="pcard" onclick="openCredit(29)" aria-label="Earth Fall">
+   <div class="part"><img src="media/pasted-1782862066449.png" alt="Earth Fall" loading="lazy"><span class="playdot">&#9654;</span></div>
+   <div class="pmeta"><b>Earth Fall</b>
+     <span class="pch">CARL</span>
+     <span class="pbits"></span></div>
+  </button><button class="pcard" onclick="openCredit(30)" aria-label="A Green Story">
+   <div class="part"><img src="media/pasted-1782862013464.png" alt="A Green Story" loading="lazy"><span class="playdot">&#9654;</span></div>
+   <div class="pmeta"><b>A Green Story</b>
+     <span class="pch">THOMAS</span>
+     <span class="pbits"></span></div>
+  </button><button class="pcard" onclick="openCredit(31)" aria-label="Poolboy: Drowning Out the Fury">
+   <div class="part"><img src="media/pasted-1782861953819.png" alt="Poolboy: Drowning Out the Fury" loading="lazy"><span class="playdot">&#9654;</span></div>
+   <div class="pmeta"><b>Poolboy: Drowning Out the Fury</b>
+     <span class="pch">PARAMEDIC SIR LARRY HAVERFORD</span>
+     <span class="pbits"></span></div>
+  </button></div>
 </section>
 
-<section id="films"><h2>SHORT FILMS</h2>
-  <div class="films"><p class="empty">YouTube links go here.</p></div></section>
+<section class="pad"><div class="rule"><span class="lbl">Short films</span><i></i></div>
+ <div class="films"><a class="film" href="#" onclick="return false"><b>Coming soon</b><span>YouTube links go here.</span></a></div>
+</section>
 
-<section id="writing"><h2>WRITING</h2>
-  <p class="empty">Projects go here.</p></section>
+<section class="pad"><div class="rule"><span class="lbl">Writing</span><i></i></div>
+ <p class="soon">Projects coming.</p></section>
 
-<section id="shots"><h2>PHOTOS</h2>
-  <div class="shots">
-    <img src="media/headshot1.jpg" alt="Brendan McCarthy">
-    <img src="media/headshot2.jpg" alt="Brendan McCarthy">
-    <img src="media/headshot3.jpg" alt="Brendan McCarthy"></div></section>
 
-<section id="contact"><h2>CONTACT</h2>
-  <p class="lead">Represented by SK Management.</p>
-  <p class="empty">Contact details go here.</p></section>
+<section class="pad"><div class="rule"><span class="lbl">Photographs</span><span class="ct">3</span><i></i></div>
+ <div class="wall" style="grid-template-columns:repeat(auto-fill,minmax(230px,1fr))">
+  <img src="media/headshot1.jpg" alt="Brendan McCarthy" style="width:100%;display:block">
+  <img src="media/headshot2.jpg" alt="Brendan McCarthy" style="width:100%;display:block">
+  <img src="media/headshot3.jpg" alt="Brendan McCarthy" style="width:100%;display:block">
+ </div>
+</section>
 
-<footer>&copy; 2026 Brendan McCarthy</footer>
-</div></body></html>
+<footer class="pad" style="border-top:1px solid var(--hair);font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--grey)">
+ SAG-AFTRA &nbsp;&middot;&nbsp; SK MANAGEMENT &nbsp;&middot;&nbsp;
+ <a href="mailto:hello@brendanmccarthyactor.com" style="color:var(--blue)">hello@brendanmccarthyactor.com</a>
+</footer>
+</main>
+
+<div class="viewer" id="viewer" onclick="if(event.target===this)closeCredit()">
+ <div class="vbox">
+  <div class="vhead">
+   <div><div class="vch" id="vch"></div><h3 id="vt"></h3><div class="vs" id="vs"></div></div>
+   <button class="vclose" onclick="closeCredit()">&times; BACK</button>
+  </div>
+  <div id="vbody"></div>
+ </div>
+</div>
+
+<script>
+/* Click a project, see what there is to see. A clip if one is on file, the key art
+   if not. Nothing pretends there is footage where there is not. */
+const WORK=[{"t": "A GUNMAN'S HAND", "ch": "JOHN WESLEY HARDIN", "r": "LEAD", "n": "NEW SKYLINE ENTERTAINMENT", "d": "BRENDAN McCARTHY", "p": "pasted-1782863507297.png", "clip": ""}, {"t": "Frisco King", "ch": "OFFICER RAWLINS", "r": "Guest Star", "n": "Paramount+", "d": "", "p": "pasted-1782863080478.png", "clip": ""}, {"t": "Grotesquerie", "ch": "NICK", "r": "Guest Star", "n": "FX", "d": "", "p": "pasted-1782858289716.png", "clip": ""}, {"t": "The Rookie: Feds", "ch": "PAXTON", "r": "Guest Star", "n": "ABC", "d": "", "p": "pasted-1782859268251.png", "clip": ""}, {"t": "911 - Lone Star", "ch": "CRAIG", "r": "Guest Star", "n": "FOX", "d": "", "p": "pasted-1782858149095.png", "clip": ""}, {"t": "American Horror Story", "ch": "DETECTIVE MONROE", "r": "Guest Star", "n": "FX", "d": "", "p": "pasted-1782858219172.png", "clip": ""}, {"t": "Shooter", "ch": "BO WINNICK", "r": "Recurring Guest Star (5 eps)", "n": "USA", "d": "", "p": "pasted-1782858345971.png", "clip": ""}, {"t": "NCIS", "ch": "OWEN DIXON", "r": "Guest Star", "n": "CBS", "d": "", "p": "pasted-1782858398591.png", "clip": ""}, {"t": "Chicago PD", "ch": "VINCE PARKER", "r": "Guest Star", "n": "NBC", "d": "", "p": "pasted-1782859984205.png", "clip": ""}, {"t": "Legends (pilot)", "ch": "ELLROY STREETER", "r": "Guest Star", "n": "TNT", "d": "", "p": "pasted-1782860039775.png", "clip": ""}, {"t": "Defiance", "ch": "HUNTER BELL", "r": "Guest Star", "n": "Syfy", "d": "", "p": "pasted-1782860089836.png", "clip": ""}, {"t": "The Mentalist", "ch": "LANCE GLADSTONE", "r": "Guest Star", "n": "CBS", "d": "", "p": "pasted-1782860426261.png", "clip": ""}, {"t": "Justified", "ch": "TANNER DODD", "r": "Recurring Guest Star", "n": "FX", "d": "", "p": "pasted-1782860362101.png", "clip": ""}, {"t": "True Blood", "ch": "NATE", "r": "Recurring", "n": "HBO", "d": "", "p": "pasted-1782860315336.png", "clip": ""}, {"t": "Good Christian Belles", "ch": "", "r": "Co-Star", "n": "ABC", "d": "", "p": "pasted-1782861854003.png", "clip": ""}, {"t": "The Tunnel", "ch": "", "r": "Lead", "n": "Commonwealth/KellyCo", "d": "", "p": "pasted-1782862426719.png", "clip": ""}, {"t": "Rizzoli & Isles (pilot)", "ch": "THE APPRENTICE", "r": "Guest Star", "n": "TNT", "d": "", "p": "pasted-1782861897230.png", "clip": ""}, {"t": "Selfless", "ch": "ANTON 2", "r": "Strong Supporting", "n": "Tarsem Singh, Dir.", "d": "", "p": "pasted-1782859664134.png", "clip": ""}, {"t": "Hidden Truth", "ch": "PACE", "r": "Lead", "n": "Steven R. Monroe, Dir.", "d": "", "p": "pasted-1782858474180.png", "clip": ""}, {"t": "A Life Lived", "ch": "ALEX", "r": "Lead", "n": "Riley Wood, Dir.", "d": "", "p": "pasted-1782859612032.png", "clip": ""}, {"t": "Bacardi", "ch": "EMILIO BACARDI", "r": "Emilio Bacardi", "n": "Bacardi Ltd.", "d": "", "p": "pasted-1782862683363.png", "clip": ""}, {"t": "Demon Lake", "ch": "AUGGIE", "r": "Lead", "n": "Dragon Eye Films", "d": "", "p": "pasted-1782862250813.png", "clip": ""}, {"t": "The Holy Ghost People", "ch": "", "r": "Lead", "n": "Mitchell Altieri, Dir.", "d": "", "p": "pasted-1782860146370.png", "clip": ""}, {"t": "Glow", "ch": "THORNE", "r": "Lead", "n": "Douglas Jessup, Dir.", "d": "", "p": "pasted-1782860184185.png", "clip": ""}, {"t": "Twist of Fate", "ch": "", "r": "Lead", "n": "HD Motion Pictures", "d": "", "p": "pasted-1782862314703.png", "clip": ""}, {"t": "2001 Maniacs", "ch": "RUFUS", "r": "Lead", "n": "Raw Nerve Prod.", "d": "", "p": "pasted-1782860503005.png", "clip": ""}, {"t": "The Works", "ch": "RICK", "r": "Co-Star", "n": "Gal Katzir, Dir.", "d": "", "p": "pasted-1782860577159.png", "clip": ""}, {"t": "61*", "ch": "JOHNNY BLANCHARD", "r": "Co-Star", "n": "Billy Crystal, Dir./HBO", "d": "", "p": "pasted-1782860257491.png", "clip": ""}, {"t": "Most Likely to Murder", "ch": "HARLEN", "r": "", "n": "Feature", "d": "", "p": "pasted-1782862172616.png", "clip": ""}, {"t": "Earth Fall", "ch": "CARL", "r": "", "n": "", "d": "", "p": "pasted-1782862066449.png", "clip": ""}, {"t": "A Green Story", "ch": "THOMAS", "r": "", "n": "", "d": "", "p": "pasted-1782862013464.png", "clip": ""}, {"t": "Poolboy: Drowning Out the Fury", "ch": "PARAMEDIC SIR LARRY HAVERFORD", "r": "", "n": "", "d": "", "p": "pasted-1782861953819.png", "clip": ""}];
+function openCredit(i){
+ const c=WORK[i]; if(!c)return;
+ document.getElementById('vch').textContent=c.ch||'';
+ document.getElementById('vt').textContent=c.t||'';
+ document.getElementById('vs').textContent=[c.r,c.n,c.d?'dir. '+c.d:''].filter(Boolean).join(' \u00b7 ');
+ document.getElementById('vbody').innerHTML = c.clip
+   ? '<video src="'+c.clip+'" controls autoplay playsinline></video>'
+   : (c.p ? '<img src="media/'+c.p+'" alt="">'
+          + '<div class="vnone">No clip on file for this one yet.</div>' : '');
+ document.getElementById('viewer').classList.add('on');
+ document.body.style.overflow='hidden';
+}
+function closeCredit(){
+ const v=document.getElementById('viewer');
+ v.classList.remove('on');
+ document.getElementById('vbody').innerHTML='';
+ document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{ if(e.key==='Escape')closeCredit(); });
+</script>
+</body></html>
