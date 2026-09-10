@@ -412,6 +412,42 @@ footer .sp{flex:1}
 /* Click a project, see what there is to see. A clip if one is on file, the key art
    if not. Nothing pretends there is footage where there is not. */
 const WORK=[{"t": "A GUNMAN'S HAND", "ch": "JOHN WESLEY HARDIN", "r": "LEAD", "n": "NEW SKYLINE ENTERTAINMENT", "d": "BRENDAN McCARTHY", "p": "pasted-1782863507297.png", "clip": ""}, {"t": "Frisco King", "ch": "OFFICER RAWLINS", "r": "Guest Star", "n": "Paramount+", "d": "", "p": "pasted-1782863080478.png", "clip": ""}, {"t": "Grotesquerie", "ch": "NICK", "r": "Guest Star", "n": "FX", "d": "", "p": "pasted-1782858289716.png", "clip": ""}, {"t": "The Rookie: Feds", "ch": "PAXTON", "r": "Guest Star", "n": "ABC", "d": "", "p": "pasted-1782859268251.png", "clip": ""}, {"t": "911 - Lone Star", "ch": "CRAIG", "r": "Guest Star", "n": "FOX", "d": "", "p": "pasted-1782858149095.png", "clip": ""}, {"t": "American Horror Story", "ch": "DETECTIVE MONROE", "r": "Guest Star", "n": "FX", "d": "", "p": "pasted-1782858219172.png", "clip": ""}, {"t": "Shooter", "ch": "BO WINNICK", "r": "Recurring Guest Star (5 eps)", "n": "USA", "d": "", "p": "pasted-1782858345971.png", "clip": ""}, {"t": "NCIS", "ch": "OWEN DIXON", "r": "Guest Star", "n": "CBS", "d": "", "p": "pasted-1782858398591.png", "clip": ""}, {"t": "Chicago PD", "ch": "VINCE PARKER", "r": "Guest Star", "n": "NBC", "d": "", "p": "pasted-1782859984205.png", "clip": ""}, {"t": "Legends (pilot)", "ch": "ELLROY STREETER", "r": "Guest Star", "n": "TNT", "d": "", "p": "pasted-1782860039775.png", "clip": ""}, {"t": "Defiance", "ch": "HUNTER BELL", "r": "Guest Star", "n": "Syfy", "d": "", "p": "pasted-1782860089836.png", "clip": ""}, {"t": "The Mentalist", "ch": "LANCE GLADSTONE", "r": "Guest Star", "n": "CBS", "d": "", "p": "pasted-1782860426261.png", "clip": ""}, {"t": "Justified", "ch": "TANNER DODD", "r": "Recurring Guest Star", "n": "FX", "d": "", "p": "pasted-1782860362101.png", "clip": ""}, {"t": "True Blood", "ch": "NATE", "r": "Recurring", "n": "HBO", "d": "", "p": "pasted-1782860315336.png", "clip": ""}, {"t": "Good Christian Belles", "ch": "", "r": "Co-Star", "n": "ABC", "d": "", "p": "pasted-1782861854003.png", "clip": ""}, {"t": "The Tunnel", "ch": "", "r": "Lead", "n": "Commonwealth/KellyCo", "d": "", "p": "pasted-1782862426719.png", "clip": ""}, {"t": "Rizzoli & Isles (pilot)", "ch": "THE APPRENTICE", "r": "Guest Star", "n": "TNT", "d": "", "p": "pasted-1782861897230.png", "clip": ""}, {"t": "Selfless", "ch": "ANTON 2", "r": "Strong Supporting", "n": "Tarsem Singh, Dir.", "d": "", "p": "pasted-1782859664134.png", "clip": ""}, {"t": "Hidden Truth", "ch": "PACE", "r": "Lead", "n": "Steven R. Monroe, Dir.", "d": "", "p": "pasted-1782858474180.png", "clip": ""}, {"t": "A Life Lived", "ch": "ALEX", "r": "Lead", "n": "Riley Wood, Dir.", "d": "", "p": "pasted-1782859612032.png", "clip": ""}, {"t": "Bacardi", "ch": "EMILIO BACARDI", "r": "Emilio Bacardi", "n": "Bacardi Ltd.", "d": "", "p": "pasted-1782862683363.png", "clip": ""}, {"t": "Demon Lake", "ch": "AUGGIE", "r": "Lead", "n": "Dragon Eye Films", "d": "", "p": "pasted-1782862250813.png", "clip": ""}, {"t": "The Holy Ghost People", "ch": "", "r": "Lead", "n": "Mitchell Altieri, Dir.", "d": "", "p": "pasted-1782860146370.png", "clip": ""}, {"t": "Glow", "ch": "THORNE", "r": "Lead", "n": "Douglas Jessup, Dir.", "d": "", "p": "pasted-1782860184185.png", "clip": ""}, {"t": "Twist of Fate", "ch": "", "r": "Lead", "n": "HD Motion Pictures", "d": "", "p": "pasted-1782862314703.png", "clip": ""}, {"t": "2001 Maniacs", "ch": "RUFUS", "r": "Lead", "n": "Raw Nerve Prod.", "d": "", "p": "pasted-1782860503005.png", "clip": ""}, {"t": "The Works", "ch": "RICK", "r": "Co-Star", "n": "Gal Katzir, Dir.", "d": "", "p": "pasted-1782860577159.png", "clip": ""}, {"t": "61*", "ch": "JOHNNY BLANCHARD", "r": "Co-Star", "n": "Billy Crystal, Dir./HBO", "d": "", "p": "pasted-1782860257491.png", "clip": ""}, {"t": "Most Likely to Murder", "ch": "HARLEN", "r": "", "n": "Feature", "d": "", "p": "pasted-1782862172616.png", "clip": ""}, {"t": "Earth Fall", "ch": "CARL", "r": "", "n": "", "d": "", "p": "pasted-1782862066449.png", "clip": ""}, {"t": "A Green Story", "ch": "THOMAS", "r": "", "n": "", "d": "", "p": "pasted-1782862013464.png", "clip": ""}, {"t": "Poolboy: Drowning Out the Fury", "ch": "PARAMEDIC SIR LARRY HAVERFORD", "r": "", "n": "", "d": "", "p": "pasted-1782861953819.png", "clip": ""}];
+/* ===== THE PAGE READS ITS OWN MEDIA LIST =====
+   Nothing below is edited by hand, ever. The builder writes media/clips.json and
+   this merges it in on load - clips, notes and the reel. No file, no problem: the
+   page renders exactly as it does now. That way nothing you drop in can break the
+   page, because the page and the media never live in the same file. */
+(function(){
+ fetch('media/clips.json',{cache:'no-store'})
+  .then(function(r){ return r.ok?r.json():null; })
+  .then(function(j){
+   if(!j)return;
+   var by={};
+   (j.credits||[]).forEach(function(c){ by[(c.t||'').toLowerCase()]=c; });
+   WORK.forEach(function(w){
+    var m=by[(w.t||'').toLowerCase()];
+    if(!m)return;
+    if(m.clip) w.clip=m.clip;
+    if(m.note) w.note=m.note;
+   });
+   var n=WORK.filter(function(w){return w.clip}).length;
+   var ct=document.querySelector('.lbl');
+   if(j.reel){
+    var v=document.getElementById('reelVid');
+    if(v){ v.src=j.reel; if(j.reelPoster) v.poster=j.reelPoster;
+           document.getElementById('reelWell').style.display='';
+           document.getElementById('reelSoon').style.display='none';
+           v.load(); }
+   }
+   /* A play dot on a card that has no footage is a promise the page cannot keep. */
+   document.querySelectorAll('.pcard').forEach(function(btn,i){
+    var d=btn.querySelector('.playdot');
+    if(d) d.style.display=WORK[i]&&WORK[i].clip?'':'none';
+   });
+  })
+  .catch(function(){});
+})();
+
 function openCredit(i){
  const c=WORK[i]; if(!c)return;
  document.getElementById('vch').textContent=c.ch||'';
