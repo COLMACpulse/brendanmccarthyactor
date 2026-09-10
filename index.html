@@ -158,6 +158,18 @@ footer .sp{flex:1}
 .film:hover{background:#fff}
 .film b{display:block;font-family:var(--disp);font-size:17px}
 .film span{display:block;font-family:var(--mono);font-size:11px;color:var(--grey);margin-top:5px}
+/* Key art on a film card. Posters arrive at whatever shape they were made in - 4:3,
+   16:9 - so the card fixes the frame and the image fills it. */
+.film{padding:0;overflow:hidden}
+.fart{display:block;aspect-ratio:16/9;overflow:hidden;background:var(--black)}
+/* contain, not cover. A poster is typography - cropping one to fit a frame cuts
+   the title off. The frame stays the same shape for every film; the art sits
+   inside it whole. */
+.fart img{width:100%;height:100%;object-fit:contain;display:block}
+.fbody{display:block;padding:16px 20px 19px}
+/* Headshots come back from different photographers at different crops. The grid
+   decides the shape, not the files, or the row never lines up. */
+.photo{width:100%;aspect-ratio:4/5;object-fit:cover;display:block;background:var(--black)}
 .film em{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;
  text-transform:uppercase;color:var(--salmon);font-style:normal;margin-top:12px}
 .soon{font-family:var(--mono);font-size:11.5px;color:var(--grey)}
@@ -554,12 +566,14 @@ const SITE={
   {
    "t": "A Gunman's Hand",
    "s": "John Wesley Hardin",
-   "u": "https://youtu.be/o9ESqePAe1E"
+   "u": "https://youtu.be/o9ESqePAe1E",
+   "p": "media/gunmans-hand-poster.jpg"
   },
   {
    "t": "The Law of the Land",
-   "s": "Short film",
-   "u": "https://youtu.be/B_b_EheKTU4"
+   "s": "Written and directed by Brendan McCarthy",
+   "u": "https://youtu.be/B_b_EheKTU4",
+   "p": "media/law-of-the-land-poster.jpg"
   }
  ],
  "writing": [],
@@ -605,8 +619,10 @@ function render(){
  document.getElementById('secFilms').style.display=F.length?'':'none';
  document.getElementById('ctFilms').textContent=F.length||'';
  document.getElementById('films').innerHTML=F.map(function(f){
-  return '<a class="film" href="'+esc(f.u)+'" target="_blank" rel="noopener"><b>'+esc(f.t)+'</b>'+
-   (f.s?'<span>'+esc(f.s)+'</span>':'')+'<em>Watch on YouTube</em></a>'; }).join('');
+  return '<a class="film" href="'+esc(f.u)+'" target="_blank" rel="noopener">'+
+   (f.p?'<span class="fart"><img src="'+esc(f.p)+'" alt="'+esc(f.t)+'" loading="lazy"></span>':'')+
+   '<span class="fbody"><b>'+esc(f.t)+'</b>'+
+   (f.s?'<span>'+esc(f.s)+'</span>':'')+'<em>Watch on YouTube</em></span></a>'; }).join('');
 
  var W=S.writing||[];
  document.getElementById('ctWriting').textContent=W.length||'';
@@ -620,7 +636,7 @@ function render(){
  document.getElementById('secPhotos').style.display=P.length?'':'none';
  document.getElementById('ctPhotos').textContent=P.length||'';
  document.getElementById('photos').innerHTML=P.map(function(p){
-  return '<img src="'+esc(p)+'" alt="'+esc(S.name)+'" style="width:100%;display:block" loading="lazy">'; }).join('');
+  return '<img src="'+esc(p)+'" alt="'+esc(S.name)+'" class="photo" loading="lazy">'; }).join('');
 
  document.getElementById('ftr').innerHTML=esc(S.footer||'')+
   (S.email?' &nbsp;&middot;&nbsp; <a href="mailto:'+esc(S.email)+'" style="color:var(--blue)">'+esc(S.email)+'</a>':'');

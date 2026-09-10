@@ -302,7 +302,7 @@ function renderWork(){
 }
 
 /* ---------- films, writing, photographs ---------- */
-window.addFilm=function(){ SITE.films.unshift({t:'',s:'',u:''}); renderAll(); };
+window.addFilm=function(){ SITE.films.unshift({t:'',s:'',u:'',p:''}); renderAll(); };
 window.delFilm=function(i){ SITE.films.splice(i,1); renderAll(); };
 window.setF=function(i,k,v){ SITE.films[i][k]=v; };
 window.addWriting=function(){ SITE.writing.unshift({t:'',s:'',u:''}); renderAll(); };
@@ -312,17 +312,31 @@ window.delPhoto=function(i){ delete NEW[SITE.photos[i]]; SITE.photos.splice(i,1)
 window.movePhoto=function(i,d){ const j=i+d; if(j<0||j>=SITE.photos.length)return;
  const a=SITE.photos,tmp=a[i]; a[i]=a[j]; a[j]=tmp; renderAll(); };
 
-function listOf(arr,setter,del){
+/* Films carry key art the same way projects do, so the poster is pickable here
+   rather than being something only the page knows about. */
+window.pickFilmArt=function(i){
+ const inp=document.createElement('input'); inp.type='file'; inp.accept='image/*';
+ inp.onchange=async e=>{ const f=e.target.files[0]; if(!f)return;
+  try{ const r=await takeImage(f);
+   const path='media/'+slug(SITE.films[i].t||f.name.replace(/\.[^.]+$/,''),r.touched?'jpg':((f.name.split('.').pop()||'jpg').toLowerCase()));
+   NEW[path]=r.blob; SITE.films[i].p=path; renderAll();
+  }catch(err){ alert(err.message); } };
+ inp.click();
+};
+function listOf(arr,setter,del,art){
  return (arr||[]).map((x,i)=>'<div class="card">'+
+  (art&&x.p?'<img src="'+esc(preview(x.p))+'" style="width:100%;aspect-ratio:16/9;object-fit:cover;display:block;margin-bottom:10px" alt="">':'')+
   '<label>Title</label><input type="text" value="'+esc(x.t)+'" oninput="'+setter+'('+i+',\'t\',this.value)">'+
   '<label>Line underneath</label><input type="text" value="'+esc(x.s||'')+'" oninput="'+setter+'('+i+',\'s\',this.value)">'+
   '<label>Link</label><input type="text" value="'+esc(x.u||'')+'" oninput="'+setter+'('+i+',\'u\',this.value)" placeholder="https://">'+
-  '<div style="margin-top:9px"><button class="sm danger" onclick="'+del+'('+i+')">Remove</button></div>'+
+  '<div style="margin-top:9px;display:flex;gap:6px;flex-wrap:wrap">'+
+   (art?'<button class="sm" onclick="pickFilmArt('+i+')">'+(x.p?'Change art':'Add key art')+'</button>':'')+
+   '<button class="sm danger" onclick="'+del+'('+i+')">Remove</button></div>'+
  '</div>').join('') || '<div class="msg warn">Nothing here yet.</div>';
 }
 function renderAll(){
  renderWork();
- $('filmList').innerHTML=listOf(SITE.films,'setF','delFilm');
+ $('filmList').innerHTML=listOf(SITE.films,'setF','delFilm',true);
  $('writeList').innerHTML=listOf(SITE.writing,'setWr','delWriting');
  $('photoList').innerHTML=SITE.photos.map((p,i)=>'<div class="card row">'+
    '<img src="'+esc(preview(p))+'" style="aspect-ratio:1/1" alt="">'+
