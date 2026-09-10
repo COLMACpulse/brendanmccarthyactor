@@ -148,6 +148,8 @@ footer .sp{flex:1}
 .vclose:hover{border-color:var(--salmon);color:var(--salmon)}
 .vnone{font-family:var(--mono);font-size:12px;color:#b9b4a9;letter-spacing:.06em;
  padding:16px 0 0;text-align:center}
+.vnote{color:#d8d3c8;font-size:14.5px;line-height:1.62;max-width:66ch;padding:16px 0 0;
+ border-top:1px solid #3a3730;margin-top:16px}
 
 /* ---- short films ---- */
 .films{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1px;
@@ -179,7 +181,26 @@ footer .sp{flex:1}
 </header>
 
 <section class="pad"><div class="rule"><span class="lbl">Reel</span><i></i></div>
- <p class="soon">Reel coming.</p></section>
+ <div class="well" id="reelWell">
+  <video id="reelVid" controls playsinline preload="metadata"
+         poster="media/reel-poster.jpg" src="media/reel.mp4"></video>
+ </div>
+ <p class="soon" id="reelSoon" style="display:none">Reel coming.</p>
+</section>
+<script>
+/* The reel is the only thing on this page that shows acting rather than showing that
+   the work happened, so it plays here rather than on somebody else's player. If the
+   file has not been put in place yet, say so plainly instead of showing a broken
+   black rectangle. */
+(function(){
+ var v=document.getElementById('reelVid');
+ if(!v)return;
+ v.addEventListener('error',function(){
+  document.getElementById('reelWell').style.display='none';
+  document.getElementById('reelSoon').style.display='';
+ });
+})();
+</script>
 
 <section class="pad"><div class="rule"><span class="lbl">Work</span><span class="ct">32</span><i></i></div>
  <div class="wall"><button class="pcard" onclick="openCredit(0)" aria-label="A GUNMAN&#x27;S HAND">
@@ -383,6 +404,7 @@ footer .sp{flex:1}
    <button class="vclose" onclick="closeCredit()">&times; BACK</button>
   </div>
   <div id="vbody"></div>
+  <div class="vnote" id="vnote" style="display:none"></div>
  </div>
 </div>
 
@@ -399,6 +421,11 @@ function openCredit(i){
    ? '<video src="'+c.clip+'" controls autoplay playsinline></video>'
    : (c.p ? '<img src="media/'+c.p+'" alt="">'
           + '<div class="vnone">No clip on file for this one yet.</div>' : '');
+ /* Optional context on the credit - what the scene was, who was in it, anything
+    worth knowing. Absent on most, and absent means nothing is drawn. */
+ var nt=document.getElementById('vnote');
+ nt.textContent=c.note||'';
+ nt.style.display=c.note?'':'none';
  document.getElementById('viewer').classList.add('on');
  document.body.style.overflow='hidden';
 }
