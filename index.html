@@ -107,8 +107,11 @@ footer .sp{flex:1}
 .who{display:block}.who .name{margin-bottom:2px}.who .hs{max-width:214px;margin-top:22px}@media(max-width:720px){.who{grid-template-columns:1fr}.who .hs{max-width:280px}}
 
 /* ---- the wall of work ---- */
-.wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:20px}
-.pcard{display:block;background:none;border:0;padding:0;text-align:left;cursor:pointer;font:inherit;color:inherit}
+.wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:30px 20px;align-items:start}
+.pcard{display:block;background:none;border:0;padding:0;text-align:left;cursor:pointer;font:inherit;color:inherit;
+ /* a grid item stretches to the tallest card in its row, and a button centres what
+    it holds - together those push a shorter card's poster down out of line */
+ align-self:start}
 .part{position:relative;aspect-ratio:2/3;overflow:hidden;background:var(--black);
  box-shadow:0 1px 0 var(--hair),0 8px 18px rgba(20,18,14,.14);transition:transform .18s,box-shadow .18s}
 .part img{width:100%;height:100%;object-fit:cover;display:block}
@@ -118,8 +121,15 @@ footer .sp{flex:1}
  justify-content:center;opacity:0;transition:opacity .18s}
 .pcard:hover .playdot{opacity:1}
 .pmeta{padding-top:10px}
-.pmeta b{display:block;font-family:var(--disp);font-size:14.5px;line-height:1.28;letter-spacing:-.01em}
-.pch{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;color:var(--blue);margin-top:3px}
+.pmeta b{display:block;font-family:var(--disp);font-size:14.5px;line-height:1.28;letter-spacing:-.01em;
+ /* a title that runs to two lines would otherwise shove the character name and the
+    credit line down out of step with the rest of the row - so every title keeps two */
+ min-height:2.56em}
+.pch{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;color:var(--blue);margin-top:3px;
+ /* one line, always - an empty slot has to measure the same as a filled one, and a
+    long role name has to stay on one line or it shifts everything under it. The full
+    name is on the card when you open it. */
+ line-height:1.6;min-height:1.6em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pbits{display:block;font-family:var(--mono);font-size:10.5px;color:var(--grey);margin-top:2px}
 
 /* ---- the viewer ---- */
@@ -140,7 +150,7 @@ footer .sp{flex:1}
  padding:16px 0 0;text-align:center}
 
 /* ---- short films ---- */
-.films{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1px;
+.films{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1px;
  background:var(--hair);border:1px solid var(--hair)}
 .film{display:block;background:var(--bond);padding:20px 22px;text-decoration:none;color:inherit}
 .film:hover{background:#fff}
@@ -246,11 +256,13 @@ footer .sp{flex:1}
    <div class="part"><img src="media/pasted-1782861854003.png" alt="Good Christian Belles" loading="lazy"><span class="playdot">&#9654;</span></div>
    <div class="pmeta"><b>Good Christian Belles</b>
      
+     <span class="pch"></span>
      <span class="pbits">Co-Star &middot; ABC</span></div>
   </button><button class="pcard" onclick="openCredit(15)" aria-label="The Tunnel">
    <div class="part"><img src="media/pasted-1782862426719.png" alt="The Tunnel" loading="lazy"><span class="playdot">&#9654;</span></div>
    <div class="pmeta"><b>The Tunnel</b>
      
+     <span class="pch"></span>
      <span class="pbits">Lead &middot; Commonwealth/KellyCo</span></div>
   </button><button class="pcard" onclick="openCredit(16)" aria-label="Rizzoli &amp; Isles (pilot)">
    <div class="part"><img src="media/pasted-1782861897230.png" alt="Rizzoli &amp; Isles (pilot)" loading="lazy"><span class="playdot">&#9654;</span></div>
@@ -286,6 +298,7 @@ footer .sp{flex:1}
    <div class="part"><img src="media/pasted-1782860146370.png" alt="The Holy Ghost People" loading="lazy"><span class="playdot">&#9654;</span></div>
    <div class="pmeta"><b>The Holy Ghost People</b>
      
+     <span class="pch"></span>
      <span class="pbits">Lead &middot; Mitchell Altieri, Dir.</span></div>
   </button><button class="pcard" onclick="openCredit(23)" aria-label="Glow">
    <div class="part"><img src="media/pasted-1782860184185.png" alt="Glow" loading="lazy"><span class="playdot">&#9654;</span></div>
@@ -296,6 +309,7 @@ footer .sp{flex:1}
    <div class="part"><img src="media/pasted-1782862314703.png" alt="Twist of Fate" loading="lazy"><span class="playdot">&#9654;</span></div>
    <div class="pmeta"><b>Twist of Fate</b>
      
+     <span class="pch"></span>
      <span class="pbits">Lead &middot; HD Motion Pictures</span></div>
   </button><button class="pcard" onclick="openCredit(25)" aria-label="2001 Maniacs">
    <div class="part"><img src="media/pasted-1782860503005.png" alt="2001 Maniacs" loading="lazy"><span class="playdot">&#9654;</span></div>
@@ -335,8 +349,13 @@ footer .sp{flex:1}
   </button></div>
 </section>
 
-<section class="pad"><div class="rule"><span class="lbl">Short films</span><i></i></div>
- <div class="films"><a class="film" href="#" onclick="return false"><b>Coming soon</b><span>YouTube links go here.</span></a></div>
+<section class="pad"><div class="rule"><span class="lbl">Short films</span><span class="ct">2</span><i></i></div>
+ <div class="films">
+  <a class="film" href="https://youtu.be/o9ESqePAe1E" target="_blank" rel="noopener">
+    <b>A Gunman&#x27;s Hand</b><span>John Wesley Hardin</span><em>Watch on YouTube</em></a>
+  <a class="film" href="https://youtu.be/B_b_EheKTU4" target="_blank" rel="noopener">
+    <b>The Law of the Land</b><span>Short film</span><em>Watch on YouTube</em></a>
+ </div>
 </section>
 
 <section class="pad"><div class="rule"><span class="lbl">Writing</span><i></i></div>
