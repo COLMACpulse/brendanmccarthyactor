@@ -77,6 +77,7 @@ button.big:hover:not(:disabled){background:#bd5a41}
   <button class="tab" data-p="work">Work</button>
   <button class="tab" data-p="films">Short films</button>
   <button class="tab" data-p="writing">Writing</button>
+  <button class="tab" data-p="stills">Stills</button>
   <button class="tab" data-p="photos">Photographs</button>
   <button class="tab" data-p="reps">Representation</button>
   <button class="tab" data-p="size">Size</button>
@@ -126,6 +127,13 @@ button.big:hover:not(:disabled){background:#bd5a41}
   <p class="hint">Empty leaves &ldquo;Projects coming.&rdquo; on the page.</p>
   <button onclick="addWriting()">+ Add a project</button>
   <div id="writeList" style="margin-top:14px"></div>
+</div>
+
+<div class="pane" id="p-stills">
+  <p class="hint">The strip beside your headshot in the header. All cut to the same
+  shape, so pick frames where you sit near the middle.</p>
+  <button onclick="pickImg('still')">+ Add stills</button>
+  <div id="stillList" style="margin-top:14px"></div>
 </div>
 
 <div class="pane" id="p-photos">
@@ -361,6 +369,7 @@ drop($('dropIndex'),'.html,text/html',async f=>{
  catch(e){ $('loadMsg').innerHTML='<div class="msg bad">Could not read it: '+esc(e.message)+'</div>'; return; }
  SITE.work=SITE.work||[]; SITE.films=SITE.films||[];
  SITE.writing=SITE.writing||[]; SITE.photos=SITE.photos||[]; SITE.reps=SITE.reps||[];
+ SITE.stills=SITE.stills||[];
  $('loadMsg').innerHTML='<div class="msg ok">Loaded &mdash; '+SITE.work.length+' projects, '+
   SITE.photos.length+' photographs, '+SITE.films.length+' films.</div>';
  $('app').style.display=''; $('build').disabled=false;
@@ -446,6 +455,7 @@ window.pickImg=function(what,i){
     if(what==='headshot') SITE.headshot=path;
     else if(what==='sigil') SITE.sigil=path;
     else if(what==='photo') SITE.photos.push(path);
+    else if(what==='still') SITE.stills.push(path);
     else if(what==='poster') SITE.work[i].p=path;
    }catch(err){ alert(err.message); }
   }
@@ -511,6 +521,9 @@ window.addRep=function(){ SITE.reps=SITE.reps||[];
 window.delRep=function(i){ SITE.reps.splice(i,1); renderAll(); };
 window.setR=function(i,k,v){ SITE.reps[i][k]=v; };
 window.dropSigil=function(){ delete NEW[SITE.sigil]; SITE.sigil=''; fill(); renderAll(); };
+window.delStill=function(i){ delete NEW[SITE.stills[i]]; SITE.stills.splice(i,1); renderAll(); };
+window.moveStill=function(i,d){ const j=i+d; if(j<0||j>=SITE.stills.length)return;
+ const a=SITE.stills,t=a[i]; a[i]=a[j]; a[j]=t; renderAll(); };
 window.delPhoto=function(i){ delete NEW[SITE.photos[i]]; SITE.photos.splice(i,1); renderAll(); };
 window.movePhoto=function(i,d){ const j=i+d; if(j<0||j>=SITE.photos.length)return;
  const a=SITE.photos,tmp=a[i]; a[i]=a[j]; a[j]=tmp; renderAll(); };
@@ -553,6 +566,14 @@ function renderAll(){
    '<label>Address</label><input type="text" value="'+esc(r.place||'')+'" oninput="setR('+i+',\'place\',this.value)">'+
    '<div style="margin-top:9px"><button class="sm danger" onclick="delRep('+i+')">Remove</button></div>'+
   '</div>').join('') || '<div class="msg warn">Nothing here yet.</div>';
+ $('stillList').innerHTML=SITE.stills.map((p,i)=>'<div class="card row">'+
+   '<img src="'+esc(preview(p))+'" alt="">'+
+   '<div class="st">'+esc(p.split('/').pop())+'</div>'+
+   '<div style="display:grid;gap:4px">'+
+    '<button class="sm" onclick="moveStill('+i+',-1)">&larr;</button>'+
+    '<button class="sm" onclick="moveStill('+i+',1)">&rarr;</button>'+
+    '<button class="sm danger" onclick="delStill('+i+')">Remove</button></div></div>').join('')
+   || '<div class="msg warn">No stills.</div>';
  $('photoList').innerHTML=SITE.photos.map((p,i)=>'<div class="card row">'+
    '<img src="'+esc(preview(p))+'" style="aspect-ratio:1/1" alt="">'+
    '<div class="st">'+esc(p.split('/').pop())+'</div>'+

@@ -192,25 +192,48 @@ footer .sp{flex:1}
  .hero{grid-template-columns:1fr}
 }
 
+/* The mark sits with the name, not down beside the headshot - it reads as his rather
+   than as decoration floating in the gap. */
+.namerow{display:flex;align-items:center;gap:clamp(12px,2.4vw,26px)}
+.namerow .name{margin:0}
+/* Headshot and stills are one grid of equal cells, all cut to the same shape. The
+   first attempt stretched the stills to the headshot's height, which is circular -
+   the row's height came from the images and the images' height came from the row,
+   so they fell back to their natural size and blew the page open. Equal columns and
+   a fixed ratio means nothing has to measure anything. */
+/* One column per picture, however many there are - a fixed count meant the fifth
+   wrapped onto a second row the moment a still was added. */
+.hsrow{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;
+ gap:clamp(7px,1.1vw,12px);margin-top:22px}
+.who .hs,.stills img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;
+ background:var(--black);margin:0}
+.stills{display:contents}
+@media(max-width:760px){
+ .hsrow{grid-auto-flow:row;grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:430px){ .hsrow{grid-template-columns:repeat(2,1fr)} }
+
 /* ---- the mark ----
    It sat in its own grid column first, which looked right and was not: a third track
    narrowed the first one and broke his name onto two lines. The dead space was never
    between the columns anyway - it is beside the headshot. So the mark goes there, in
    the same column as everything else about him, and the name gets its width back. */
-.hsrow{display:flex;align-items:flex-start;gap:clamp(18px,4vw,56px)}
-.who .hs{margin-top:22px;flex:0 0 auto}
-.sigil{width:clamp(74px,8vw,124px);height:auto;display:block;margin-top:30px;
- flex:0 0 auto;opacity:.95}
-@media(max-width:620px){
- .hsrow{gap:20px}
- .sigil{width:64px;margin-top:24px}
-}
+.sigil{width:clamp(52px,5.6vw,84px);height:auto;display:block;flex:0 0 auto;opacity:.95}
+@media(max-width:620px){ .sigil{width:46px} }
 
 /* His name goes on one line. It was overflowing its column by about fifteen pixels,
    which is the worst possible margin - it looks like a decision rather than an
-   accident. Sized to the space and told not to break. */
-.who .name{white-space:nowrap;font-size:clamp(26px,5.6vw,57px);line-height:1.02}
-@media(max-width:620px){ .who .name{font-size:clamp(22px,8.4vw,40px)} }
+   accident. Sized to the space and told not to break.
+
+   nowrap has a cost: the name then sets a floor under the column width, and on a
+   narrow screen that floor pushed the whole page wider than the phone. So a grid
+   child is allowed to shrink, and the name is sized against the viewport all the way
+   down rather than hitting a fixed minimum and overflowing. */
+.slate>*{min-width:0}
+.who .name{white-space:nowrap;font-size:clamp(19px,5.4vw,57px);line-height:1.02}
+@media(max-width:900px){ .who .name{font-size:clamp(19px,4.6vw,40px)} }
+@media(max-width:620px){ .who .name{font-size:clamp(19px,6.6vw,34px)} }
+@media(max-width:430px){ .who .name{font-size:clamp(17px,6.2vw,28px)} .sigil{width:38px} }
 
 /* The footer was a flex row when all it held was one line of text. Now it holds the
    representation block, and flex was shrinking that to its content width and
@@ -260,7 +283,7 @@ footer#ftr{display:block}
    else. Do not hand-edit below unless you want to. */
 const SITE={
  "name": "Brendan McCarthy",
- "lane": "Actor",
+ "lane": "Actor · Writer · Filmmaker",
  "headshot": "media/headshot1.jpg",
  "facts": [
   [
@@ -642,6 +665,12 @@ const SITE={
    "place": "1999 Avenue of the Stars, 4th Floor, Los Angeles, CA 90067",
    "url": "bmkylaw.com"
   }
+ ],
+ "stills": [
+  "media/still-truck.jpg",
+  "media/still-car.jpg",
+  "media/still-western.jpg",
+  "media/still-drive.jpg"
  ]
 };
 let WORK=SITE.work;
@@ -652,11 +681,15 @@ function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(m){
 function render(){
  var S=SITE;
  document.getElementById('hdr').innerHTML=
-  '<div class="who"><h1 class="name">'+esc(S.name)+'</h1><div class="lane">'+esc(S.lane)+'</div>'+
-  '<div class="hsrow">'+
-   (S.headshot?'<img class="hs" src="'+esc(S.headshot)+'" alt="'+esc(S.name)+'">':'')+
-   (S.sigil?'<img class="sigil" src="'+esc(S.sigil)+'" alt="">':'')+
-  '</div></div>'+
+  '<div class="who">'+
+   '<div class="namerow"><h1 class="name">'+esc(S.name)+'</h1>'+
+    (S.sigil?'<img class="sigil" src="'+esc(S.sigil)+'" alt="">':'')+'</div>'+
+   '<div class="lane">'+esc(S.lane)+'</div>'+
+   '<div class="hsrow">'+
+    (S.headshot?'<img class="hs" src="'+esc(S.headshot)+'" alt="'+esc(S.name)+'">':'')+
+    ((S.stills&&S.stills.length)?'<div class="stills">'+S.stills.map(function(x){
+       return '<img src="'+esc(x)+'" alt="" loading="lazy">'; }).join('')+'</div>':'')+
+   '</div></div>'+
   '<div class="facts">'+(S.facts||[]).map(function(f){
     var v=/@/.test(f[1])?'<a href="mailto:'+esc(f[1])+'">'+esc(f[1])+'</a>':esc(f[1]);
     return '<span class="k">'+esc(f[0])+'</span>'+v; }).join('')+'</div>';
