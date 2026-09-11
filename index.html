@@ -240,6 +240,32 @@ footer .sp{flex:1}
    collapsing it to a single column. It is a block. */
 footer#ftr{display:block}
 .reps{width:100%}
+
+/* ---- projects ----
+   Yesteryear, OFL licensed, carried in the repo rather than fetched from a font
+   service - the page has no outside dependencies and this does not add one. It has
+   enough weight to read at size, which the thinner scripts did not. */
+@font-face{font-family:'Yesteryear';src:url('fonts/yesteryear.woff2') format('woff2');
+ font-weight:400;font-style:normal;font-display:swap}
+/* Fixed counts rather than auto-fill: auto-fill gave three columns for four projects
+   and left a dead cell with the background showing through. Four, two, one. */
+.projects{display:grid;grid-template-columns:repeat(4,1fr);
+ gap:1px;background:var(--hair);border:1px solid var(--hair)}
+@media(max-width:900px){ .projects{grid-template-columns:repeat(2,1fr)} }
+@media(max-width:480px){ .projects{grid-template-columns:1fr} }
+.proj{background:var(--bond);border:0;padding:26px 22px 24px;text-align:left;cursor:pointer;
+ font:inherit;color:inherit;display:block;transition:background .15s}
+.proj:hover{background:#fff}
+.proj b{display:block;font-family:'Yesteryear',cursive;font-weight:400;
+ font-size:clamp(25px,2.6vw,32px);line-height:1.12;letter-spacing:.005em;color:var(--ink)}
+.proj .pl{display:block;margin-top:9px;font-size:13.5px;line-height:1.5;color:var(--grey)}
+.proj .ps{display:block;margin-top:11px;font-family:var(--mono);font-size:9.5px;
+ letter-spacing:.16em;text-transform:uppercase;color:var(--blue)}
+.vscript{font-family:'Yesteryear',cursive;font-weight:400;font-size:clamp(34px,5vw,52px);
+ line-height:1.1;color:var(--bond);margin:0 0 4px}
+.vmat{font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;
+ color:#b9b4a9;margin-top:14px}
+.vmat span{display:inline-block;border:1px solid #4a463e;padding:5px 10px;margin:0 6px 6px 0}
 </style></head><body>
 <main class="sheet">
 <div class="stripe"></div>
@@ -642,7 +668,40 @@ const SITE={
    "p": "media/law-of-the-land-poster.jpg"
   }
  ],
- "writing": [],
+ "writing": [
+  {
+   "t": "Gone Astray",
+   "s": "",
+   "status": "",
+   "material": "",
+   "p": "",
+   "u": ""
+  },
+  {
+   "t": "The Devil's Paintbrush",
+   "s": "",
+   "status": "",
+   "material": "",
+   "p": "",
+   "u": ""
+  },
+  {
+   "t": "Just Released",
+   "s": "",
+   "status": "",
+   "material": "",
+   "p": "",
+   "u": ""
+  },
+  {
+   "t": "Stingaree",
+   "s": "",
+   "status": "",
+   "material": "",
+   "p": "",
+   "u": ""
+  }
+ ],
  "photos": [
   "media/headshot1.jpg",
   "media/headshot2.jpg",
@@ -736,9 +795,12 @@ function render(){
  var W=S.writing||[];
  document.getElementById('ctWriting').textContent=W.length||'';
  document.getElementById('writing').innerHTML=W.length
-  ? '<div class="films">'+W.map(function(x){
-      return '<a class="film" href="'+esc(x.u||'#')+'"'+(x.u?' target="_blank" rel="noopener"':' onclick="return false"')+
-      '><b>'+esc(x.t)+'</b>'+(x.s?'<span>'+esc(x.s)+'</span>':'')+'</a>'; }).join('')+'</div>'
+  ? '<div class="projects">'+W.map(function(x,i){
+      return '<button class="proj" onclick="openProject('+i+')" aria-label="'+esc(x.t)+'">'+
+        '<b>'+esc(x.t)+'</b>'+
+        (x.s?'<span class="pl">'+esc(x.s)+'</span>':'')+
+        (x.status?'<span class="ps">'+esc(x.status)+'</span>':'')+
+      '</button>'; }).join('')+'</div>'
   : '<p class="soon">Projects coming.</p>';
 
  var P=S.photos||[];
@@ -764,10 +826,35 @@ function render(){
 }
 render();
 
+/* Opens in the same overlay the credits use. It shows what exists and says so when
+   nothing does - a card that opens onto an empty box is worse than a card that does
+   not open. Artwork, a logline, where it stands, what material there is. */
+function openProject(i){
+ var x=(SITE.writing||[])[i]; if(!x)return;
+ var v=document.getElementById('viewer');
+ document.getElementById('vch').textContent=x.status||'';
+ document.getElementById('vt').innerHTML='<span class="vscript">'+esc(x.t)+'</span>';
+ document.getElementById('vs').textContent='';
+ var body='';
+ if(x.p) body+='<img src="'+esc(x.p)+'" alt="'+esc(x.t)+'">';
+ document.getElementById('vbody').innerHTML=body;
+ var nt=document.getElementById('vnote');
+ var bits=[];
+ if(x.s) bits.push('<div>'+esc(x.s)+'</div>');
+ if(x.material) bits.push('<div class="vmat">'+String(x.material).split(/\s*[,\u00b7]\s*/)
+   .filter(Boolean).map(function(m){return '<span>'+esc(m)+'</span>';}).join('')+'</div>');
+ if(x.u) bits.push('<div class="vmat"><a href="'+esc(x.u)+'" target="_blank" rel="noopener" '+
+   'style="color:#8fa8c8">Read more</a></div>');
+ if(!bits.length) bits.push('<div style="color:#b9b4a9">More on this one soon.</div>');
+ nt.innerHTML=bits.join(''); nt.style.display='';
+ v.classList.add('on'); document.body.style.overflow='hidden';
+}
+window.openProject=openProject;
+
 function openCredit(i){
  const c=WORK[i]; if(!c)return;
  document.getElementById('vch').textContent=c.ch||'';
- document.getElementById('vt').textContent=c.t||'';
+ document.getElementById('vt').textContent=c.t||'';   // textContent also wipes any script markup a project left behind
  document.getElementById('vs').textContent=[c.r,c.n,c.d?'dir. '+c.d:''].filter(Boolean).join(' \u00b7 ');
  document.getElementById('vbody').innerHTML = c.clip
    ? '<video src="'+c.clip+'" controls autoplay playsinline></video>'

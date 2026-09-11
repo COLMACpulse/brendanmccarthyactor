@@ -125,7 +125,8 @@ button.big:hover:not(:disabled){background:#bd5a41}
 </div>
 
 <div class="pane" id="p-writing">
-  <p class="hint">Empty leaves &ldquo;Projects coming.&rdquo; on the page.</p>
+  <p class="hint">Titles show in script and open a card. Fill in what exists &mdash;
+  anything left blank simply is not drawn.</p>
   <button onclick="addWriting()">+ Add a project</button>
   <div id="writeList" style="margin-top:14px"></div>
 </div>
@@ -459,6 +460,7 @@ window.pickImg=function(what,i){
     else if(what==='sigil') SITE.sigil=path;
     else if(what==='photo') SITE.photos.push(path);
     else if(what==='still') SITE.stills.push(path);
+    else if(what==='projart') SITE.writing[i].p=path;
     else if(what==='poster') SITE.work[i].p=path;
    }catch(err){ alert(err.message); }
   }
@@ -516,7 +518,9 @@ function renderWork(){
 window.addFilm=function(){ SITE.films.unshift({t:'',s:'',u:'',p:''}); renderAll(); };
 window.delFilm=function(i){ SITE.films.splice(i,1); renderAll(); };
 window.setF=function(i,k,v){ SITE.films[i][k]=v; };
-window.addWriting=function(){ SITE.writing.unshift({t:'',s:'',u:''}); renderAll(); };
+window.addWriting=function(){ SITE.writing.push({t:'',s:'',status:'',material:'',p:'',u:''}); renderAll(); };
+window.moveWriting=function(i,d){ const j=i+d; if(j<0||j>=SITE.writing.length)return;
+ const a=SITE.writing,t=a[i]; a[i]=a[j]; a[j]=t; renderAll(); };
 window.delWriting=function(i){ SITE.writing.splice(i,1); renderAll(); };
 window.setWr=function(i,k,v){ SITE.writing[i][k]=v; };
 window.addRep=function(){ SITE.reps=SITE.reps||[];
@@ -556,7 +560,21 @@ function listOf(arr,setter,del,art){
 function renderAll(){
  renderWork();
  $('filmList').innerHTML=listOf(SITE.films,'setF','delFilm',true);
- $('writeList').innerHTML=listOf(SITE.writing,'setWr','delWriting');
+ $('writeList').innerHTML=(SITE.writing||[]).map((x,i)=>'<div class="card">'+
+   (x.p?'<img src="'+esc(preview(x.p))+'" style="width:100%;max-height:190px;object-fit:cover;display:block;margin-bottom:10px" alt="">':'')+
+   '<label>Title</label><input type="text" value="'+esc(x.t)+'" oninput="setWr('+i+',\'t\',this.value)">'+
+   '<label>Logline</label><textarea oninput="setWr('+i+',\'s\',this.value)" placeholder="One or two lines on what it is">'+esc(x.s||'')+'</textarea>'+
+   '<div class="two">'+
+    '<div><label>Where it stands</label><input type="text" value="'+esc(x.status||'')+'" oninput="setWr('+i+',\'status\',this.value)" placeholder="Feature &middot; in development"></div>'+
+    '<div><label>Material that exists</label><input type="text" value="'+esc(x.material||'')+'" oninput="setWr('+i+',\'material\',this.value)" placeholder="Script, Lookbook, Deck"></div>'+
+   '</div>'+
+   '<label>Link (optional)</label><input type="text" value="'+esc(x.u||'')+'" oninput="setWr('+i+',\'u\',this.value)" placeholder="https://">'+
+   '<div style="margin-top:9px;display:flex;gap:6px;flex-wrap:wrap">'+
+    '<button class="sm" onclick="pickImg(\'projart\','+i+')">'+(x.p?'Change artwork':'Add artwork')+'</button>'+
+    '<button class="sm" onclick="moveWriting('+i+',-1)">&uarr;</button>'+
+    '<button class="sm" onclick="moveWriting('+i+',1)">&darr;</button>'+
+    '<button class="sm danger" onclick="delWriting('+i+')">Remove</button></div>'+
+  '</div>').join('') || '<div class="msg warn">Nothing here yet.</div>';
  $('repList').innerHTML=(SITE.reps||[]).map((r,i)=>'<div class="card">'+
    '<label>Heading</label><input type="text" value="'+esc(r.label)+'" oninput="setR('+i+',\'label\',this.value)" placeholder="Management">'+
    '<label>Company</label><input type="text" value="'+esc(r.name)+'" oninput="setR('+i+',\'name\',this.value)">'+
