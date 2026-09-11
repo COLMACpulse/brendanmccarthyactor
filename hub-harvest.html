@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pull clips out of the hub backup</title>
+<style>
+:root{--bond:#F2F0EA;--ink:#16161A;--blue:#1F3D63;--salmon:#D2694E;--hair:#DAD5C9;
+ --grey:#6E6A62;--go:#3E7D53;--warn:#B4771F;
+ --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--disp:Georgia,serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bond);color:var(--ink);
+ font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
+main{max-width:940px;margin:0 auto;padding:26px 20px 110px}
+h1{font-family:var(--disp);font-size:28px;margin:0 0 3px;letter-spacing:-.02em}
+.sub{font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;
+ color:var(--grey);margin:0 0 22px}
+h2{font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;
+ color:var(--grey);margin:30px 0 11px;padding-bottom:6px;border-bottom:1px solid var(--hair)}
+.drop{border:2px dashed var(--hair);background:#fff;padding:26px 20px;text-align:center;cursor:pointer}
+.drop:hover,.drop.over{border-color:var(--salmon);background:#fffdf9}
+.drop b{display:block;font-family:var(--disp);font-size:18px;margin-bottom:4px}
+.drop span{font-family:var(--mono);font-size:11px;color:var(--grey)}
+.card{background:#fff;border:1px solid var(--hair);padding:11px 14px;margin:0 0 7px;
+ display:grid;grid-template-columns:24px 1fr auto;gap:12px;align-items:center}
+.card .nm{font-size:14px;line-height:1.3;word-break:break-word}
+.card .st{font-family:var(--mono);font-size:10.5px;color:var(--grey);margin-top:3px}
+.card .st.ok{color:var(--go)} .card .st.warn{color:var(--warn)}
+input[type=checkbox]{width:18px;height:18px;accent-color:var(--salmon)}
+select{font:inherit;font-size:13px;padding:6px 9px;border:1px solid var(--hair);background:#fff;max-width:230px}
+button{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+ min-height:38px;padding:8px 13px;border:1px solid var(--blue);background:transparent;color:var(--blue);cursor:pointer}
+button:hover:not(:disabled){background:var(--blue);color:var(--bond)}
+button:disabled{opacity:.4;cursor:default}
+button.big{background:var(--salmon);border-color:var(--salmon);color:#fff;font-size:12px;
+ min-height:50px;padding:13px 26px}
+button.big:hover:not(:disabled){background:#bd5a41}
+.msg{font-family:var(--mono);font-size:11.5px;padding:11px 13px;margin:11px 0;
+ border-left:3px solid;line-height:1.65}
+.msg.ok{border-color:var(--go);background:#f2f7f3;color:#2c5a3c}
+.msg.warn{border-color:var(--warn);background:#fdf8ef;color:#7d5314}
+.msg.bad{border-color:var(--salmon);background:#fdf3f0;color:#96422c}
+.hint{font-size:13.5px;color:var(--grey);margin:0 0 14px}
+.bar{height:5px;background:var(--hair);margin-top:8px}
+.bar i{display:block;height:100%;background:var(--go);width:0}
+.bar i.warn{background:var(--warn)}.bar i.bad{background:var(--salmon)}
+.foot{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--hair);
+ padding:12px 20px;display:flex;gap:15px;align-items:center;justify-content:center;flex-wrap:wrap}
+.foot span{font-family:var(--mono);font-size:11px;color:var(--grey)}
+.working{position:fixed;inset:0;background:rgba(242,240,234,.97);display:none;align-items:center;
+ justify-content:center;flex-direction:column;gap:13px;z-index:99;padding:24px;text-align:center}
+.working.on{display:flex}.working b{font-family:var(--disp);font-size:22px}
+.working span{font-family:var(--mono);font-size:11.5px;color:var(--grey);max-width:60ch}
+.wbar{width:min(420px,86vw);height:6px;background:var(--hair)}
+.wbar i{display:block;height:100%;background:var(--salmon);width:0}
+.row{display:flex;gap:9px;flex-wrap:wrap;margin:12px 0}
+</style></head><body>
+
+<main>
+<h1>Pull clips out of the hub backup</h1>
+<p class="sub">reads the archive in place &middot; never loads it whole</p>
+
+<h2>1 &middot; Your page</h2>
+<p class="hint">So it knows what your credits are called.</p>
+<div class="drop" id="dropIndex"><b>Drop index.html</b><span>from the site folder</span></div>
+<div id="idxMsg"></div>
+
+<h2>2 &middot; The backup</h2>
+<p class="hint">The hub backup zip. It is read where it sits &mdash; only the pieces you
+pick are ever pulled out, so a two gigabyte archive costs nothing to open.</p>
+<div class="drop" id="dropZip"><b>Drop the hub backup</b><span>colmac_hub_backup&hellip;.zip</span></div>
+<div id="zipMsg"></div>
+
+<div id="app" style="display:none">
+<h2>3 &middot; What it found</h2>
+<div id="pickMsg"></div>
+<div class="row">
+  <button onclick="selAll(true)">Select all matched</button>
+  <button onclick="selAll(false)">Select none</button>
+</div>
+<div id="list"></div>
+
+<h2>4 &middot; Size</h2>
+<div class="card" style="display:block" id="tally"></div>
+</div>
+</main>
+
+<div class="foot">
+  <button class="big" id="go" disabled>Pull them out</button>
+  <span id="note">load your page and the backup</span>
+</div>
+
+<div class="working" id="working"><b id="wTitle">Working</b><span id="wMsg"></span>
+ <div class="wbar"><i id="wBar"></i></div>
+ <span style="font-size:10.5px">Anything over the limit is re-encoded in real time.
+ Keep this tab in front.</span></div>
+
+<script src="compress.js"></script>
+<script>
+'use strict';
+const $=i=>document.getElementById(i), MB=1048576, HARD=100*MB, SOFT=1024*MB;
+const fmt=n=>n>=MB?(n/MB).toFixed(1)+' MB':(n/1024).toFixed(0)+' KB';
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+let TEMPLATE='', SITE=null, ZIPFILE=null, ENTRIES=[], ROWS=[], OUT={};
+
+function busy(on,t,m,p){ $('working').classList.toggle('on',!!on);
+ if(t)$('wTitle').textContent=t; if(m!=null)$('wMsg').textContent=m;
+ $('wBar').style.width=Math.round((p||0)*100)+'%'; }
+function drop(el,accept,cb){
+ const inp=document.createElement('input'); inp.type='file'; inp.accept=accept;
+ inp.style.display='none'; document.body.appendChild(inp);
+ el.onclick=()=>inp.click();
+ inp.onchange=e=>{ if(e.target.files[0])cb(e.target.files[0]); inp.value=''; };
+ el.ondragover=e=>{e.preventDefault();el.classList.add('over')};
+ el.ondragleave=()=>el.classList.remove('over');
+ el.ondrop=e=>{e.preventDefault();el.classList.remove('over');
+   if(e.dataTransfer.files[0])cb(e.dataTransfer.files[0])};
+}
+
+/* ===== READING A ZIP WITHOUT OPENING IT =====
+   The backup is two gigabytes. Nothing here reads two gigabytes. A zip keeps its
+   table of contents at the very end, so the tail is read, the table is parsed, and
+   after that each file you actually want is fetched by seeking straight to its
+   offset. The browser never holds more than one clip at a time. */
+const dv=b=>new DataView(b);
+async function slice(file,start,end){ return await file.slice(start,end).arrayBuffer(); }
+
+async function readDirectory(file){
+ /* The end-of-central-directory record sits in the last 64KB, after a comment of
+    unknown length, so it has to be found by scanning backwards for its signature. */
+ const tailLen=Math.min(file.size, 66000);
+ const tail=await slice(file, file.size-tailLen, file.size);
+ const t=dv(tail); let eocd=-1;
+ for(let i=tail.byteLength-22;i>=0;i--){ if(t.getUint32(i,true)===0x06054b50){ eocd=i; break; } }
+ if(eocd<0) throw new Error('This does not look like a zip file.');
+ let count=t.getUint16(eocd+10,true);
+ let cdSize=t.getUint32(eocd+12,true);
+ let cdOff=t.getUint32(eocd+16,true);
+
+ /* A zip over 4GB, or with more than 65535 entries, records the real numbers in a
+    ZIP64 record instead and leaves 0xFFFFFFFF here as a flag. Read the real ones. */
+ if(cdOff===0xFFFFFFFF||cdSize===0xFFFFFFFF||count===0xFFFF){
+  let loc=-1;
+  for(let i=eocd-20;i>=0;i--){ if(t.getUint32(i,true)===0x07064b50){ loc=i; break; } }
+  if(loc<0) throw new Error('Zip64 archive with no locator - cannot read this one.');
+  const z64Off=Number(t.getBigUint64(loc+8,true));
+  const z=dv(await slice(file,z64Off,z64Off+56));
+  if(z.getUint32(0,true)!==0x06064b50) throw new Error('Zip64 record not found.');
+  count=Number(z.getBigUint64(32,true));
+  cdSize=Number(z.getBigUint64(40,true));
+  cdOff=Number(z.getBigUint64(48,true));
+ }
+
+ const cd=await slice(file,cdOff,cdOff+cdSize), c=dv(cd);
+ const dec=new TextDecoder('utf-8'), out=[]; let p=0;
+ for(let n=0;n<count && p+46<=cd.byteLength;n++){
+  if(c.getUint32(p,true)!==0x02014b50) break;
+  const method=c.getUint16(p+10,true);
+  let comp=c.getUint32(p+20,true), raw=c.getUint32(p+24,true);
+  const nLen=c.getUint16(p+28,true), eLen=c.getUint16(p+30,true), kLen=c.getUint16(p+32,true);
+  let lho=c.getUint32(p+42,true);
+  const name=dec.decode(new Uint8Array(cd,p+46,nLen));
+  /* Per-entry zip64: the oversized fields move into the extra block. */
+  if(comp===0xFFFFFFFF||raw===0xFFFFFFFF||lho===0xFFFFFFFF){
+   let e=p+46+nLen; const end=e+eLen;
+   while(e+4<=end){
+    const id=c.getUint16(e,true), sz=c.getUint16(e+2,true); let q=e+4;
+    if(id===0x0001){
+     if(raw===0xFFFFFFFF){ raw=Number(c.getBigUint64(q,true)); q+=8; }
+     if(comp===0xFFFFFFFF){ comp=Number(c.getBigUint64(q,true)); q+=8; }
+     if(lho===0xFFFFFFFF){ lho=Number(c.getBigUint64(q,true)); q+=8; }
+     break;
+    }
+    e+=4+sz;
+   }
+  }
+  out.push({name:name,method:method,comp:comp,raw:raw,lho:lho});
+  p+=46+nLen+eLen+kLen;
+ }
+ return out;
+}
+
+async function extract(file,ent){
+ /* The local header repeats the name and extra block at their own lengths, which do
+    not have to match the central directory's. Read it rather than assuming. */
+ const h=dv(await slice(file,ent.lho,ent.lho+30));
+ if(h.getUint32(0,true)!==0x04034b50) throw new Error('Broken entry: '+ent.name);
+ const start=ent.lho+30+h.getUint16(26,true)+h.getUint16(28,true);
+ const blob=file.slice(start,start+ent.comp);
+ if(ent.method===0) return blob;                       // stored
+ if(ent.method!==8) throw new Error('Unsupported compression in '+ent.name);
+ if(typeof DecompressionStream!=='function')
+   throw new Error('This browser cannot decompress zip entries. Try Chrome or Safari.');
+ return await new Response(blob.stream().pipeThrough(new DecompressionStream('deflate-raw'))).blob();
+}
+
+/* ===== MATCHING A FILE TO A CREDIT =====
+   The hub names its media <id>__TITLE.ext, so the title is right there once the id
+   is stripped. Two things the obvious version gets wrong, both seen in his archive:
+   EARTHFALL is one word and the credit is two, and GUNMAN_S_HAND_-_REEL is a clip
+   whose name happens to contain the word reel. So: compare with the spaces taken
+   out too, and let a credit match win before anything is called a reel. */
+const STOP={the:1,a:1,an:1,of:1,and:1};
+function norm(s){
+ s=String(s||'').replace(/^[a-z0-9]{8,}__/,'').replace(/\.[a-z0-9]+$/i,'');
+ s=s.replace(/__/g,' ').replace(/_/g,' ')
+    .replace(/\(\s*\d+\s*\)|\bscene\s*\d+\b|\breel\b|\s-\s/gi,'  ');
+ return s.toLowerCase().replace(/[^a-z0-9 ]/g,' ').split(/\s+/).filter(Boolean).join(' ');
+}
+function toks(s){ return norm(s).split(' ').filter(w=>w&&!STOP[w]); }
+function flat(s){ return toks(s).join(''); }
+function score(f,t){
+ const A=new Set(toks(f)), B=new Set(toks(t));
+ if(!A.size||!B.size) return 0;
+ let inter=0; A.forEach(x=>{ if(B.has(x))inter++; });
+ let j=inter/(A.size+B.size-inter);
+ const fa=flat(f), fb=flat(t);
+ if(fa&&fb&&fa===fb) return 1;
+ if(fa&&fb&&(fa.indexOf(fb)>=0||fb.indexOf(fa)>=0)) j=Math.max(j,0.85);
+ return j;
+}
+function classify(fn,titles){
+ let best=null,bs=0;
+ titles.forEach(t=>{ const s=score(fn,t); if(s>bs){bs=s;best=t;} });
+ if(bs>=0.5) return {kind:'clip',title:best,score:bs};
+ if(/mccarthy|performance/.test(norm(fn))) return {kind:'reel',title:null,score:0};
+ return {kind:'none',title:null,score:bs};
+}
+
+/* ---------- loading ---------- */
+drop($('dropIndex'),'.html,text/html',async f=>{
+ TEMPLATE=await f.text();
+ const m=TEMPLATE.match(/const SITE=(\{[\s\S]*?\n\});/);
+ if(!m){ $('idxMsg').innerHTML='<div class="msg bad">That page has no SITE block. Use the latest index.html.</div>'; return; }
+ try{ SITE=JSON.parse(m[1]); }catch(e){ $('idxMsg').innerHTML='<div class="msg bad">Could not read it.</div>'; return; }
+ $('idxMsg').innerHTML='<div class="msg ok">'+SITE.work.length+' credits loaded.</div>';
+ if(ZIPFILE) scan();
+});
+
+drop($('dropZip'),'.zip,application/zip',async f=>{
+ ZIPFILE=f;
+ $('zipMsg').innerHTML='<div class="msg">Reading the table of contents&hellip;</div>';
+ try{
+  ENTRIES=await readDirectory(f);
+ }catch(e){ $('zipMsg').innerHTML='<div class="msg bad">'+esc(e.message)+'</div>'; return; }
+ const vids=ENTRIES.filter(e=>/\.(mp4|mov|m4v|webm)$/i.test(e.name)&&!/\/$/.test(e.name));
+ $('zipMsg').innerHTML='<div class="msg ok">'+ENTRIES.length+' files in the archive, '+
+  vids.length+' of them video. Nothing has been read out of it yet.</div>';
+ if(SITE) scan();
+});
+
+function scan(){
+ const titles=SITE.work.map(w=>w.t);
+ ROWS=ENTRIES.filter(e=>/\.(mp4|mov|m4v|webm)$/i.test(e.name)&&!/\/$/.test(e.name))
+  .map(e=>{ const base=e.name.split('/').pop();
+    const c=classify(base,titles);
+    return {ent:e, base:base, kind:c.kind, title:c.title, score:c.score,
+            pick:c.kind==='clip', asReel:false};
+  }).sort((a,b)=>b.ent.raw-a.ent.raw);
+ /* Two files can match one credit; only one can be that credit's clip. */
+ const used={};
+ ROWS.forEach(r=>{ if(r.kind==='clip'){ if(used[r.title]){ r.dup=true; r.pick=false; } else used[r.title]=1; } });
+ /* His backup holds the same reel twice at the same byte count, plus a third cut.
+    Only one can be the reel, so the duplicates are marked and the smallest candidate
+    is the one pre-selected - it re-encodes fastest and they are the same performance.
+    Change it if the big one is the better cut. */
+ const reels=ROWS.filter(r=>r.kind==='reel');
+ const bySize={};
+ reels.forEach(r=>{ if(bySize[r.ent.raw]) r.dupReel=true; else bySize[r.ent.raw]=1; });
+ if(reels.length){
+  const best=reels.filter(r=>!r.dupReel).sort((a,b)=>a.ent.raw-b.ent.raw)[0];
+  if(best) best.pick=true;
+ }
+ const n=ROWS.filter(r=>r.kind==='clip').length,
+       rl=ROWS.filter(r=>r.kind==='reel').length,
+       no=ROWS.filter(r=>r.kind==='none').length;
+ $('pickMsg').innerHTML='<div class="msg ok"><b>'+n+' matched to a credit.</b> '+
+  rl+' look like a reel, '+no+' could not be placed &mdash; set those yourself or leave them.</div>';
+ $('app').style.display=''; $('go').disabled=false;
+ $('note').textContent='pick what you want, then pull';
+ render();
+}
+
+window.selAll=function(on){ ROWS.forEach(r=>{ if(r.kind==='clip'&&!r.dup)r.pick=on; }); render(); };
+window.setPick=function(i,on){
+ ROWS[i].pick=on;
+ if(on&&ROWS[i].kind==='reel') ROWS.forEach((r,j)=>{ if(j!==i&&r.kind==='reel')r.pick=false; });
+ render();
+};
+window.setTitle=function(i,v){
+ const r=ROWS[i];
+ if(v==='__REEL__'){ r.asReel=true; r.title=null; r.kind='reel'; }
+ else if(v===''){ r.asReel=false; r.title=null; r.kind='none'; r.pick=false; }
+ else { r.asReel=false; r.title=v; r.kind='clip'; }
+ render();
+};
+
+function render(){
+ const titles=SITE.work.map(w=>w.t);
+ $('list').innerHTML=ROWS.map((r,i)=>{
+  const big=r.ent.raw>HARD;
+  let st, cls='';
+  if(r.kind==='clip'){ st='matched'+(r.score<1?' \u00b7 close but not exact':'')+(r.dup?' \u00b7 a second file for this credit':''); cls=r.dup?'warn':'ok'; }
+  else if(r.kind==='reel'){ st=r.dupReel?'the same reel again, byte for byte':'looks like your reel'; cls=r.dupReel?'warn':'ok'; }
+  else { st='no credit matches this name'; cls='warn'; }
+  if(big) st+=' \u00b7 over 100 MB, will be re-encoded';
+  const sel='<select onchange="setTitle('+i+',this.value)">'+
+    '<option value=""'+(r.kind==='none'?' selected':'')+'>&mdash; leave it &mdash;</option>'+
+    '<option value="__REEL__"'+(r.kind==='reel'?' selected':'')+'>Use as the reel</option>'+
+    titles.map(t=>'<option value="'+esc(t)+'"'+(r.title===t?' selected':'')+'>'+esc(t)+'</option>').join('')+
+    '</select>';
+  return '<div class="card">'+
+   '<input type="checkbox" '+(r.pick?'checked':'')+' onchange="setPick('+i+',this.checked)">'+
+   '<div><div class="nm">'+esc(r.base)+'</div><div class="st '+cls+'">'+fmt(r.ent.raw)+' &middot; '+st+'</div></div>'+
+   sel+'</div>';
+ }).join('');
+ tally();
+}
+
+function tally(){
+ const picked=ROWS.filter(r=>r.pick);
+ /* Rough: anything over the cap comes out around 1.8 Mbps once re-encoded, and a
+    reel around 4. Under the cap it is left exactly as it is. */
+ let est=1.9*MB;
+ picked.forEach(r=>{ est += r.ent.raw>HARD ? (r.kind==='reel'?45*MB:18*MB) : r.ent.raw; });
+ const pct=Math.min(1,est/SOFT);
+ $('tally').innerHTML='<b>'+picked.length+' selected.</b> Roughly <b>'+fmt(est)+
+  '</b> of the 1 GB GitHub Pages allows, once the big ones are shrunk.'+
+  '<div class="bar"><i class="'+(pct>.9?'bad':pct>.7?'warn':'')+'" style="width:'+(pct*100)+'%"></i></div>'+
+  (pct>.9?'<div class="msg warn" style="margin:10px 0 0">Too much. Leave some off.</div>':'');
+}
+
+function slugName(t,ext){ return String(t||'clip').toLowerCase().replace(/[^a-z0-9]+/g,'-')
+  .replace(/^-|-$/g,'').slice(0,46)+'.'+ext; }
+
+/* ---------- zip out ---------- */
+function crc32(b){ let c,t=crc32.t;
+ if(!t){t=crc32.t=[];for(let n=0;n<256;n++){c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0;}}
+ let crc=0xFFFFFFFF; for(let i=0;i<b.length;i++)crc=(crc>>>8)^t[(crc^b[i])&255];
+ return (crc^0xFFFFFFFF)>>>0; }
+function makeZip(files){
+ const enc=new TextEncoder(),chunks=[],cen=[]; let off=0;
+ const u16=v=>[v&255,(v>>8)&255], u32=v=>[v&255,(v>>8)&255,(v>>16)&255,(v>>24)&255];
+ files.forEach(f=>{ const nm=enc.encode(f.name),d=f.data,crc=crc32(d);
+  const L=[].concat(u32(0x04034b50),u16(20),u16(0),u16(0),u16(0),u16(0),u32(crc),
+    u32(d.length),u32(d.length),u16(nm.length),u16(0));
+  chunks.push(new Uint8Array(L),nm,d); cen.push({nm:nm,crc:crc,size:d.length,off:off});
+  off+=L.length+nm.length+d.length; });
+ const cs=off; let cl=0;
+ cen.forEach(c=>{ const H=[].concat(u32(0x02014b50),u16(20),u16(20),u16(0),u16(0),u16(0),u16(0),
+   u32(c.crc),u32(c.size),u32(c.size),u16(c.nm.length),u16(0),u16(0),u16(0),u16(0),u32(0),u32(c.off));
+  chunks.push(new Uint8Array(H),c.nm); cl+=H.length+c.nm.length; });
+ chunks.push(new Uint8Array([].concat(u32(0x06054b50),u16(0),u16(0),u16(cen.length),
+   u16(cen.length),u32(cl),u32(cs),u16(0))));
+ return new Blob(chunks,{type:'application/zip'});
+}
+
+$('go').onclick=async()=>{
+ const picked=ROWS.filter(r=>r.pick);
+ if(!picked.length){ alert('Nothing selected.'); return; }
+ const files=[]; const S=JSON.parse(JSON.stringify(SITE));
+ let done=0;
+ for(const r of picked){
+  const label=r.kind==='reel'?'your reel':(r.title||r.base);
+  busy(true,'Pulling out '+label,'reading it from the archive',done/picked.length);
+  let blob;
+  try{ blob=await extract(ZIPFILE,r.ent); }
+  catch(e){ busy(false); alert('Could not read '+r.base+': '+e.message); return; }
+
+  const isReel=r.kind==='reel';
+  const cap=isReel?60*MB:22*MB;
+  if(blob.size>cap){
+   try{
+    blob=await ActorCompress.process(blob,{h:isReel?1080:720,mbps:isReel?4:1.8,
+     onProgress:p=>busy(true,'Shrinking '+label,
+       'real time \u2014 '+Math.round((p||0)*100)+'%  ('+(done+1)+' of '+picked.length+')',
+       (done+(p||0))/picked.length)});
+   }catch(e){ busy(false); alert('Could not re-encode '+r.base+': '+e.message); return; }
+  }
+  const path='media/'+(isReel?'reel.mp4':slugName(r.title,'mp4'));
+  files.push({name:path,data:new Uint8Array(await blob.arrayBuffer())});
+  if(isReel) S.reel=path;
+  else { const w=S.work.find(x=>x.t===r.title); if(w) w.clip=path; }
+  done++;
+ }
+ busy(true,'Writing the folder','almost there',1);
+ if(TEMPLATE){
+  const out=TEMPLATE.replace(/const SITE=\{[\s\S]*?\n\};/,'const SITE='+JSON.stringify(S,null,1)+';');
+  files.push({name:'index.html',data:new TextEncoder().encode(out)});
+ }
+ files.push({name:'UPLOAD-THESE.txt',data:new TextEncoder().encode(
+  'Drag everything in here into your GitHub repo and commit.\n\n'+
+  'index.html goes at the top level, everything in media/ goes in media/.\n'+
+  'Say yes when it asks to overwrite index.html - the clip paths are written into it.\n')});
+ const blob=makeZip(files);
+ busy(false);
+ const a=document.createElement('a');
+ a.href=URL.createObjectURL(blob); a.download='site-update.zip'; a.click();
+ setTimeout(()=>URL.revokeObjectURL(a.href),6000);
+ $('note').textContent='done \u2014 upload it and commit';
+};
+</script></body></html>
