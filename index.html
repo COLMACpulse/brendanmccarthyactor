@@ -747,6 +747,7 @@ const SITE={
 };
 let WORK=SITE.work;
 
+if(typeof window.srcFor!=='function') window.srcFor=function(p){return p||'';};
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(m){
   return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];});}
 
@@ -766,12 +767,12 @@ function render(){
  document.getElementById('hdr').innerHTML=
   '<div class="who">'+
    '<div class="namerow"><h1 class="name">'+esc(S.name)+'</h1>'+
-    (S.sigil?'<img class="sigil" src="'+esc(S.sigil)+'" alt="">':'')+'</div>'+
+    (S.sigil?'<img class="sigil" src="'+esc(srcFor(S.sigil))+'" alt="">':'')+'</div>'+
    '<div class="lane">'+esc(S.lane)+'</div>'+
    '<div class="hsrow">'+
-    (S.headshot?'<img class="hs" src="'+esc(S.headshot)+'" alt="'+esc(S.name)+'">':'')+
+    (S.headshot?'<img class="hs" src="'+esc(srcFor(S.headshot))+'" alt="'+esc(S.name)+'">':'')+
     ((S.stills&&S.stills.length)?'<div class="stills">'+S.stills.map(function(x){
-       return '<img src="'+esc(x)+'" alt="" loading="lazy">'; }).join('')+'</div>':'')+
+       return '<img src="'+esc(srcFor(x))+'" alt="" loading="lazy">'; }).join('')+'</div>':'')+
    '</div></div>'+
   '<div class="facts">'+(S.facts||[]).map(function(f){
     var val=String(f[1]||''), v;
@@ -788,7 +789,7 @@ function render(){
 
  if(S.reel){
   var v=document.getElementById('reelVid');
-  v.src=S.reel; if(S.reelPoster)v.poster=S.reelPoster;
+  v.src=srcFor(S.reel); if(S.reelPoster)v.poster=srcFor(S.reelPoster);
   document.getElementById('reelWell').style.display='';
   document.getElementById('reelSoon').style.display='none';
  }
@@ -796,7 +797,7 @@ function render(){
  document.getElementById('ctWork').textContent=WORK.length||'';
  document.getElementById('wall').innerHTML=WORK.map(function(w,i){
   return '<button class="pcard" onclick="openCredit('+i+')" aria-label="'+esc(w.t)+'">'+
-   '<div class="part">'+(w.p?'<img src="'+esc(/^media\//.test(w.p)?w.p:'media/'+w.p)+'" alt="'+esc(w.t)+'" loading="lazy">':'')+
+   '<div class="part">'+(w.p?'<img src="'+esc(srcFor(/^(media\/|idb:)/.test(w.p)?w.p:'media/'+w.p))+'" alt="'+esc(w.t)+'" loading="lazy">':'')+
    (w.clip?'<span class="playdot">&#9654;</span>':'')+'</div>'+
    '<div class="pmeta"><b>'+esc(w.t)+'</b>'+
     '<span class="pch">'+esc(w.ch||'')+'</span>'+
@@ -808,7 +809,7 @@ function render(){
  document.getElementById('ctFilms').textContent=F.length||'';
  document.getElementById('films').innerHTML=F.map(function(f){
   return '<a class="film" href="'+esc(f.u)+'" target="_blank" rel="noopener">'+
-   (f.p?'<span class="fart"><img src="'+esc(f.p)+'" alt="'+esc(f.t)+'" loading="lazy"></span>':'')+
+   (f.p?'<span class="fart"><img src="'+esc(srcFor(f.p))+'" alt="'+esc(f.t)+'" loading="lazy"></span>':'')+
    '<span class="fbody"><b>'+esc(f.t)+'</b>'+
    (f.s?'<span>'+esc(f.s)+'</span>':'')+'<em>Watch on YouTube</em></span></a>'; }).join('');
 
@@ -827,7 +828,7 @@ function render(){
  document.getElementById('secPhotos').style.display=P.length?'':'none';
  document.getElementById('ctPhotos').textContent=P.length||'';
  document.getElementById('photos').innerHTML=P.map(function(p){
-  return '<img src="'+esc(p)+'" alt="'+esc(S.name)+'" class="photo" loading="lazy">'; }).join('');
+  return '<img src="'+esc(srcFor(p))+'" alt="'+esc(S.name)+'" class="photo" loading="lazy">'; }).join('');
 
  var R=S.reps||[];
  document.getElementById('ftr').innerHTML=
@@ -856,7 +857,7 @@ function openProject(i){
  document.getElementById('vt').innerHTML='<span class="vscript">'+esc(x.t)+'</span>';
  document.getElementById('vs').textContent='';
  var body='';
- if(x.p) body+='<img src="'+esc(x.p)+'" alt="'+esc(x.t)+'">';
+ if(x.p) body+='<img src="'+esc(srcFor(x.p))+'" alt="'+esc(x.t)+'">';
  document.getElementById('vbody').innerHTML=body;
  var nt=document.getElementById('vnote');
  var bits=[];
@@ -876,10 +877,24 @@ function openCredit(i){
  document.getElementById('vch').textContent=c.ch||'';
  document.getElementById('vt').textContent=c.t||'';   // textContent also wipes any script markup a project left behind
  document.getElementById('vs').textContent=[c.r,c.n,c.d?'dir. '+c.d:''].filter(Boolean).join(' \u00b7 ');
+ /* A clip path can be written into the page before the file is uploaded - that is
+    the point, so footage can go in one at a time whenever there is time for it. Until
+    the file lands the card falls back to its key art and says so, rather than opening
+    onto a black rectangle with no explanation. The play dot goes too, so the page
+    stops promising something it cannot show. */
+ var poster=c.p?'<img src="'+srcFor(/^(media\/|idb:)/.test(c.p)?c.p:'media/'+c.p)+'" alt="">':'';
  document.getElementById('vbody').innerHTML = c.clip
-   ? '<video src="'+c.clip+'" controls autoplay playsinline></video>'
-   : (c.p ? '<img src="'+(/^media\//.test(c.p)?c.p:'media/'+c.p)+'" alt="">'
-          + '<div class="vnone">No clip on file for this one yet.</div>' : '');
+   ? '<video src="'+srcFor(c.clip)+'" controls autoplay playsinline></video>'
+   : (c.p ? poster+'<div class="vnone">No clip on file for this one yet.</div>' : '');
+ if(c.clip){
+  var vv=document.getElementById('vbody').querySelector('video');
+  if(vv) vv.addEventListener('error',function(){
+   document.getElementById('vbody').innerHTML=
+     poster+'<div class="vnone">This one is not uploaded yet.</div>';
+   var dot=document.querySelectorAll('.pcard')[i];
+   if(dot){ var d=dot.querySelector('.playdot'); if(d)d.style.display='none'; }
+  });
+ }
  /* Optional context on the credit - what the scene was, who was in it, anything
     worth knowing. Absent on most, and absent means nothing is drawn. */
  var nt=document.getElementById('vnote');
@@ -895,5 +910,655 @@ function closeCredit(){
  document.body.style.overflow='';
 }
 document.addEventListener('keydown',e=>{ if(e.key==='Escape')closeCredit(); });
+</script>
+<script>
+/* ===== TRIM + COMPRESS =====
+   Replaces the third-party compressor step. Plays the source through a canvas at
+   a chosen size and re-records it at a chosen bitrate, trimming as it goes.
+
+   HONEST LIMITS, because they matter:
+   - This is a real re-encode, not a container rewrite. It takes as long as the
+     clip runs. A 90 second take takes 90 seconds.
+   - Quality comes from the bitrate you pick, and the browser's encoder is not as
+     good as a dedicated one. It is good enough for a self-tape and it is one step
+     instead of another app.
+   - Audio is carried through from the source track.
+   - Nothing is upscaled. If you ask for a size larger than the source it clamps.
+
+   Actors Access accepts up to 1 GB and asks for under 500 MB. The targets here are
+   built around landing well under that without visible damage. */
+(function(g){
+const A={};
+
+A.PRESETS=[
+ {id:'CASTING', label:'Casting standard', h:1080, mbps:8,
+  note:'1080p, high bitrate. What most offices expect.'},
+ {id:'LIGHT',   label:'Smaller file',     h:1080, mbps:4,
+  note:'1080p at half the bitrate. Uploads faster, still clean.'},
+ {id:'SMALL',   label:'720p',             h:720,  mbps:2.5,
+  note:'When the upload keeps failing or the connection is bad.'}
+];
+A.estimate=function(seconds,mbps){ return Math.round(seconds*mbps*1000000/8); };
+
+A.mime=function(){
+ for(const m of ['video/mp4;codecs=avc1.4d002a,mp4a.40.2','video/mp4;codecs=avc1','video/mp4',
+                 'video/webm;codecs=vp9,opus','video/webm']){
+  try{ if(MediaRecorder.isTypeSupported(m))return m; }catch(e){}
+ }
+ return '';
+};
+
+/* trimStart / trimEnd in seconds. h = target height. */
+A.process=async function(blob,opts){
+ const o=Object.assign({h:1080,mbps:8,trimStart:0,trimEnd:0,onProgress:null},opts||{});
+ const v=document.createElement('video');
+ v.src=URL.createObjectURL(blob); v.muted=false; v.playsInline=true; v.preload='auto';
+ await new Promise((res,rej)=>{ v.onloadedmetadata=res; v.onerror=()=>rej(new Error('cannot read that take')); });
+ const SW=v.videoWidth, SH=v.videoHeight, dur=v.duration;
+ if(!SW||!isFinite(dur)) throw new Error('that take has no usable video');
+
+ const start=Math.max(0,Math.min(o.trimStart,dur-0.2));
+ const end=Math.max(start+0.2,Math.min(dur-(o.trimEnd||0),dur));
+ const span=end-start;
+
+ // never upscale
+ const outH=Math.min(o.h,SH), outW=Math.round(SW*(outH/SH)/2)*2;
+ const cvs=document.createElement('canvas'); cvs.width=outW; cvs.height=outH;
+ const ctx=cvs.getContext('2d');
+ const stream=cvs.captureStream(30);
+ try{
+  const sv=v.captureStream?v.captureStream():null;
+  if(sv) sv.getAudioTracks().forEach(t=>stream.addTrack(t));
+ }catch(e){}
+
+ const m=A.mime();
+ const rec = m ? new MediaRecorder(stream,{mimeType:m,
+                   videoBitsPerSecond:Math.round(o.mbps*1000000), audioBitsPerSecond:128000})
+               : new MediaRecorder(stream);
+ const chunks=[];
+ rec.ondataavailable=e=>{ if(e.data.size)chunks.push(e.data); };
+ const done=new Promise(res=>{ rec.onstop=()=>res(new Blob(chunks,{type:rec.mimeType||'video/mp4'})); });
+
+ v.currentTime=start;
+ await new Promise(r=>{ const h2=()=>{v.removeEventListener('seeked',h2);r();}; v.addEventListener('seeked',h2); });
+ rec.start();
+ await v.play().catch(()=>{});
+ await new Promise(resolve=>{
+  const tick=()=>{
+   if(v.currentTime>=end||v.ended){ resolve(); return; }
+   ctx.drawImage(v,0,0,outW,outH);
+   if(o.onProgress)o.onProgress(Math.min(1,(v.currentTime-start)/span));
+   requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+ });
+ try{ v.pause(); }catch(e){}
+ rec.stop();
+ const out=await done;
+ URL.revokeObjectURL(v.src);
+ return {blob:out, width:outW, height:outH, seconds:Math.round(span*10)/10,
+         from:blob.size, to:out.size,
+         saved:Math.round((1-out.size/Math.max(1,blob.size))*100)};
+};
+/* ===== STITCH =====
+   Some offices want every take as its own file; some want one file with the slate
+   on the front. This plays each clip through a canvas in sequence and records the
+   whole run as a single video.
+
+   It re-encodes in real time, so the cost is the sum of the clips - three ninety
+   second takes plus a slate is about five minutes. There is no faster path in a
+   browser without a native encoder.
+
+   Hard cuts only. Casting instructions routinely say no cross-fades, so the join
+   is either a straight cut or a beat of black, never a dissolve. */
+A.stitch=async function(items,opts){
+ const o=Object.assign({h:1080,mbps:8,gapMs:0,onProgress:null},opts||{});
+ if(!items.length)throw new Error('nothing to join');
+ // measure first so the canvas is sized once and never rescales mid-run
+ const vids=[];
+ for(const it of items){
+  const v=document.createElement('video');
+  v.src=URL.createObjectURL(it.blob); v.preload='auto'; v.playsInline=true;
+  await new Promise((res,rej)=>{ v.onloadedmetadata=res; v.onerror=()=>rej(new Error('cannot read '+(it.name||'a clip'))); });
+  vids.push({v:v,name:it.name});
+ }
+ const src=vids[0].v;
+ const outH=Math.min(o.h,src.videoHeight||o.h);
+ const outW=Math.round((src.videoWidth/src.videoHeight)*outH/2)*2;
+ const cvs=document.createElement('canvas'); cvs.width=outW; cvs.height=outH;
+ const ctx=cvs.getContext('2d');
+ const stream=cvs.captureStream(30);
+
+ // one audio destination the whole run mixes into, so the track never stops
+ const AC=window.AudioContext||window.webkitAudioContext;
+ const ac=new AC(); const dest=ac.createMediaStreamDestination();
+ dest.stream.getAudioTracks().forEach(t=>stream.addTrack(t));
+
+ const m=A.mime();
+ const rec = m ? new MediaRecorder(stream,{mimeType:m,videoBitsPerSecond:Math.round(o.mbps*1000000),audioBitsPerSecond:128000})
+               : new MediaRecorder(stream);
+ const chunks=[]; rec.ondataavailable=e=>{ if(e.data.size)chunks.push(e.data); };
+ const done=new Promise(res=>{ rec.onstop=()=>res(new Blob(chunks,{type:rec.mimeType||'video/mp4'})); });
+ rec.start();
+
+ const total=vids.reduce((n,x)=>n+(isFinite(x.v.duration)?x.v.duration:0),0)||1;
+ let elapsed=0;
+ for(let i=0;i<vids.length;i++){
+  const v=vids[i].v;
+  let node=null;
+  try{ node=ac.createMediaElementSource(v); node.connect(dest); }catch(e){}
+  v.currentTime=0;
+  await new Promise(r=>{ const h=()=>{v.removeEventListener('seeked',h);r();}; v.addEventListener('seeked',h); });
+  await v.play().catch(()=>{});
+  await new Promise(resolve=>{
+   const tick=()=>{
+    if(v.ended||v.currentTime>=(v.duration-0.05)){ resolve(); return; }
+    ctx.drawImage(v,0,0,outW,outH);
+    if(o.onProgress)o.onProgress(Math.min(1,(elapsed+v.currentTime)/total), vids[i].name);
+    requestAnimationFrame(tick);
+   };
+   requestAnimationFrame(tick);
+  });
+  try{ v.pause(); }catch(e){}
+  elapsed+=isFinite(v.duration)?v.duration:0;
+  try{ if(node)node.disconnect(); }catch(e){}
+  // a beat of black between clips, never a dissolve
+  if(o.gapMs && i<vids.length-1){
+   const t0=performance.now();
+   await new Promise(resolve=>{
+    const tick=()=>{
+     if(performance.now()-t0>=o.gapMs){ resolve(); return; }
+     ctx.fillStyle='#000'; ctx.fillRect(0,0,outW,outH);
+     requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+   });
+  }
+ }
+ rec.stop();
+ const out=await done;
+ vids.forEach(x=>{ try{URL.revokeObjectURL(x.v.src);}catch(e){} });
+ try{ ac.close(); }catch(e){}
+ return {blob:out,width:outW,height:outH,seconds:Math.round(total*10)/10,count:items.length};
+};
+g.ActorCompress=A;
+})(window);
+
+</script>
+<script>
+/* ===== EDIT MODE =====
+   The page you are looking at is the page you edit. Add a project, drop in a clip,
+   change a line - it happens here, on the real thing, and it is kept in this browser
+   until you bake it. Same shape as the hub: IndexedDB holds the work, and baking is
+   a separate, deliberate act that produces something to publish.
+
+   Visitors never see any of this. Edit mode only exists when the address ends in
+   #edit, and nothing below runs otherwise. */
+(function(){
+'use strict';
+
+var EDIT = location.hash === '#edit';
+
+/* One store for the working copy of SITE, one for media that has not been baked yet.
+   Modelled on the hub's DB so it behaves the way you already expect. */
+var DB={_p:null,
+ open:function(){ if(typeof indexedDB==='undefined')return Promise.reject(new Error('no-idb'));
+  if(!this._p)this._p=new Promise(function(res,rej){
+   var r=indexedDB.open('bmc_site',1);
+   r.onupgradeneeded=function(e){var d=e.target.result;
+    if(!d.objectStoreNames.contains('media'))d.createObjectStore('media',{keyPath:'id'});
+    if(!d.objectStoreNames.contains('meta'))d.createObjectStore('meta',{keyPath:'k'});};
+   r.onsuccess=function(e){res(e.target.result)}; r.onerror=function(){rej(r.error)};});
+  return this._p; },
+ getMeta:function(k){var s=this;return s.open().then(function(db){return new Promise(function(res){
+   var q=db.transaction('meta','readonly').objectStore('meta').get(k);
+   q.onsuccess=function(){res(q.result?q.result.v:null)}; q.onerror=function(){res(null)};});})
+   .catch(function(){return null});},
+ putMeta:function(k,v){var s=this;return s.open().then(function(db){return new Promise(function(res){
+   var tx=db.transaction('meta','readwrite'); tx.objectStore('meta').put({k:k,v:v});
+   tx.oncomplete=res; tx.onerror=res;});}).catch(function(){});},
+ putMedia:function(id,blob,name){var s=this;return s.open().then(function(db){return new Promise(function(res,rej){
+   var tx=db.transaction('media','readwrite'); tx.objectStore('media').put({id:id,blob:blob,name:name});
+   tx.oncomplete=res; tx.onerror=function(){rej(tx.error)};});});},
+ allMedia:function(){var s=this;return s.open().then(function(db){return new Promise(function(res){
+   var out={}, q=db.transaction('media','readonly').objectStore('media').openCursor();
+   q.onsuccess=function(e){var c=e.target.result;
+    if(c){ out[c.value.id]=c.value; c.continue(); } else res(out); };
+   q.onerror=function(){res({})};});}).catch(function(){return {}});},
+ delMedia:function(id){var s=this;return s.open().then(function(db){return new Promise(function(res){
+   var tx=db.transaction('media','readwrite'); tx.objectStore('media').delete(id);
+   tx.oncomplete=res; tx.onerror=res;});}).catch(function(){});}
+};
+
+var MEDIA={}, URLS={};
+/* Media added here has no file yet, so it is referenced as idb:<id> until it is
+   baked. Everything that draws an image or a video goes through this. */
+window.srcFor=function(p){
+ if(!p) return '';
+ if(p.indexOf('idb:')!==0) return p;
+ if(URLS[p]) return URLS[p];
+ var rec=MEDIA[p.slice(4)];
+ if(!rec) return '';
+ URLS[p]=URL.createObjectURL(rec.blob);
+ return URLS[p];
+};
+
+if(!EDIT){
+ /* Not editing: leave the page exactly as it was baked. */
+ window.addEventListener('hashchange',function(){ if(location.hash==='#edit')location.reload(); });
+ return;
+}
+
+/* ---------- styles, only ever injected in edit mode ---------- */
+var css=document.createElement('style');
+css.textContent=
+"#eb{position:fixed;right:0;top:0;bottom:0;width:min(430px,100%);background:#fff;"+
+ "border-left:1px solid var(--hair);z-index:9000;display:flex;flex-direction:column;"+
+ "box-shadow:-16px 0 46px rgba(0,0,0,.10);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,sans-serif}"+
+"#eb.off{transform:translateX(100%)}body.editing{padding-right:min(430px,100%)}"+
+"#ebh{padding:13px 15px;border-bottom:1px solid var(--hair);display:flex;gap:9px;align-items:center}"+
+"#ebh b{font-family:var(--disp);font-size:16px;flex:1}"+
+"#ebt{display:flex;flex-wrap:wrap;border-bottom:1px solid var(--hair);padding:0 7px}"+
+"#ebt button{background:none;border:0;border-bottom:2px solid transparent;padding:9px 9px;cursor:pointer;"+
+ "font-family:var(--mono);font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--grey)}"+
+"#ebt button.on{color:var(--ink);border-bottom-color:var(--salmon)}"+
+"#ebc{flex:1;overflow:auto;padding:14px 15px 40px}"+
+"#eb label{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.09em;"+
+ "text-transform:uppercase;color:var(--grey);margin:12px 0 4px}"+
+"#eb input[type=text],#eb textarea,#eb select{width:100%;font:inherit;font-size:13.5px;padding:7px 9px;"+
+ "border:1px solid var(--hair);background:#fff;color:var(--ink);font-family:inherit}"+
+"#eb textarea{min-height:52px;resize:vertical}"+
+"#eb .k{background:#faf9f6;border:1px solid var(--hair);padding:11px 12px;margin:0 0 8px}"+
+"#eb .two{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}"+
+"#eb button.b{font-family:var(--mono);font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;"+
+ "min-height:32px;padding:6px 10px;border:1px solid var(--blue);background:transparent;color:var(--blue);cursor:pointer}"+
+"#eb button.b:hover{background:var(--blue);color:#fff}"+
+"#eb button.b.bad{border-color:var(--salmon);color:var(--salmon)}"+
+"#eb button.b.bad:hover{background:var(--salmon);color:#fff}"+
+"#eb .rowb{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}"+
+"#ebf{border-top:1px solid var(--hair);padding:11px 15px;display:flex;gap:9px;align-items:center}"+
+"#ebf .st{font-family:var(--mono);font-size:9.5px;color:var(--grey);flex:1}"+
+"#ebf button{font-family:var(--mono);font-size:11px;letter-spacing:.09em;text-transform:uppercase;"+
+ "min-height:42px;padding:10px 16px;border:1px solid var(--salmon);background:var(--salmon);color:#fff;cursor:pointer}"+
+"#ebthumb{width:46px;aspect-ratio:3/4;object-fit:cover;background:#111;display:block}"+
+"#ebwork{display:grid;grid-template-columns:46px 1fr;gap:9px;align-items:start}"+
+"#ebtoggle{position:fixed;right:14px;bottom:14px;z-index:9001;font-family:var(--mono);font-size:10px;"+
+ "letter-spacing:.1em;text-transform:uppercase;padding:11px 15px;border:1px solid var(--ink);"+
+ "background:var(--ink);color:var(--bond);cursor:pointer}"+
+"#ebwork .st{font-family:var(--mono);font-size:9.5px;color:var(--grey);margin-top:3px}"+
+"#ebbusy{position:fixed;inset:0;background:rgba(242,240,234,.96);z-index:9500;display:none;"+
+ "align-items:center;justify-content:center;flex-direction:column;gap:12px;text-align:center;padding:22px}"+
+"#ebbusy.on{display:flex}#ebbusy b{font-family:var(--disp);font-size:21px}"+
+"#ebbusy span{font-family:var(--mono);font-size:11px;color:var(--grey)}"+
+"#ebbusy .bar{width:min(380px,84vw);height:5px;background:var(--hair)}"+
+"#ebbusy .bar i{display:block;height:100%;background:var(--salmon);width:0}";
+document.head.appendChild(css);
+
+var E=function(x){return String(x==null?'':x).replace(/[&<>"]/g,function(m){
+ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];});};
+var MB=1048576, HARD=100*MB;
+var dirty=false, TAB='who';
+
+function el(id){ return document.getElementById(id); }
+function mark(){ dirty=true; save(); status(); }
+function status(){
+ var s=el('ebstat'); if(!s)return;
+ var n=Object.keys(MEDIA).length;
+ s.textContent=(dirty?'saved in this browser':'no changes yet')+(n?' \u00b7 '+n+' file'+(n===1?'':'s')+' not baked':'');
+}
+var saveT=null;
+function save(){ clearTimeout(saveT); saveT=setTimeout(function(){ DB.putMeta('site',SITE); },350); }
+
+function busy(on,t,m,p){
+ var b=el('ebbusy'); if(!b)return;
+ b.classList.toggle('on',!!on);
+ if(t)b.querySelector('b').textContent=t;
+ if(m!=null)b.querySelector('span').textContent=m;
+ b.querySelector('.bar i').style.width=Math.round((p||0)*100)+'%';
+}
+
+/* ---------- bringing media in ---------- */
+function newId(){ return 'm'+Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+function askFile(accept,multi){
+ return new Promise(function(res){
+  var i=document.createElement('input'); i.type='file'; i.accept=accept; i.multiple=!!multi;
+  i.onchange=function(e){ res(Array.prototype.slice.call(e.target.files)); };
+  i.click();
+ });
+}
+async function addImage(file){
+ var max=2200;
+ var img=await new Promise(function(res,rej){ var im=new Image();
+  im.onload=function(){res(im)}; im.onerror=function(){rej(new Error('cannot read that image'))};
+  im.src=URL.createObjectURL(file); });
+ var blob=file, name=file.name;
+ if(Math.max(img.width,img.height)>max || file.size>1.6*MB){
+  var sc=Math.min(1,max/Math.max(img.width,img.height));
+  var c=document.createElement('canvas');
+  c.width=Math.round(img.width*sc)||img.width; c.height=Math.round(img.height*sc)||img.height;
+  c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+  blob=await new Promise(function(r){ c.toBlob(r,'image/jpeg',0.86); });
+  name=name.replace(/\.[^.]+$/,'')+'.jpg';
+ }
+ var id=newId(); MEDIA[id]={id:id,blob:blob,name:name};
+ await DB.putMedia(id,blob,name);
+ return 'idb:'+id;
+}
+async function addVideo(file,label,isReel){
+ var cap=isReel?60*MB:22*MB, blob=file, name=file.name;
+ if(file.size>cap){
+  if(typeof ActorCompress!=='object'){ throw new Error('the re-encoder is missing from this page'); }
+  busy(true,'Shrinking '+label,'runs in real time',0);
+  var res=await ActorCompress.process(file,{h:isReel?1080:720,mbps:isReel?4:1.8,
+   onProgress:function(p){ busy(true,'Shrinking '+label,Math.round((p||0)*100)+'%',p); }});
+  busy(false);
+  blob=(res&&res.blob)?res.blob:res;
+  if(!(blob instanceof Blob)) throw new Error('the re-encoder returned nothing usable');
+  name=name.replace(/\.[^.]+$/,'')+'.mp4';
+ } else {
+  var ext=(name.split('.').pop()||'mp4').toLowerCase();
+  if(ext==='mov'||ext==='m4v') name=name.replace(/\.[^.]+$/,'')+'.mp4';
+ }
+ var id=newId(); MEDIA[id]={id:id,blob:blob,name:name};
+ await DB.putMedia(id,blob,name);
+ return 'idb:'+id;
+}
+
+/* ---------- the panel ---------- */
+var TABS=[['who','Header'],['reel','Reel'],['work','Work'],['films','Films'],
+          ['writing','Writing'],['stills','Stills'],['photos','Photos'],['reps','Reps']];
+
+function panel(){
+ var d=document.createElement('div'); d.id='eb';
+ d.innerHTML=
+  '<div id="ebh"><b>Editing</b>'+
+   '<button class="b" onclick="EB.preview()">Preview</button>'+
+   '<button class="b" onclick="EB.close()">Close</button></div>'+
+  '<div id="ebt">'+TABS.map(function(t){
+    return '<button data-t="'+t[0]+'" onclick="EB.tab(\''+t[0]+'\')">'+t[1]+'</button>';}).join('')+'</div>'+
+  '<div id="ebc"></div>'+
+  '<div id="ebf"><span class="st" id="ebstat"></span>'+
+   '<button onclick="EB.bake()">Bake for GitHub</button></div>';
+ document.body.appendChild(d);
+ var busyEl=document.createElement('div'); busyEl.id='ebbusy';
+ busyEl.innerHTML='<b>Working</b><span></span><div class="bar"><i></i></div>';
+ document.body.appendChild(busyEl);
+ document.body.classList.add('editing');
+ draw();
+}
+
+function field(label,val,fn,ph){
+ return '<label>'+E(label)+'</label><input type="text" value="'+E(val||'')+'" '+
+        'oninput="EB.set(this,\''+fn+'\')" data-ph="'+E(ph||'')+'" placeholder="'+E(ph||'')+'">';
+}
+
+function draw(){
+ var c=el('ebc'); if(!c)return;
+ Array.prototype.forEach.call(document.querySelectorAll('#ebt button'),function(b){
+  b.classList.toggle('on', b.getAttribute('data-t')===TAB); });
+ var h='';
+ if(TAB==='who'){
+  h+=field('Name',SITE.name,'name');
+  h+=field('Line under the name',SITE.lane,'lane');
+  h+='<div class="two"><div>'+field('Union',factGet('union'),'fact:Union')+'</div>'+
+     '<div>'+field('Management',factGet('management'),'fact:Management')+'</div></div>';
+  h+=field('IMDb','' + factGet('imdb'),'fact:IMDb','https://www.imdb.com/name/...');
+  h+=field('Email',SITE.email,'email');
+  h+=field('Footer line',SITE.footer,'footer');
+  h+='<label>Headshot</label><div class="k" id="ebwork"><img id="ebthumb" src="'+E(srcFor(SITE.headshot))+'">'+
+     '<div><div class="st">'+E(SITE.headshot||'none')+'</div>'+
+     '<div class="rowb"><button class="b" onclick="EB.pic(\'headshot\')">Change</button></div></div></div>';
+  h+='<label>Sigil</label><div class="k" id="ebwork"><img id="ebthumb" style="aspect-ratio:1;object-fit:contain;background:none" src="'+E(srcFor(SITE.sigil))+'">'+
+     '<div><div class="st">'+E(SITE.sigil||'none')+'</div>'+
+     '<div class="rowb"><button class="b" onclick="EB.pic(\'sigil\')">Change</button>'+
+     '<button class="b bad" onclick="EB.clr(\'sigil\')">Remove</button></div></div></div>';
+ }
+ else if(TAB==='reel'){
+  h+='<div class="k">'+(SITE.reel?'<div class="st">'+E(SITE.reel)+'</div>':'<div class="st">no reel yet</div>')+
+     '<div class="rowb"><button class="b" onclick="EB.reel()">'+(SITE.reel?'Replace':'Add the reel')+'</button>'+
+     (SITE.reel?'<button class="b bad" onclick="EB.clr(\'reel\')">Remove</button>':'')+'</div></div>'+
+     '<p style="font-size:12.5px;color:var(--grey);line-height:1.55">Anything over 60 MB is '+
+     're-encoded to 1080p on the way in, so it can live on GitHub.</p>';
+ }
+ else if(TAB==='work'){
+  h+='<div class="rowb"><button class="b" onclick="EB.addWork()">+ Add a project</button></div>';
+  h+=SITE.work.map(function(w,i){
+   return '<div class="k" id="ebwork"><img id="ebthumb" src="'+E(srcFor(w.p&&w.p.indexOf('media/')!==0&&w.p.indexOf('idb:')!==0?'media/'+w.p:w.p))+'">'+
+    '<div><input type="text" value="'+E(w.t)+'" oninput="EB.setW('+i+',\'t\',this.value)">'+
+    '<div class="two"><div>'+ish('Character',w.ch,i,'ch')+'</div><div>'+ish('Role',w.r,i,'r')+'</div>'+
+    '<div>'+ish('Network',w.n,i,'n')+'</div><div>'+ish('Director',w.d,i,'d')+'</div></div>'+
+    '<div class="st">'+(w.clip?'clip: '+E(w.clip.split('/').pop()):'no clip')+'</div>'+
+    '<div class="rowb"><button class="b" onclick="EB.poster('+i+')">Poster</button>'+
+    '<button class="b" onclick="EB.clip('+i+')">'+(w.clip?'Replace clip':'Add clip')+'</button>'+
+    (w.clip?'<button class="b" onclick="EB.noclip('+i+')">No clip</button>':'')+
+    '<button class="b" onclick="EB.mv('+i+',-1)">&uarr;</button>'+
+    '<button class="b" onclick="EB.mv('+i+',1)">&darr;</button>'+
+    '<button class="b bad" onclick="EB.rm('+i+')">Delete</button></div></div></div>';
+  }).join('');
+ }
+ else if(TAB==='films') h+=simpleList('films','Film','EB.setF','EB.delF','EB.addF',true);
+ else if(TAB==='writing'){
+  h+='<label>Script face</label><select onchange="EB.script(this.value)">'+
+   [['yesteryear','Yesteryear'],['kaushan-script','Kaushan Script'],['marck-script','Marck Script'],
+    ['sacramento','Sacramento'],['pinyon-script','Pinyon Script'],['italianno','Italianno']]
+   .map(function(o){return '<option value="'+o[0]+'"'+((SITE.scriptFont||'yesteryear')===o[0]?' selected':'')+'>'+o[1]+'</option>';}).join('')+'</select>';
+  h+='<div class="rowb" style="margin-top:10px"><button class="b" onclick="EB.addWr()">+ Add a project</button></div>';
+  h+=(SITE.writing||[]).map(function(x,i){
+   return '<div class="k">'+
+    (x.p?'<img src="'+E(srcFor(x.p))+'" style="width:100%;max-height:140px;object-fit:cover;display:block;margin-bottom:8px">':'')+
+    '<input type="text" value="'+E(x.t)+'" oninput="EB.setWr('+i+',\'t\',this.value)">'+
+    '<label>Logline</label><textarea oninput="EB.setWr('+i+',\'s\',this.value)">'+E(x.s||'')+'</textarea>'+
+    '<div class="two"><div><label>Where it stands</label><input type="text" value="'+E(x.status||'')+'" oninput="EB.setWr('+i+',\'status\',this.value)"></div>'+
+    '<div><label>Material</label><input type="text" value="'+E(x.material||'')+'" oninput="EB.setWr('+i+',\'material\',this.value)" placeholder="Script, Deck"></div></div>'+
+    '<div class="rowb"><button class="b" onclick="EB.projart('+i+')">Artwork</button>'+
+    '<button class="b bad" onclick="EB.delWr('+i+')">Remove</button></div></div>';
+  }).join('');
+ }
+ else if(TAB==='stills') h+=picList('stills','EB.addStill','EB.delStill','EB.mvStill');
+ else if(TAB==='photos') h+=picList('photos','EB.addPhoto','EB.delPhoto','EB.mvPhoto');
+ else if(TAB==='reps'){
+  h+='<div class="rowb"><button class="b" onclick="EB.addRep()">+ Add</button></div>';
+  h+=(SITE.reps||[]).map(function(r,i){
+   return '<div class="k">'+
+    '<label>Heading</label><input type="text" value="'+E(r.label)+'" oninput="EB.setR('+i+',\'label\',this.value)">'+
+    '<label>Company</label><input type="text" value="'+E(r.name)+'" oninput="EB.setR('+i+',\'name\',this.value)">'+
+    '<div class="two"><div><label>Person</label><input type="text" value="'+E(r.who||'')+'" oninput="EB.setR('+i+',\'who\',this.value)"></div>'+
+    '<div><label>Phone</label><input type="text" value="'+E(r.phone||'')+'" oninput="EB.setR('+i+',\'phone\',this.value)"></div>'+
+    '<div><label>Email</label><input type="text" value="'+E(r.email||'')+'" oninput="EB.setR('+i+',\'email\',this.value)"></div>'+
+    '<div><label>Website</label><input type="text" value="'+E(r.url||'')+'" oninput="EB.setR('+i+',\'url\',this.value)"></div></div>'+
+    '<label>Address</label><input type="text" value="'+E(r.place||'')+'" oninput="EB.setR('+i+',\'place\',this.value)">'+
+    '<div class="rowb"><button class="b bad" onclick="EB.delRep('+i+')">Remove</button></div></div>';
+  }).join('');
+ }
+ c.innerHTML=h; status();
+}
+function ish(lab,v,i,k){
+ return '<label>'+lab+'</label><input type="text" value="'+E(v||'')+'" oninput="EB.setW('+i+',\''+k+'\',this.value)">';
+}
+function picList(key,add,del,mv){
+ var a=SITE[key]||[];
+ return '<div class="rowb"><button class="b" onclick="'+add+'()">+ Add</button></div>'+
+  (a.length?a.map(function(p,i){
+   return '<div class="k" id="ebwork"><img id="ebthumb" src="'+E(srcFor(p))+'">'+
+    '<div><div class="st">'+E(String(p).split('/').pop())+'</div>'+
+    '<div class="rowb"><button class="b" onclick="'+mv+'('+i+',-1)">&larr;</button>'+
+    '<button class="b" onclick="'+mv+'('+i+',1)">&rarr;</button>'+
+    '<button class="b bad" onclick="'+del+'('+i+')">Remove</button></div></div></div>';}).join('')
+   :'<div class="k"><div class="st">nothing here yet</div></div>');
+}
+function simpleList(key,label,set,del,add,art){
+ var a=SITE[key]||[];
+ return '<div class="rowb"><button class="b" onclick="'+add+'()">+ Add a '+label.toLowerCase()+'</button></div>'+
+  a.map(function(x,i){
+   return '<div class="k">'+
+    (art&&x.p?'<img src="'+E(srcFor(x.p))+'" style="width:100%;aspect-ratio:16/9;object-fit:contain;background:#111;display:block;margin-bottom:8px">':'')+
+    '<label>Title</label><input type="text" value="'+E(x.t)+'" oninput="'+set+'('+i+',\'t\',this.value)">'+
+    '<label>Line underneath</label><input type="text" value="'+E(x.s||'')+'" oninput="'+set+'('+i+',\'s\',this.value)">'+
+    '<label>Link</label><input type="text" value="'+E(x.u||'')+'" oninput="'+set+'('+i+',\'u\',this.value)">'+
+    '<div class="rowb">'+(art?'<button class="b" onclick="EB.filmart('+i+')">Key art</button>':'')+
+    '<button class="b bad" onclick="'+del+'('+i+')">Remove</button></div></div>';}).join('');
+}
+function factGet(k){ var f=(SITE.facts||[]).find(function(x){return String(x[0]).toLowerCase()===k;}); return f?f[1]:''; }
+function factSet(k,v){ SITE.facts=SITE.facts||[];
+ var f=SITE.facts.find(function(x){return String(x[0]).toLowerCase()===k.toLowerCase();});
+ if(f)f[1]=v; else SITE.facts.push([k,v]); }
+
+function redraw(){ render(); draw(); mark(); }
+
+/* ---------- the public handle the panel's buttons call ---------- */
+window.EB={
+ tab:function(t){ TAB=t; draw(); },
+ close:function(){ location.hash=''; location.reload(); },
+ preview:function(){ var p=el('eb'); p.classList.toggle('off');
+  document.body.classList.toggle('editing',!p.classList.contains('off')); },
+ set:function(inp,fn){ var v=inp.value;
+  if(fn.indexOf('fact:')===0) factSet(fn.slice(5),v); else SITE[fn]=v;
+  if(fn==='email') factSet('Email',v);
+  render(); mark(); },
+ setW:function(i,k,v){ SITE.work[i][k]=v; render(); mark(); },
+ setWr:function(i,k,v){ SITE.writing[i][k]=v; render(); mark(); },
+ setF:function(i,k,v){ SITE.films[i][k]=v; render(); mark(); },
+ setR:function(i,k,v){ SITE.reps[i][k]=v; render(); mark(); },
+ script:function(v){ SITE.scriptFont=v; redraw(); },
+ addWork:function(){ SITE.work.unshift({t:'New project',ch:'',r:'',n:'',d:'',p:'',clip:'',note:''}); redraw(); },
+ rm:function(i){ if(confirm('Remove "'+SITE.work[i].t+'"?')){ SITE.work.splice(i,1); redraw(); } },
+ mv:function(i,d){ var j=i+d; if(j<0||j>=SITE.work.length)return;
+  var a=SITE.work,t=a[i]; a[i]=a[j]; a[j]=t; redraw(); },
+ addF:function(){ SITE.films=SITE.films||[]; SITE.films.unshift({t:'',s:'',u:'',p:''}); redraw(); },
+ delF:function(i){ SITE.films.splice(i,1); redraw(); },
+ addWr:function(){ SITE.writing=SITE.writing||[]; SITE.writing.push({t:'New project',s:'',status:'',material:'',p:'',u:''}); redraw(); },
+ delWr:function(i){ SITE.writing.splice(i,1); redraw(); },
+ addRep:function(){ SITE.reps=SITE.reps||[]; SITE.reps.push({label:'',name:'',who:'',phone:'',email:'',place:'',url:''}); redraw(); },
+ delRep:function(i){ SITE.reps.splice(i,1); redraw(); },
+ delStill:function(i){ SITE.stills.splice(i,1); redraw(); },
+ mvStill:function(i,d){ var j=i+d; if(j<0||j>=SITE.stills.length)return;
+  var a=SITE.stills,t=a[i]; a[i]=a[j]; a[j]=t; redraw(); },
+ delPhoto:function(i){ SITE.photos.splice(i,1); redraw(); },
+ mvPhoto:function(i,d){ var j=i+d; if(j<0||j>=SITE.photos.length)return;
+  var a=SITE.photos,t=a[i]; a[i]=a[j]; a[j]=t; redraw(); },
+ clr:function(k){ SITE[k]=''; redraw(); },
+ noclip:function(i){ SITE.work[i].clip=''; redraw(); },
+ pic:async function(k){ var f=await askFile('image/*'); if(!f.length)return;
+  try{ SITE[k]=await addImage(f[0]); redraw(); }catch(e){ alert(e.message); } },
+ poster:async function(i){ var f=await askFile('image/*'); if(!f.length)return;
+  try{ SITE.work[i].p=await addImage(f[0]); redraw(); }catch(e){ alert(e.message); } },
+ projart:async function(i){ var f=await askFile('image/*'); if(!f.length)return;
+  try{ SITE.writing[i].p=await addImage(f[0]); redraw(); }catch(e){ alert(e.message); } },
+ filmart:async function(i){ var f=await askFile('image/*'); if(!f.length)return;
+  try{ SITE.films[i].p=await addImage(f[0]); redraw(); }catch(e){ alert(e.message); } },
+ addStill:async function(){ var fs=await askFile('image/*',true);
+  for(var i=0;i<fs.length;i++){ try{ SITE.stills=SITE.stills||[]; SITE.stills.push(await addImage(fs[i])); }catch(e){ alert(e.message); } }
+  redraw(); },
+ addPhoto:async function(){ var fs=await askFile('image/*',true);
+  for(var i=0;i<fs.length;i++){ try{ SITE.photos=SITE.photos||[]; SITE.photos.push(await addImage(fs[i])); }catch(e){ alert(e.message); } }
+  redraw(); },
+ clip:async function(i){ var f=await askFile('video/*'); if(!f.length)return;
+  try{ SITE.work[i].clip=await addVideo(f[0],SITE.work[i].t,false); redraw(); }
+  catch(e){ busy(false); alert(e.message); } },
+ reel:async function(){ var f=await askFile('video/*'); if(!f.length)return;
+  try{ SITE.reel=await addVideo(f[0],'the reel',true); redraw(); }
+  catch(e){ busy(false); alert(e.message); } },
+ bake:bake
+};
+
+/* ---------- baking ----------
+   Everything added here is held as idb:<id>. Baking gives each one a real filename,
+   rewrites the page to point at it, and hands back a folder to upload. Nothing is
+   thrown away: the working copy stays in this browser, so a bake can be repeated. */
+function crc32(b){ var c,t=crc32.t;
+ if(!t){t=crc32.t=[];for(var n=0;n<256;n++){c=n;for(var k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0;}}
+ var crc=0xFFFFFFFF; for(var i=0;i<b.length;i++)crc=(crc>>>8)^t[(crc^b[i])&255];
+ return (crc^0xFFFFFFFF)>>>0; }
+function zipOf(files){
+ var enc=new TextEncoder(),chunks=[],cen=[],off=0;
+ var u16=function(v){return [v&255,(v>>8)&255]}, u32=function(v){return [v&255,(v>>8)&255,(v>>16)&255,(v>>24)&255]};
+ files.forEach(function(f){ var nm=enc.encode(f.name),d=f.data,crc=crc32(d);
+  var L=[].concat(u32(0x04034b50),u16(20),u16(0),u16(0),u16(0),u16(0),u32(crc),
+    u32(d.length),u32(d.length),u16(nm.length),u16(0));
+  chunks.push(new Uint8Array(L),nm,d); cen.push({nm:nm,crc:crc,size:d.length,off:off});
+  off+=L.length+nm.length+d.length; });
+ var cs=off,cl=0;
+ cen.forEach(function(c){ var H=[].concat(u32(0x02014b50),u16(20),u16(20),u16(0),u16(0),u16(0),u16(0),
+   u32(c.crc),u32(c.size),u32(c.size),u16(c.nm.length),u16(0),u16(0),u16(0),u16(0),u32(0),u32(c.off));
+  chunks.push(new Uint8Array(H),c.nm); cl+=H.length+c.nm.length; });
+ chunks.push(new Uint8Array([].concat(u32(0x06054b50),u16(0),u16(0),u16(cen.length),
+   u16(cen.length),u32(cl),u32(cs),u16(0))));
+ return new Blob(chunks,{type:'application/zip'});
+}
+function slugFile(base,ext){
+ return String(base||'file').toLowerCase().replace(/\.[^.]+$/,'')
+  .replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,46)+'.'+ext;
+}
+async function bake(){
+ busy(true,'Baking','working out what is new',0);
+ var out=JSON.parse(JSON.stringify(SITE)), files=[], used={}, map={};
+ var ids=[];
+ /* Every path already on the site is spoken for. Without this a new still called
+    still-car.jpg would be handed the same filename as the still-car.jpg already
+    published, and the upload would quietly replace the wrong picture. */
+ (function seed(o){
+  if(Array.isArray(o)) return o.forEach(seed);
+  if(o&&typeof o==='object'){ for(var k in o) seed(o[k]); return; }
+  if(typeof o==='string'&&o.indexOf('media/')===0) used[o]=1;
+ })(out);
+ var walk=function(o){
+  if(Array.isArray(o)) return o.map(walk);
+  if(o&&typeof o==='object'){ var r={}; for(var k in o) r[k]=walk(o[k]); return r; }
+  if(typeof o==='string'&&o.indexOf('idb:')===0){ if(ids.indexOf(o)<0)ids.push(o); return o; }
+  return o;
+ };
+ walk(out);
+ for(var i=0;i<ids.length;i++){
+  var key=ids[i], rec=MEDIA[key.slice(4)];
+  if(!rec) continue;
+  var ext=(rec.name.split('.').pop()||'bin').toLowerCase();
+  var name='media/'+slugFile(rec.name,ext);
+  var stem=slugFile(rec.name,ext).replace(/\.[^.]+$/,'');
+  var n=2; while(used[name]){ name='media/'+stem+'-'+(n++)+'.'+ext; }
+  used[name]=1; map[key]=name;
+  busy(true,'Baking',rec.name,(i+1)/(ids.length+1));
+  files.push({name:name,data:new Uint8Array(await rec.blob.arrayBuffer())});
+ }
+ var swap=function(o){
+  if(Array.isArray(o)) return o.map(swap);
+  if(o&&typeof o==='object'){ var r={}; for(var k in o) r[k]=swap(o[k]); return r; }
+  if(typeof o==='string'&&map[o]) return map[o];
+  return o;
+ };
+ out=swap(out);
+ var doc=document.documentElement.outerHTML;
+ /* Rewrite the page's own SITE block. The edit layer stays in the file - it is inert
+    without #edit on the address, and it is what makes the next round of changes
+    possible without starting over. */
+ var baked=doc.replace(/const SITE=\{[\s\S]*?\n\};/,'const SITE='+JSON.stringify(out,null,1)+';');
+ if(baked===doc){ busy(false); alert('Could not rewrite the page. Nothing was baked.'); return; }
+ files.unshift({name:'index.html',data:new TextEncoder().encode('<!doctype html>\n'+baked)});
+ files.push({name:'UPLOAD-THESE.txt',data:new TextEncoder().encode(
+  'Drag everything in here into your GitHub repo and commit.\n\n'+
+  'index.html sits at the top level, everything in media/ goes in media/.\n'+
+  'Say yes when it asks to overwrite index.html.\n\n'+
+  'Your working copy stays in this browser, so you can keep editing and bake again.\n')});
+ var blob=zipOf(files);
+ busy(false);
+ var a=document.createElement('a');
+ a.href=URL.createObjectURL(blob); a.download='site-update.zip'; a.click();
+ setTimeout(function(){URL.revokeObjectURL(a.href)},6000);
+ alert('Baked '+files.length+' file'+(files.length===1?'':'s')+'. Upload them and commit.');
+}
+
+/* ---------- start ---------- */
+(async function(){
+ MEDIA=await DB.allMedia();
+ var saved=await DB.getMeta('site');
+ if(saved && confirm('You have unbaked changes in this browser. Carry on with them?\n\n'+
+   'Cancel to throw them away and start from the published page.')){
+  for(var k in saved) SITE[k]=saved[k];
+  dirty=true;
+ } else if(saved){ await DB.putMeta('site',null); }
+ render();
+ panel();
+})();
+})();
+
 </script>
 </body></html>
