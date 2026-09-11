@@ -90,6 +90,7 @@ button.big:hover:not(:disabled){background:#bd5a41}
    <div><label>Union</label><input type="text" id="fUnion"></div>
    <div><label>Management</label><input type="text" id="fMgmt"></div>
   </div>
+  <label>IMDb page</label><input type="text" id="fImdb" placeholder="https://www.imdb.com/name/...">
   <label>Email shown on the page</label><input type="text" id="fEmail">
   <label>Footer line</label><input type="text" id="fFooter">
   <label>Header headshot</label>
@@ -386,11 +387,13 @@ function fill(){
  $('fName').value=SITE.name||''; $('fLane').value=SITE.lane||'';
  $('fUnion').value=factGet('union'); $('fMgmt').value=factGet('management');
  $('fEmail').value=SITE.email||''; $('fFooter').value=SITE.footer||'';
+ $('fImdb').value=factGet('imdb');
  $('hsPrev').src=preview(SITE.headshot); $('hsName').textContent=SITE.headshot||'none set';
  $('sgPrev').src=preview(SITE.sigil); $('sgName').textContent=SITE.sigil||'none set';
 }
 [['fName',v=>SITE.name=v],['fLane',v=>SITE.lane=v],['fFooter',v=>SITE.footer=v],
  ['fUnion',v=>factSet('Union',v)],['fMgmt',v=>factSet('Management',v)],
+ ['fImdb',v=>factSet('IMDb',v)],
  ['fEmail',v=>{SITE.email=v;factSet('Email',v);}]]
  .forEach(([id,set])=>{ const el=$(id); if(el)el.oninput=e=>set(e.target.value); });
 

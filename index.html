@@ -295,6 +295,10 @@ const SITE={
    "SK Management"
   ],
   [
+   "IMDb",
+   "https://www.imdb.com/name/nm0995100/"
+  ],
+  [
    "Email",
    "hello@brendanmccarthyactor.com"
   ]
@@ -691,7 +695,16 @@ function render(){
        return '<img src="'+esc(x)+'" alt="" loading="lazy">'; }).join('')+'</div>':'')+
    '</div></div>'+
   '<div class="facts">'+(S.facts||[]).map(function(f){
-    var v=/@/.test(f[1])?'<a href="mailto:'+esc(f[1])+'">'+esc(f[1])+'</a>':esc(f[1]);
+    var val=String(f[1]||''), v;
+    /* A web address is shown by where it goes, not by its full path - nobody needs to
+       read a name id. An email is a mailto. Anything else is just text. */
+    if(/^https?:\/\//i.test(val)){
+     var label=val.replace(/^https?:\/\//i,'').replace(/^www\./i,'').replace(/\/$/,'');
+     if(/imdb\.com\/name\//i.test(val)) label='imdb.com';
+     v='<a href="'+esc(val)+'" target="_blank" rel="noopener">'+esc(label)+'</a>';
+    } else if(/@/.test(val)){
+     v='<a href="mailto:'+esc(val)+'">'+esc(val)+'</a>';
+    } else v=esc(val);
     return '<span class="k">'+esc(f[0])+'</span>'+v; }).join('')+'</div>';
 
  if(S.reel){
