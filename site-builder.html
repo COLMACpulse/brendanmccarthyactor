@@ -3,6 +3,12 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Edit brendanmccarthyactor.com</title>
 <style>
+@font-face{font-family:'Yesteryear';src:url('fonts/yesteryear.woff2') format('woff2')}
+@font-face{font-family:'Italianno';src:url('fonts/italianno.woff2') format('woff2')}
+@font-face{font-family:'Sacramento';src:url('fonts/sacramento.woff2') format('woff2')}
+@font-face{font-family:'Pinyon Script';src:url('fonts/pinyon-script.woff2') format('woff2')}
+@font-face{font-family:'Kaushan Script';src:url('fonts/kaushan-script.woff2') format('woff2')}
+@font-face{font-family:'Marck Script';src:url('fonts/marck-script.woff2') format('woff2')}
 :root{--bond:#F2F0EA;--ink:#16161A;--blue:#1F3D63;--salmon:#D2694E;--hair:#DAD5C9;
  --grey:#6E6A62;--go:#3E7D53;--warn:#B4771F;
  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--disp:Georgia,serif}
@@ -127,6 +133,16 @@ button.big:hover:not(:disabled){background:#bd5a41}
 <div class="pane" id="p-writing">
   <p class="hint">Titles show in script and open a card. Fill in what exists &mdash;
   anything left blank simply is not drawn.</p>
+  <label>Script face</label>
+  <select id="fScript" onchange="setScript(this.value)" style="max-width:320px">
+    <option value="yesteryear">Yesteryear &mdash; bold, vintage poster</option>
+    <option value="kaushan-script">Kaushan Script &mdash; brush, confident</option>
+    <option value="marck-script">Marck Script &mdash; loose handwriting</option>
+    <option value="sacramento">Sacramento &mdash; light, airy</option>
+    <option value="pinyon-script">Pinyon Script &mdash; formal copperplate</option>
+    <option value="italianno">Italianno &mdash; fine calligraphy</option>
+  </select>
+  <div id="scriptPrev" style="margin:12px 0 4px;padding:14px 16px;background:#fff;border:1px solid var(--hair)"></div>
   <button onclick="addWriting()">+ Add a project</button>
   <div id="writeList" style="margin-top:14px"></div>
 </div>
@@ -376,7 +392,7 @@ drop($('dropIndex'),'.html,text/html',async f=>{
   SITE.photos.length+' photographs, '+SITE.films.length+' films.</div>';
  $('app').style.display=''; $('build').disabled=false;
  $('footNote').textContent='change what you like, then build';
- fill(); renderAll();
+ fill(); renderAll(); scriptPreview();
 });
 
 /* ---------- header ---------- */
@@ -518,6 +534,22 @@ function renderWork(){
 window.addFilm=function(){ SITE.films.unshift({t:'',s:'',u:'',p:''}); renderAll(); };
 window.delFilm=function(i){ SITE.films.splice(i,1); renderAll(); };
 window.setF=function(i,k,v){ SITE.films[i][k]=v; };
+window.setScript=function(v){ SITE.scriptFont=v; scriptPreview(); };
+function scriptPreview(){
+ const k=SITE.scriptFont||'yesteryear';
+ const M={'yesteryear':['Yesteryear',1],'kaushan-script':['Kaushan Script',1],
+  'sacramento':['Sacramento',1.18],'italianno':['Italianno',1.42],
+  'pinyon-script':['Pinyon Script',1.3],'marck-script':['Marck Script',1.16]};
+ const f=M[k]||M['yesteryear'];
+ const el=$('scriptPrev'); if(!el)return;
+ /* Shows the real titles in the real face, so the choice is made on the words that
+    will actually be on the page rather than on a font name. */
+ const names=(SITE.writing||[]).map(w=>w.t).filter(Boolean).slice(0,4);
+ el.innerHTML='<div style="font-family:\''+f[0]+'\',cursive;font-size:'+Math.round(30*f[1])+
+   'px;line-height:1.25;color:#16161A">'+
+   (names.length?names.map(esc).join(' &nbsp; '):'Gone Astray &nbsp; Stingaree')+'</div>';
+ const sel=$('fScript'); if(sel)sel.value=k;
+}
 window.addWriting=function(){ SITE.writing.push({t:'',s:'',status:'',material:'',p:'',u:''}); renderAll(); };
 window.moveWriting=function(i,d){ const j=i+d; if(j<0||j>=SITE.writing.length)return;
  const a=SITE.writing,t=a[i]; a[i]=a[j]; a[j]=t; renderAll(); };
@@ -595,6 +627,7 @@ function renderAll(){
     '<button class="sm" onclick="moveStill('+i+',1)">&rarr;</button>'+
     '<button class="sm danger" onclick="delStill('+i+')">Remove</button></div></div>').join('')
    || '<div class="msg warn">No stills.</div>';
+ scriptPreview();
  $('photoList').innerHTML=SITE.photos.map((p,i)=>'<div class="card row">'+
    '<img src="'+esc(preview(p))+'" style="aspect-ratio:1/1" alt="">'+
    '<div class="st">'+esc(p.split('/').pop())+'</div>'+

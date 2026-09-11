@@ -245,8 +245,16 @@ footer#ftr{display:block}
    Yesteryear, OFL licensed, carried in the repo rather than fetched from a font
    service - the page has no outside dependencies and this does not add one. It has
    enough weight to read at size, which the thinner scripts did not. */
-@font-face{font-family:'Yesteryear';src:url('fonts/yesteryear.woff2') format('woff2');
- font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Yesteryear';src:url('fonts/yesteryear.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'Italianno';src:url('fonts/italianno.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'Sacramento';src:url('fonts/sacramento.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'Pinyon Script';src:url('fonts/pinyon-script.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'Kaushan Script';src:url('fonts/kaushan-script.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'Marck Script';src:url('fonts/marck-script.woff2') format('woff2');font-weight:400;font-display:swap}
+/* Which one is in use comes from SITE, set on the root at load. Each has its own
+   optical size - Pinyon at 32px reads far smaller than Kaushan - so the scale rides
+   with the choice instead of being fixed. */
+:root{--script:'Yesteryear',cursive;--script-scale:1}
 /* Fixed counts rather than auto-fill: auto-fill gave three columns for four projects
    and left a dead cell with the background showing through. Four, two, one. */
 .projects{display:grid;grid-template-columns:repeat(4,1fr);
@@ -256,12 +264,12 @@ footer#ftr{display:block}
 .proj{background:var(--bond);border:0;padding:26px 22px 24px;text-align:left;cursor:pointer;
  font:inherit;color:inherit;display:block;transition:background .15s}
 .proj:hover{background:#fff}
-.proj b{display:block;font-family:'Yesteryear',cursive;font-weight:400;
- font-size:clamp(25px,2.6vw,32px);line-height:1.12;letter-spacing:.005em;color:var(--ink)}
+.proj b{display:block;font-family:var(--script);font-weight:400;
+ font-size:calc(clamp(25px,2.6vw,32px) * var(--script-scale));line-height:1.12;letter-spacing:.005em;color:var(--ink)}
 .proj .pl{display:block;margin-top:9px;font-size:13.5px;line-height:1.5;color:var(--grey)}
 .proj .ps{display:block;margin-top:11px;font-family:var(--mono);font-size:9.5px;
  letter-spacing:.16em;text-transform:uppercase;color:var(--blue)}
-.vscript{font-family:'Yesteryear',cursive;font-weight:400;font-size:clamp(34px,5vw,52px);
+.vscript{font-family:var(--script);font-weight:400;font-size:calc(clamp(34px,5vw,52px) * var(--script-scale));
  line-height:1.1;color:var(--bond);margin:0 0 4px}
 .vmat{font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;
  color:#b9b4a9;margin-top:14px}
@@ -734,15 +742,27 @@ const SITE={
   "media/still-car.jpg",
   "media/still-western.jpg",
   "media/still-drive.jpg"
- ]
+ ],
+ "scriptFont": "yesteryear"
 };
 let WORK=SITE.work;
 
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(m){
   return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];});}
 
+var SCRIPTS={
+ 'yesteryear':{n:'Yesteryear',s:1},
+ 'kaushan-script':{n:'Kaushan Script',s:1},
+ 'sacramento':{n:'Sacramento',s:1.18},
+ 'italianno':{n:'Italianno',s:1.42},
+ 'pinyon-script':{n:'Pinyon Script',s:1.3},
+ 'marck-script':{n:'Marck Script',s:1.16}
+};
 function render(){
  var S=SITE;
+ var f=SCRIPTS[S.scriptFont]||SCRIPTS['yesteryear'];
+ document.documentElement.style.setProperty('--script',"'"+f.n+"',cursive");
+ document.documentElement.style.setProperty('--script-scale',f.s);
  document.getElementById('hdr').innerHTML=
   '<div class="who">'+
    '<div class="namerow"><h1 class="name">'+esc(S.name)+'</h1>'+
