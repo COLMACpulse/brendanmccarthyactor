@@ -51,6 +51,19 @@ body{margin:0;background:var(--bond);color:var(--ink);font-family:var(--body);fo
 section{padding:30px 38px;border-bottom:1px solid var(--hair)}
 section:last-of-type{border-bottom:0}
 
+/* Representation. Facts, set like facts - no invitation, no button. */
+.reps{display:grid;grid-template-columns:repeat(auto-fit,minmax(258px,1fr));gap:26px 34px;
+ padding:0 0 22px;margin:0 0 20px;border-bottom:1px solid var(--hair)}
+.rep{font-family:var(--mono);font-size:11.5px;line-height:1.85;color:var(--grey);
+ letter-spacing:.01em;text-transform:none}
+.rep .rk{display:block;font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+ color:var(--grey);opacity:.72;margin-bottom:5px}
+.rep b{display:block;font-family:var(--disp);font-size:14.5px;font-weight:400;
+ letter-spacing:0;color:var(--ink);line-height:1.35;margin-bottom:6px;text-transform:none}
+.rep span{display:block}
+.rep a{color:var(--blue);text-decoration:none}
+.rep a:hover{text-decoration:underline}
+.fline{letter-spacing:.08em}
 /* ---- video wells: black plates on paper ---- */
 .well{margin:0;background:var(--black)}
 .well video{width:100%;display:block;aspect-ratio:16/9;max-height:62vh;object-fit:contain;background:var(--black)}
@@ -178,6 +191,32 @@ footer .sp{flex:1}
  .facts{text-align:left}
  .hero{grid-template-columns:1fr}
 }
+
+/* ---- the mark ----
+   It sat in its own grid column first, which looked right and was not: a third track
+   narrowed the first one and broke his name onto two lines. The dead space was never
+   between the columns anyway - it is beside the headshot. So the mark goes there, in
+   the same column as everything else about him, and the name gets its width back. */
+.hsrow{display:flex;align-items:flex-start;gap:clamp(18px,4vw,56px)}
+.who .hs{margin-top:22px;flex:0 0 auto}
+.sigil{width:clamp(74px,8vw,124px);height:auto;display:block;margin-top:30px;
+ flex:0 0 auto;opacity:.95}
+@media(max-width:620px){
+ .hsrow{gap:20px}
+ .sigil{width:64px;margin-top:24px}
+}
+
+/* His name goes on one line. It was overflowing its column by about fifteen pixels,
+   which is the worst possible margin - it looks like a decision rather than an
+   accident. Sized to the space and told not to break. */
+.who .name{white-space:nowrap;font-size:clamp(26px,5.6vw,57px);line-height:1.02}
+@media(max-width:620px){ .who .name{font-size:clamp(22px,8.4vw,40px)} }
+
+/* The footer was a flex row when all it held was one line of text. Now it holds the
+   representation block, and flex was shrinking that to its content width and
+   collapsing it to a single column. It is a block. */
+footer#ftr{display:block}
+.reps{width:100%}
 </style></head><body>
 <main class="sheet">
 <div class="stripe"></div>
@@ -582,7 +621,28 @@ const SITE={
   "media/headshot2.jpg",
   "media/headshot3.jpg"
  ],
- "footer": "SAG-AFTRA · SK MANAGEMENT"
+ "footer": "SAG-AFTRA · SK MANAGEMENT",
+ "sigil": "media/sigil.png",
+ "reps": [
+  {
+   "label": "Management",
+   "name": "SK Management",
+   "who": "Sharon King",
+   "phone": "+1 310 980 0234",
+   "email": "skmanagementinc@gmail.com",
+   "place": "Los Angeles, CA",
+   "url": ""
+  },
+  {
+   "label": "Legal",
+   "name": "Yorn, Levine, Barnes, Krintzman, Rubenstein, Kohner, Endlich, Goodell & Gellman",
+   "who": "Gregg Gellman",
+   "phone": "+1 310 319 3968",
+   "email": "",
+   "place": "1999 Avenue of the Stars, 4th Floor, Los Angeles, CA 90067",
+   "url": "bmkylaw.com"
+  }
+ ]
 };
 let WORK=SITE.work;
 
@@ -593,7 +653,10 @@ function render(){
  var S=SITE;
  document.getElementById('hdr').innerHTML=
   '<div class="who"><h1 class="name">'+esc(S.name)+'</h1><div class="lane">'+esc(S.lane)+'</div>'+
-  (S.headshot?'<img class="hs" src="'+esc(S.headshot)+'" alt="'+esc(S.name)+'">':'')+'</div>'+
+  '<div class="hsrow">'+
+   (S.headshot?'<img class="hs" src="'+esc(S.headshot)+'" alt="'+esc(S.name)+'">':'')+
+   (S.sigil?'<img class="sigil" src="'+esc(S.sigil)+'" alt="">':'')+
+  '</div></div>'+
   '<div class="facts">'+(S.facts||[]).map(function(f){
     var v=/@/.test(f[1])?'<a href="mailto:'+esc(f[1])+'">'+esc(f[1])+'</a>':esc(f[1]);
     return '<span class="k">'+esc(f[0])+'</span>'+v; }).join('')+'</div>';
@@ -638,8 +701,20 @@ function render(){
  document.getElementById('photos').innerHTML=P.map(function(p){
   return '<img src="'+esc(p)+'" alt="'+esc(S.name)+'" class="photo" loading="lazy">'; }).join('');
 
- document.getElementById('ftr').innerHTML=esc(S.footer||'')+
-  (S.email?' &nbsp;&middot;&nbsp; <a href="mailto:'+esc(S.email)+'" style="color:var(--blue)">'+esc(S.email)+'</a>':'');
+ var R=S.reps||[];
+ document.getElementById('ftr').innerHTML=
+  (R.length?'<div class="reps">'+R.map(function(r){
+    var bits=[];
+    if(r.who)   bits.push(esc(r.who));
+    if(r.phone) bits.push('<a href="tel:'+esc(r.phone.replace(/[^+0-9]/g,''))+'">'+esc(r.phone)+'</a>');
+    if(r.email) bits.push('<a href="mailto:'+esc(r.email)+'">'+esc(r.email)+'</a>');
+    if(r.url)   bits.push('<a href="'+(/^https?:/.test(r.url)?esc(r.url):'https://'+esc(r.url))+'" target="_blank" rel="noopener">'+esc(r.url.replace(/^https?:\/\//,''))+'</a>');
+    if(r.place) bits.push(esc(r.place));
+    return '<div class="rep"><span class="rk">'+esc(r.label)+'</span>'+
+      '<b>'+esc(r.name)+'</b>'+bits.map(function(x){return '<span>'+x+'</span>';}).join('')+'</div>';
+  }).join('')+'</div>':'')+
+  '<div class="fline">'+esc(S.footer||'')+
+  (S.email?' &nbsp;&middot;&nbsp; <a href="mailto:'+esc(S.email)+'">'+esc(S.email)+'</a>':'')+'</div>';
 }
 render();
 

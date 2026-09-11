@@ -78,6 +78,7 @@ button.big:hover:not(:disabled){background:#bd5a41}
   <button class="tab" data-p="films">Short films</button>
   <button class="tab" data-p="writing">Writing</button>
   <button class="tab" data-p="photos">Photographs</button>
+  <button class="tab" data-p="reps">Representation</button>
   <button class="tab" data-p="size">Size</button>
 </div>
 
@@ -93,6 +94,12 @@ button.big:hover:not(:disabled){background:#bd5a41}
   <label>Header headshot</label>
   <div class="card row"><img id="hsPrev" alt=""><div class="st" id="hsName"></div>
     <button class="sm" onclick="pickImg('headshot')">Change</button></div>
+  <label>Sigil</label>
+  <div class="card row"><img id="sgPrev" style="aspect-ratio:1/1;object-fit:contain;background:none" alt="">
+    <div class="st" id="sgName"></div>
+    <div style="display:grid;gap:4px">
+      <button class="sm" onclick="pickImg('sigil')">Change</button>
+      <button class="sm danger" onclick="dropSigil()">Remove</button></div></div>
 </div>
 
 <div class="pane" id="p-reel">
@@ -125,6 +132,12 @@ button.big:hover:not(:disabled){background:#bd5a41}
   <p class="hint">Shown full width in a grid. Big images get resized.</p>
   <button onclick="pickImg('photo')">+ Add photographs</button>
   <div id="photoList" style="margin-top:14px"></div>
+</div>
+
+<div class="pane" id="p-reps">
+  <p class="hint">Shown at the foot of the page. Facts only &mdash; no request button.</p>
+  <button onclick="addRep()">+ Add</button>
+  <div id="repList" style="margin-top:14px"></div>
 </div>
 
 <div class="pane" id="p-size"><div class="card" id="tally"></div></div>
@@ -171,7 +184,7 @@ drop($('dropIndex'),'.html,text/html',async f=>{
  try{ SITE=JSON.parse(m[1]); }
  catch(e){ $('loadMsg').innerHTML='<div class="msg bad">Could not read it: '+esc(e.message)+'</div>'; return; }
  SITE.work=SITE.work||[]; SITE.films=SITE.films||[];
- SITE.writing=SITE.writing||[]; SITE.photos=SITE.photos||[];
+ SITE.writing=SITE.writing||[]; SITE.photos=SITE.photos||[]; SITE.reps=SITE.reps||[];
  $('loadMsg').innerHTML='<div class="msg ok">Loaded &mdash; '+SITE.work.length+' projects, '+
   SITE.photos.length+' photographs, '+SITE.films.length+' films.</div>';
  $('app').style.display=''; $('build').disabled=false;
@@ -189,6 +202,7 @@ function fill(){
  $('fUnion').value=factGet('union'); $('fMgmt').value=factGet('management');
  $('fEmail').value=SITE.email||''; $('fFooter').value=SITE.footer||'';
  $('hsPrev').src=preview(SITE.headshot); $('hsName').textContent=SITE.headshot||'none set';
+ $('sgPrev').src=preview(SITE.sigil); $('sgName').textContent=SITE.sigil||'none set';
 }
 [['fName',v=>SITE.name=v],['fLane',v=>SITE.lane=v],['fFooter',v=>SITE.footer=v],
  ['fUnion',v=>factSet('Union',v)],['fMgmt',v=>factSet('Management',v)],
@@ -247,6 +261,7 @@ window.pickImg=function(what,i){
     const path='media/'+slug(f.name.replace(/\.[^.]+$/,''),r.touched?'jpg':((f.name.split('.').pop()||'jpg').toLowerCase()));
     NEW[path]=r.blob;
     if(what==='headshot') SITE.headshot=path;
+    else if(what==='sigil') SITE.sigil=path;
     else if(what==='photo') SITE.photos.push(path);
     else if(what==='poster') SITE.work[i].p=path;
    }catch(err){ alert(err.message); }
@@ -308,6 +323,11 @@ window.setF=function(i,k,v){ SITE.films[i][k]=v; };
 window.addWriting=function(){ SITE.writing.unshift({t:'',s:'',u:''}); renderAll(); };
 window.delWriting=function(i){ SITE.writing.splice(i,1); renderAll(); };
 window.setWr=function(i,k,v){ SITE.writing[i][k]=v; };
+window.addRep=function(){ SITE.reps=SITE.reps||[];
+ SITE.reps.push({label:'',name:'',who:'',phone:'',email:'',place:'',url:''}); renderAll(); };
+window.delRep=function(i){ SITE.reps.splice(i,1); renderAll(); };
+window.setR=function(i,k,v){ SITE.reps[i][k]=v; };
+window.dropSigil=function(){ delete NEW[SITE.sigil]; SITE.sigil=''; fill(); renderAll(); };
 window.delPhoto=function(i){ delete NEW[SITE.photos[i]]; SITE.photos.splice(i,1); renderAll(); };
 window.movePhoto=function(i,d){ const j=i+d; if(j<0||j>=SITE.photos.length)return;
  const a=SITE.photos,tmp=a[i]; a[i]=a[j]; a[j]=tmp; renderAll(); };
@@ -338,6 +358,18 @@ function renderAll(){
  renderWork();
  $('filmList').innerHTML=listOf(SITE.films,'setF','delFilm',true);
  $('writeList').innerHTML=listOf(SITE.writing,'setWr','delWriting');
+ $('repList').innerHTML=(SITE.reps||[]).map((r,i)=>'<div class="card">'+
+   '<label>Heading</label><input type="text" value="'+esc(r.label)+'" oninput="setR('+i+',\'label\',this.value)" placeholder="Management">'+
+   '<label>Company</label><input type="text" value="'+esc(r.name)+'" oninput="setR('+i+',\'name\',this.value)">'+
+   '<div class="two">'+
+    '<div><label>Person</label><input type="text" value="'+esc(r.who||'')+'" oninput="setR('+i+',\'who\',this.value)"></div>'+
+    '<div><label>Phone</label><input type="text" value="'+esc(r.phone||'')+'" oninput="setR('+i+',\'phone\',this.value)"></div>'+
+    '<div><label>Email</label><input type="text" value="'+esc(r.email||'')+'" oninput="setR('+i+',\'email\',this.value)"></div>'+
+    '<div><label>Website</label><input type="text" value="'+esc(r.url||'')+'" oninput="setR('+i+',\'url\',this.value)"></div>'+
+   '</div>'+
+   '<label>Address</label><input type="text" value="'+esc(r.place||'')+'" oninput="setR('+i+',\'place\',this.value)">'+
+   '<div style="margin-top:9px"><button class="sm danger" onclick="delRep('+i+')">Remove</button></div>'+
+  '</div>').join('') || '<div class="msg warn">Nothing here yet.</div>';
  $('photoList').innerHTML=SITE.photos.map((p,i)=>'<div class="card row">'+
    '<img src="'+esc(preview(p))+'" style="aspect-ratio:1/1" alt="">'+
    '<div class="st">'+esc(p.split('/').pop())+'</div>'+
