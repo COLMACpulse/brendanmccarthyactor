@@ -1,0 +1,32 @@
+These 18 files from your PERFORMANCE_CLIPS folder go into media/ on GitHub.
+Drag them in exactly as they are - do not rename them. The page is already
+pointing at these filenames, so each credit starts playing the moment its
+file lands. Upload them all at once or a few at a time, any order.
+
+amr2qn0w3mx5m__GROTESQUERIE.mp4
+amr2qoyt8atmi__THE_ROOKIE__FEDS.mp4
+amr2qpwjfer0z__911__LONE_STAR.mp4
+amr2qqfama8yv__AMERICAN_HORROR_STORY.mp4
+amr2qr7btojz8__SHOOTER.mp4
+amr2qt3cb0at8__LEGENDS.mp4
+amr2qya5twlas__DEFIANCE.mp4
+amr2r0kbjxqmy__SELFLESS.mp4
+amr2r19nzf3hw__DEMON_LAKE.mp4
+amr2r2haca66t__TRUE_BLOOD.mp4
+amr2r2y2n0sns__JUSTIFIED.mp4
+amr2r36ncur9j__MENTALIST.mp4
+amr2r3nix9y6r__NCIS.mp4
+amr2r4ckyl7ix__CHICAGO_PD.mp4
+amr2r8u6agxj2__EARTHFALL.webm
+amr2rb47j5ffx__GLOW.webm
+amr2rfzpprski__HOLY_GHOST_PEOPLE.webm
+amr2sjb4119dw__GUNMAN_S_HAND_-_REEL.mp4
+
+NOT these two - GitHub refuses any file over 100 MB:
+  amr2smn6tmmxy__Brendan_McCarthy_Reel_2.mov                 755 MB
+  amr10t20k6rjn__BRENDAN_McCARTHY-_PERFORMANCE_REEL__2_.mp4  190 MB
+Those two are your reel and have to be shrunk first.
+
+Also not matched to any credit:
+  amr2rdesa30g9__HELLEN_KELLER_VS_NIGHTWOLVES.webm
+  amr2qoeqyuga7__THE_ROOKIE__FEDS_Scene_2.mp4  (second scene - one clip per credit)
