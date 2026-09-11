@@ -252,21 +252,21 @@ footer#ftr{display:block}
  gap:1px;background:var(--hair);border:1px solid var(--hair)}
 @media(max-width:900px){ .projects{grid-template-columns:repeat(2,1fr)} }
 @media(max-width:480px){ .projects{grid-template-columns:1fr} }
-.proj{background:var(--bond);border:0;padding:0 0 24px;text-align:left;cursor:pointer;
- font:inherit;color:inherit;transition:background .15s;
- /* a button centres what it holds, and the grid stretches it - together that floated
-    the titles of the cards with no artwork into the middle of an empty box */
+.proj{background:var(--bond);border:0;padding:0;text-align:left;cursor:pointer;
+ font:inherit;color:inherit;transition:opacity .15s;
  display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start}
+.proj:hover{opacity:.86}
+.noart{display:flex;aspect-ratio:2/3;align-items:center;justify-content:center;
+ padding:22px;background:var(--bond)}
+.noart b{font-family:var(--disp);font-size:clamp(19px,2vw,24px);line-height:1.2;
+ letter-spacing:-.01em;color:var(--ink);text-align:center}
 /* Title pages are portrait and every one is a different shape, so the frame is fixed
    and the art sits inside it whole - cropping a title page cuts the title off. */
 /* Four title pages, four different shapes and four different backgrounds - two black
    posters, one white page, one grey. No single letterbox colour works, so each frame
    takes the colour of its own artwork's edge and the letterbox disappears. */
-.part2{display:block;aspect-ratio:2/3;overflow:hidden;background:#111;margin-bottom:18px;
- border-bottom:1px solid var(--hair)}
+.part2{display:block;aspect-ratio:2/3;overflow:hidden;background:#111}
 .part2 img{width:100%;height:100%;object-fit:contain;display:block}
-.proj b,.proj .pl,.proj .ps{padding-left:22px;padding-right:22px}
-.proj>b:first-child{padding-top:26px}
 .proj:hover{background:#fff}
 .proj b{display:block;font-family:var(--disp);font-weight:400;
  font-size:clamp(19px,2vw,24px);line-height:1.2;letter-spacing:-.01em;color:var(--ink)}
@@ -278,6 +278,29 @@ footer#ftr{display:block}
 .vmat{font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;
  color:#b9b4a9;margin-top:14px}
 .vmat span{display:inline-block;border:1px solid #4a463e;padding:5px 10px;margin:0 6px 6px 0}
+
+/* ---- a project, opened ---- */
+.pgrid{display:grid;grid-template-columns:1fr minmax(210px,300px) 1fr;gap:clamp(16px,2.4vw,34px);
+ align-items:start}
+.pmid{overflow:hidden;background:#111;align-self:start}
+.pmid img{width:100%;display:block}
+.pcol{min-width:0}
+.psyn{margin:0 0 14px;font-size:15px;line-height:1.68;color:#e8e3d8}
+.psyn.dim{color:#9b958a}
+.prow{padding:0 0 13px;margin:0 0 13px;border-bottom:1px solid #3a3730}
+.prow:last-child{border-bottom:0}
+.pk{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;
+ text-transform:uppercase;color:#8d867a;margin-bottom:5px}
+.pv{display:block;font-size:14.5px;line-height:1.5;color:#e8e3d8}
+.pv.dim{color:#9b958a}
+.pv a{color:#8fa8c8;text-decoration:none}
+.pv a:hover{text-decoration:underline}
+.chip{display:inline-block;border:1px solid #4a463e;padding:4px 9px;margin:0 5px 5px 0;
+ font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#c9c3b6}
+@media(max-width:860px){
+ .pgrid{grid-template-columns:1fr}
+ .pmid{max-width:280px;margin:0 auto;order:-1}
+}
 </style></head><body>
 <main class="sheet">
 <div class="stripe"></div>
@@ -688,7 +711,10 @@ const SITE={
    "material": "",
    "p": "media/proj-gone-astray.jpg",
    "u": "",
-   "bg": "#563e31"
+   "bg": "#563e31",
+   "genre": "",
+   "format": "",
+   "comps": ""
   },
   {
    "t": "The Devil's Paintbrush",
@@ -697,7 +723,10 @@ const SITE={
    "material": "",
    "p": "media/proj-devils-paintbrush.jpg",
    "u": "",
-   "bg": "#887a63"
+   "bg": "#887a63",
+   "genre": "",
+   "format": "",
+   "comps": ""
   },
   {
    "t": "Just Released",
@@ -706,7 +735,10 @@ const SITE={
    "material": "",
    "p": "media/proj-just-released.jpg",
    "u": "",
-   "bg": "#070604"
+   "bg": "#070604",
+   "genre": "",
+   "format": "",
+   "comps": ""
   },
   {
    "t": "Stingaree",
@@ -715,7 +747,10 @@ const SITE={
    "material": "",
    "p": "media/proj-stingaree.jpg",
    "u": "",
-   "bg": "#000000"
+   "bg": "#000000",
+   "genre": "",
+   "format": "",
+   "comps": ""
   }
  ],
  "photos": [
@@ -814,12 +849,13 @@ function render(){
  document.getElementById('ctWriting').textContent='';
  document.getElementById('writing').innerHTML=W.length
   ? '<div class="projects">'+W.map(function(x,i){
+      /* The poster carries the title. Repeating it underneath was the page saying
+         the same thing twice in two type sizes. Where there is no artwork yet the
+         title still has to appear, or the card is blank. */
       return '<button class="proj" onclick="openProject('+i+')" aria-label="'+esc(x.t)+'">'+
         (x.p?'<span class="part2"'+(x.bg?' style="background:'+esc(x.bg)+'"':'')+
-             '><img src="'+esc(srcFor(x.p))+'" alt="'+esc(x.t)+'" loading="lazy"></span>':'')+
-        '<b>'+esc(x.t)+'</b>'+
-        (x.s?'<span class="pl">'+esc(x.s)+'</span>':'')+
-        (x.status?'<span class="ps">'+esc(x.status)+'</span>':'')+
+             '><img src="'+esc(srcFor(x.p))+'" alt="'+esc(x.t)+'" loading="lazy"></span>'
+            :'<span class="noart"><b>'+esc(x.t)+'</b></span>')+
       '</button>'; }).join('')+'</div>'
   : '<p class="soon">Projects coming.</p>';
 
@@ -852,21 +888,40 @@ render();
 function openProject(i){
  var x=(SITE.writing||[])[i]; if(!x)return;
  var v=document.getElementById('viewer');
- document.getElementById('vch').textContent=x.status||'';
- document.getElementById('vt').innerHTML='<span class="vscript">'+esc(x.t)+'</span>';
- document.getElementById('vs').textContent='';
- var body='';
- if(x.p) body+='<img src="'+esc(srcFor(x.p))+'" alt="'+esc(x.t)+'">';
- document.getElementById('vbody').innerHTML=body;
- var nt=document.getElementById('vnote');
- var bits=[];
- if(x.s) bits.push('<div>'+esc(x.s)+'</div>');
- if(x.material) bits.push('<div class="vmat">'+String(x.material).split(/\s*[,\u00b7]\s*/)
-   .filter(Boolean).map(function(m){return '<span>'+esc(m)+'</span>';}).join('')+'</div>');
- if(x.u) bits.push('<div class="vmat"><a href="'+esc(x.u)+'" target="_blank" rel="noopener" '+
-   'style="color:#8fa8c8">Read more</a></div>');
- if(!bits.length) bits.push('<div style="color:#b9b4a9">More on this one soon.</div>');
- nt.innerHTML=bits.join(''); nt.style.display='';
+ /* Three columns: what it is on the left, the poster in the middle, the numbers on
+    the right. The poster used to float in the middle of a wide black band with
+    nothing either side of it, which is the space this information wanted. */
+ document.getElementById('vch').textContent='';
+ document.getElementById('vt').textContent=x.t||'';
+ document.getElementById('vs').textContent=[x.status,x.format].filter(Boolean).join(' \u00b7 ');
+
+ var left='';
+ if(x.s) left+='<p class="psyn">'+esc(x.s)+'</p>';
+ if(x.note) left+='<p class="psyn dim">'+esc(x.note)+'</p>';
+ if(!left) left='<p class="psyn dim">Synopsis to come.</p>';
+
+ var rows=[];
+ if(x.genre)    rows.push(['Genre',esc(x.genre)]);
+ if(x.format)   rows.push(['Format',esc(x.format)]);
+ if(x.comps)    rows.push(['In the vein of',esc(x.comps)]);
+ if(x.status)   rows.push(['Status',esc(x.status)]);
+ if(x.material) rows.push(['Material',String(x.material).split(/\s*[,\u00b7]\s*/)
+   .filter(Boolean).map(function(m){return '<span class="chip">'+esc(m)+'</span>';}).join('')]);
+ if(x.u) rows.push(['More','<a href="'+esc(x.u)+'" target="_blank" rel="noopener">'+
+   esc(String(x.u).replace(/^https?:\/\//,'').replace(/\/$/,''))+'</a>']);
+ var right = rows.length
+  ? rows.map(function(r){ return '<div class="prow"><span class="pk">'+r[0]+'</span>'+
+      '<span class="pv">'+r[1]+'</span></div>'; }).join('')
+  : '<div class="prow"><span class="pv dim">Details to come.</span></div>';
+
+ document.getElementById('vbody').innerHTML=
+  '<div class="pgrid">'+
+   '<div class="pcol">'+left+'</div>'+
+   '<div class="pmid"'+(x.bg?' style="background:'+esc(x.bg)+'"':'')+'>'+
+    (x.p?'<img src="'+esc(srcFor(x.p))+'" alt="'+esc(x.t)+'">':'')+'</div>'+
+   '<div class="pcol">'+right+'</div>'+
+  '</div>';
+ var nt=document.getElementById('vnote'); nt.innerHTML=''; nt.style.display='none';
  v.classList.add('on'); document.body.style.overflow='hidden';
 }
 window.openProject=openProject;
@@ -1363,7 +1418,10 @@ function draw(){
     (x.p?'<img src="'+E(srcFor(x.p))+'" style="width:100%;max-height:140px;object-fit:cover;display:block;margin-bottom:8px">':'')+
     '<input type="text" value="'+E(x.t)+'" oninput="EB.setWr('+i+',\'t\',this.value)">'+
     '<label>Logline</label><textarea oninput="EB.setWr('+i+',\'s\',this.value)">'+E(x.s||'')+'</textarea>'+
-    '<div class="two"><div><label>Where it stands</label><input type="text" value="'+E(x.status||'')+'" oninput="EB.setWr('+i+',\'status\',this.value)"></div>'+
+    '<div class="two"><div><label>Genre</label><input type="text" value="'+E(x.genre||'')+'" oninput="EB.setWr('+i+',\'genre\',this.value)" placeholder="Western"></div>'+
+    '<div><label>Format</label><input type="text" value="'+E(x.format||'')+'" oninput="EB.setWr('+i+',\'format\',this.value)" placeholder="Feature \u00b7 112 pp"></div>'+
+    '<div><label>In the vein of</label><input type="text" value="'+E(x.comps||'')+'" oninput="EB.setWr('+i+',\'comps\',this.value)" placeholder="Bone Tomahawk, The Proposition"></div>'+
+    '<div><label>Where it stands</label><input type="text" value="'+E(x.status||'')+'" oninput="EB.setWr('+i+',\'status\',this.value)"></div>'+
     '<div><label>Material</label><input type="text" value="'+E(x.material||'')+'" oninput="EB.setWr('+i+',\'material\',this.value)" placeholder="Script, Deck"></div></div>'+
     '<div class="rowb"><button class="b" onclick="EB.projart('+i+')">Artwork</button>'+
     '<button class="b bad" onclick="EB.delWr('+i+')">Remove</button></div></div>';
@@ -1440,7 +1498,7 @@ window.EB={
   var a=SITE.work,t=a[i]; a[i]=a[j]; a[j]=t; redraw(); },
  addF:function(){ SITE.films=SITE.films||[]; SITE.films.unshift({t:'',s:'',u:'',p:''}); redraw(); },
  delF:function(i){ SITE.films.splice(i,1); redraw(); },
- addWr:function(){ SITE.writing=SITE.writing||[]; SITE.writing.push({t:'New project',s:'',status:'',material:'',p:'',u:''}); redraw(); },
+ addWr:function(){ SITE.writing=SITE.writing||[]; SITE.writing.push({t:'New project',s:'',genre:'',format:'',comps:'',status:'',material:'',p:'',bg:'',u:''}); redraw(); },
  delWr:function(i){ SITE.writing.splice(i,1); redraw(); },
  addRep:function(){ SITE.reps=SITE.reps||[]; SITE.reps.push({label:'',name:'',who:'',phone:'',email:'',place:'',url:''}); redraw(); },
  delRep:function(i){ SITE.reps.splice(i,1); redraw(); },
