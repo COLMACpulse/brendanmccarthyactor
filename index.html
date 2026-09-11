@@ -248,7 +248,7 @@ footer#ftr{display:block}
 
 /* Fixed counts rather than auto-fill: auto-fill gave three columns for four projects
    and left a dead cell with the background showing through. Four, two, one. */
-.projects{display:grid;grid-template-columns:repeat(4,1fr);
+.projects{display:grid;grid-template-columns:repeat(var(--pcols,4),1fr);
  gap:1px;background:var(--hair);border:1px solid var(--hair)}
 @media(max-width:900px){ .projects{grid-template-columns:repeat(2,1fr)} }
 @media(max-width:480px){ .projects{grid-template-columns:1fr} }
@@ -751,6 +751,54 @@ const SITE={
    "genre": "",
    "format": "",
    "comps": ""
+  },
+  {
+   "t": "Swabbies",
+   "s": "",
+   "genre": "",
+   "format": "",
+   "comps": "",
+   "status": "",
+   "material": "",
+   "p": "media/proj-swabbies.jpg",
+   "bg": "#e7caa7",
+   "u": ""
+  },
+  {
+   "t": "Yoga Sucks",
+   "s": "",
+   "genre": "",
+   "format": "",
+   "comps": "",
+   "status": "",
+   "material": "",
+   "p": "media/proj-yoga-sucks.jpg",
+   "bg": "#bc9c68",
+   "u": ""
+  },
+  {
+   "t": "Dead Lift",
+   "s": "",
+   "genre": "",
+   "format": "",
+   "comps": "",
+   "status": "",
+   "material": "",
+   "p": "media/proj-dead-lift.jpg",
+   "bg": "#0c0d0d",
+   "u": ""
+  },
+  {
+   "t": "Buried Peace",
+   "s": "",
+   "genre": "",
+   "format": "",
+   "comps": "",
+   "status": "",
+   "material": "",
+   "p": "media/proj-buried-peace.jpg",
+   "bg": "#f8e5c0",
+   "u": ""
   }
  ],
  "photos": [
@@ -847,8 +895,15 @@ function render(){
 
  var W=S.writing||[];
  document.getElementById('ctWriting').textContent='';
+ /* Six projects in a four-wide grid leaves two dead cells with the background
+    showing through. The column count follows the number of posters: the widest
+    arrangement that divides evenly and still leaves each poster a usable size. */
+ var pc=(function(n){
+  for(var c=5;c>=2;c--){ if(n%c===0) return c; }
+  return Math.min(n,4);
+ })(W.length);
  document.getElementById('writing').innerHTML=W.length
-  ? '<div class="projects">'+W.map(function(x,i){
+  ? '<div class="projects" style="--pcols:'+pc+'">'+W.map(function(x,i){
       /* The poster carries the title. Repeating it underneath was the page saying
          the same thing twice in two type sizes. Where there is no artwork yet the
          title still has to appear, or the card is blank. */
