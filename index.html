@@ -1064,6 +1064,7 @@ function closeCredit(){
 }
 document.addEventListener('keydown',e=>{ if(e.key==='Escape')closeCredit(); });
 </script>
+<!--EDITOR-START-->
 <script>
 /* ===== TRIM + COMPRESS =====
    Replaces the third-party compressor step. Plays the source through a canvas at
@@ -1304,6 +1305,7 @@ if(!EDIT){
 
 /* ---------- styles, only ever injected in edit mode ---------- */
 var css=document.createElement('style');
+css.id='ebstyle';
 css.textContent=
 "#eb{position:fixed;right:0;top:0;bottom:0;width:min(430px,100%);background:#fff;"+
  "border-left:1px solid var(--hair);z-index:9000;display:flex;flex-direction:column;"+
@@ -1451,7 +1453,7 @@ function panel(){
     return '<button data-t="'+t[0]+'" onclick="EB.tab(\''+t[0]+'\')">'+t[1]+'</button>';}).join('')+'</div>'+
   '<div id="ebc"></div>'+
   '<div id="ebf"><span class="st" id="ebstat"></span>'+
-   '<button onclick="EB.bake()">Bake for GitHub</button></div>';
+   '<button onclick="EB.bake()">Bake</button></div>';
  document.body.appendChild(d);
  var busyEl=document.createElement('div'); busyEl.id='ebbusy';
  busyEl.innerHTML='<b>Working</b><span></span><div class="bar"><i></i></div>';
@@ -1706,24 +1708,74 @@ async function bake(){
   return o;
  };
  out=swap(out);
- var doc=document.documentElement.outerHTML;
- /* Rewrite the page's own SITE block. The edit layer stays in the file - it is inert
-    without #edit on the address, and it is what makes the next round of changes
-    possible without starting over. */
- var baked=doc.replace(/const SITE=\{[\s\S]*?\n\};/,'const SITE='+JSON.stringify(out,null,1)+';');
- if(baked===doc){ busy(false); alert('Could not rewrite the page. Nothing was baked.'); return; }
- files.unshift({name:'index.html',data:new TextEncoder().encode('<!doctype html>\n'+baked)});
+ /* Serialise a clone with the editor's own furniture taken out.
+    The panel, the progress overlay and the injected stylesheet are added to the page
+    at runtime, so by the time we read the DOM they are part of it. Cutting the script
+    does not remove the markup it already wrote - the public page was shipping a dead
+    editor panel, and edit.html was getting a second one every time it was baked. */
+ var clone=document.documentElement.cloneNode(true);
+ ['#eb','#ebbusy','#ebstyle','#ebtoggle'].forEach(function(sel){
+  var n=clone.querySelector(sel); if(n) n.parentNode.removeChild(n);
+ });
+ Array.prototype.forEach.call(clone.querySelectorAll('style'),function(st){
+  if(st.textContent.indexOf('#eb{')>=0 || st.textContent.indexOf('#ebh{')>=0)
+   st.parentNode.removeChild(st);
+ });
+ var cb=clone.querySelector('body'); if(cb) cb.classList.remove('editing');
+ /* The viewer is left as the visitor should find it: shut, with nothing in it. */
+ var cv=clone.querySelector('#viewer'); if(cv) cv.classList.remove('on');
+ ['#vbody','#vnote','#vch','#vt','#vs'].forEach(function(sel){
+  var n=clone.querySelector(sel); if(n){ n.innerHTML=''; if(sel==='#vnote')n.style.display='none'; }
+ });
+ var doc=clone.outerHTML;
+ /* Test that the block was found, not that the document changed. Baking without
+    having edited anything produces a byte-identical page, and comparing strings
+    reported that perfectly good bake as a failure. */
+ var RE=/const SITE=\{[\s\S]*?\n\};/;
+ if(!RE.test(doc)){ busy(false);
+  alert('Could not find the page\'s content block. Nothing was baked.'); return; }
+ var baked=doc.replace(RE,'const SITE='+JSON.stringify(out,null,1)+';');
+
+ /* Two files come out of every bake.
+
+    index.html is what the world sees. The whole editor is cut out of it, so there is
+    no panel to find, nothing to poke at, and 36 KB less to download. A visitor adding
+    #edit to the address gets nothing, because there is nothing there.
+
+    edit.html is yours. It is the same page with the editor still in it, and it is
+    what you open next time you want to change something. Keep it in the repo if you
+    like - it is a separate address nobody is given - or keep it on your machine. */
+ /* The markers are assembled here rather than written out, because a literal copy of
+    the end marker inside this very function would be found before the real one and
+    the cut would land 1,874 characters early, leaving broken script in the public
+    file. Split strings never appear in the document. */
+ var M0='<!--EDITOR'+'-START-->', M1='<!--EDITOR'+'-END-->';
+ var i0=baked.indexOf(M0), i1=baked.indexOf(M1, i0+1);
+ var pub = (i0>=0 && i1>i0) ? baked.slice(0,i0)+baked.slice(i1+M1.length) : baked;
+ if(i0<0||i1<0){ busy(false);
+  alert('Could not find the editor block, so the public page would still contain it.\n'+
+        'Nothing was baked.'); return; }
+ files.unshift({name:'edit.html', data:new TextEncoder().encode('<!doctype html>\n'+baked)});
+ files.unshift({name:'index.html',data:new TextEncoder().encode('<!doctype html>\n'+pub)});
  files.push({name:'UPLOAD-THESE.txt',data:new TextEncoder().encode(
-  'Drag everything in here into your GitHub repo and commit.\n\n'+
-  'index.html sits at the top level, everything in media/ goes in media/.\n'+
-  'Say yes when it asks to overwrite index.html.\n\n'+
-  'Your working copy stays in this browser, so you can keep editing and bake again.\n')});
+  'Drag everything in here into your GitHub repo and commit.\n'+
+  'Say yes when it asks to overwrite.\n\n'+
+  'index.html   what the world sees. The editor has been cut out of it, so nobody\n'+
+  '             can open the panel, not even by adding #edit.\n\n'+
+  'edit.html    yours. The same page with the editor still in it. Open this one\n'+
+  '             when you want to change something - it works from the repo or from\n'+
+  '             your own machine. Nothing links to it.\n\n'+
+  'media/       goes in media/.\n\n'+
+  'Your working copy also stays in this browser, so you can keep editing and bake\n'+
+  'again whenever. Nothing here throws anything away.\n')});
  var blob=zipOf(files);
  busy(false);
  var a=document.createElement('a');
  a.href=URL.createObjectURL(blob); a.download='site-update.zip'; a.click();
  setTimeout(function(){URL.revokeObjectURL(a.href)},6000);
- alert('Baked '+files.length+' file'+(files.length===1?'':'s')+'. Upload them and commit.');
+ alert('Baked.\n\nindex.html is the public page - the editor has been cut out of it.\n'+
+  'edit.html is yours, with the editor still in.\n\n'+
+  'Upload both and commit.');
 }
 
 /* ---------- start ---------- */
@@ -1741,4 +1793,5 @@ async function bake(){
 })();
 
 </script>
+<!--EDITOR-END-->
 </body></html>
