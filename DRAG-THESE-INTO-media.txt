@@ -1,32 +1,37 @@
-These 18 files from your PERFORMANCE_CLIPS folder go into media/ on GitHub.
-Drag them in exactly as they are - do not rename them. The page is already
-pointing at these filenames, so each credit starts playing the moment its
-file lands. Upload them all at once or a few at a time, any order.
+GitHub's browser upload is capped at 25 MB per file. That is GitHub's own
+documented limit - the 100 MB figure applies to command-line pushes, not to
+dragging files into the web page.
 
-amr2qn0w3mx5m__GROTESQUERIE.mp4
-amr2qoyt8atmi__THE_ROOKIE__FEDS.mp4
-amr2qpwjfer0z__911__LONE_STAR.mp4
-amr2qqfama8yv__AMERICAN_HORROR_STORY.mp4
-amr2qr7btojz8__SHOOTER.mp4
-amr2qt3cb0at8__LEGENDS.mp4
-amr2qya5twlas__DEFIANCE.mp4
-amr2r0kbjxqmy__SELFLESS.mp4
-amr2r19nzf3hw__DEMON_LAKE.mp4
-amr2r2haca66t__TRUE_BLOOD.mp4
-amr2r2y2n0sns__JUSTIFIED.mp4
-amr2r36ncur9j__MENTALIST.mp4
-amr2r3nix9y6r__NCIS.mp4
-amr2r4ckyl7ix__CHICAGO_PD.mp4
-amr2r8u6agxj2__EARTHFALL.webm
-amr2rb47j5ffx__GLOW.webm
-amr2rfzpprski__HOLY_GHOST_PEOPLE.webm
-amr2sjb4119dw__GUNMAN_S_HAND_-_REEL.mp4
+THESE FIVE ARE OVER 25 MB AND CANNOT BE DRAGGED IN:
+  amr2r36ncur9j__MENTALIST.mp4                  36.5 MB   The Mentalist
+  amr2qt3cb0at8__LEGENDS.mp4                    35.6 MB   Legends (pilot)
+  amr2r2y2n0sns__JUSTIFIED.mp4                  29.8 MB   Justified
+  amr2sjb4119dw__GUNMAN_S_HAND_-_REEL.mp4       26.1 MB   A GUNMAN'S HAND
+  amr2r4ckyl7ix__CHICAGO_PD.mp4                 25.1 MB   Chicago PD
 
-NOT these two - GitHub refuses any file over 100 MB:
-  amr2smn6tmmxy__Brendan_McCarthy_Reel_2.mov                 755 MB
-  amr10t20k6rjn__BRENDAN_McCARTHY-_PERFORMANCE_REEL__2_.mp4  190 MB
-Those two are your reel and have to be shrunk first.
+To get them in, let the page shrink them for you:
 
-Also not matched to any credit:
-  amr2rdesa30g9__HELLEN_KELLER_VS_NIGHTWOLVES.webm
-  amr2qoeqyuga7__THE_ROOKIE__FEDS_Scene_2.mp4  (second scene - one clip per credit)
+  1. open  edit.html#edit   (or index.html#edit if you have not baked yet)
+  2. click the credit named above
+  3. press 'Add a clip here' and pick the original file from PERFORMANCE_CLIPS
+  4. it re-encodes to 720p, which lands these well under 25 MB
+  5. do all five, then press Bake
+  6. upload the media/ files that come out, plus index.html and edit.html
+
+The re-encode runs in real time, so a 40 second clip takes about 40 seconds.
+Keep the tab in front while it works.
+
+WHERE FILES LIVE NO LONGER MATTERS.
+
+The ones already sitting in the repo root work as they are - the page now looks
+in media/ first and then alongside index.html, so it finds them either way.
+You do not need to delete and re-upload anything.
+
+STILL TO REMOVE FROM THE REPO:
+
+  Brendan_McCarthy_Resume.pdf
+  Brendan_McCarthy_Resume (30).pdf
+  Brendan_McCarthy_Resume (37).pdf
+
+You took the resume off the site because of the phone number on it. All three
+copies are still in the repo and anyone can open them directly.
