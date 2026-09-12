@@ -312,16 +312,18 @@ footer#ftr{display:block}
 .vdropb.off{border-color:#7d766a;color:#9b958a}
 .vdrop span{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:#8d867a}
 .vbox.over{outline:2px dashed #8fa8c8;outline-offset:10px}
+
+/* A hosted reel keeps the same shape as a self-hosted one. */
+.rframe{position:relative;width:100%;aspect-ratio:16/9;background:var(--black)}
+.rframe iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
 </style></head><body class="">
 <main class="sheet">
 <div class="stripe"></div>
 
 <header class="slate" id="hdr"><div class="who"><div class="namerow"><h1 class="name">Brendan McCarthy</h1><img class="sigil" src="media/sigil.png" alt=""></div><div class="lane">Actor · Writer · Filmmaker</div><div class="hsrow"><img class="hs" src="media/headshot1.jpg" alt="Brendan McCarthy"><div class="stills"><img src="media/still-truck.jpg" alt="" loading="lazy"><img src="media/still-car.jpg" alt="" loading="lazy"><img src="media/still-western.jpg" alt="" loading="lazy"><img src="media/still-drive.jpg" alt="" loading="lazy"></div></div></div><div class="facts"><span class="k">Union</span>SAG-AFTRA<span class="k">Management</span>SK Management<span class="k">IMDb</span><a href="https://www.imdb.com/name/nm0995100/" target="_blank" rel="noopener">imdb.com</a><span class="k">Email</span><a href="mailto:hello@brendanmccarthyactor.com">hello@brendanmccarthyactor.com</a></div></header>
 <section class="pad"><div class="rule"><span class="lbl">Reel</span><i></i></div>
- <div class="well" id="reelWell" style="display:none">
-  <video id="reelVid" controls="" playsinline="" preload="metadata"></video>
- </div>
- <p class="soon" id="reelSoon">Reel coming.</p>
+ <div class="well" id="reelWell" style=""><video id="reelVid" controls="" playsinline="" preload="metadata" src="blob:https://colmacpulse.github.io/19bfdb9a-8d07-4a7d-991f-e9f25767b3b9"></video></div>
+ <p class="soon" id="reelSoon" style="display: none;">Reel coming.</p>
 </section>
 <section class="pad" id="secWork"><div class="rule"><span class="lbl">Work</span><span class="ct" id="ctWork"></span><i></i></div>
  <div class="wall" id="wall"><button class="pcard" onclick="openCredit(0)" aria-label="A GUNMAN'S HAND"><div class="part"><img src="media/pasted-1782863507297.png" alt="A GUNMAN'S HAND" loading="lazy"><span class="playdot">▶</span></div><div class="pmeta"><b>A GUNMAN'S HAND</b><span class="pch">JOHN WESLEY HARDIN</span><span class="pbits">LEAD · NEW SKYLINE ENTERTAINMENT</span></div></button><button class="pcard" onclick="openCredit(1)" aria-label="Frisco King"><div class="part"><img src="media/pasted-1782863080478.png" alt="Frisco King" loading="lazy"></div><div class="pmeta"><b>Frisco King</b><span class="pch">OFFICER RAWLINS</span><span class="pbits">Guest Star · Paramount+</span></div></button><button class="pcard" onclick="openCredit(2)" aria-label="Grotesquerie"><div class="part"><img src="media/pasted-1782858289716.png" alt="Grotesquerie" loading="lazy"><span class="playdot">▶</span></div><div class="pmeta"><b>Grotesquerie</b><span class="pch">NICK</span><span class="pbits">Guest Star · FX</span></div></button><button class="pcard" onclick="openCredit(3)" aria-label="The Rookie: Feds"><div class="part"><img src="media/pasted-1782859268251.png" alt="The Rookie: Feds" loading="lazy"><span class="playdot">▶</span></div><div class="pmeta"><b>The Rookie: Feds</b><span class="pch">PAXTON</span><span class="pbits">Guest Star · ABC</span></div></button><button class="pcard" onclick="openCredit(4)" aria-label="911 - Lone Star"><div class="part"><img src="media/pasted-1782858149095.png" alt="911 - Lone Star" loading="lazy"><span class="playdot">▶</span></div><div class="pmeta"><b>911 - Lone Star</b><span class="pch">CRAIG</span><span class="pbits">Guest Star · FOX</span></div></button><button class="pcard" onclick="openCredit(5)" aria-label="American Horror Story"><div class="part"><img src="media/pasted-1782858219172.png" alt="American Horror Story" loading="lazy"><span class="playdot">▶</span></div><div class="pmeta"><b>American Horror Story</b><span class="pch">DETECTIVE MONROE</span><span class="pbits">Guest Star · FX</span></div></button><button class="pcard" onclick="openCredit(6)" aria-label="Shooter"><div class="part"><img src="media/pasted-1782858345971.png" alt="Shooter" loading="lazy"><span class="playdot">▶</span></div><div class="pmeta"><b>Shooter</b><span class="pch">BO WINNICK</span><span class="pbits">Recurring Guest Star (5 eps) · USA</span></div></button><button class="pcard" onclick="openCredit(7)" aria-label="NCIS"><div class="part"><img src="media/pasted-1782858398591.png" alt="NCIS" loading="lazy"><span class="playdot">▶</span></div><div class="pmeta"><b>NCIS</b><span class="pch">OWEN DIXON</span><span class="pbits">Guest Star · CBS</span></div></button><button class="pcard" onclick="openCredit(8)" aria-label="Chicago PD"><div class="part"><img src="media/pasted-1782859984205.png" alt="Chicago PD" loading="lazy"><span class="playdot">▶</span></div><div class="pmeta"><b>Chicago PD</b><span class="pch">VINCE PARKER</span><span class="pbits">Guest Star · NBC</span></div></button><button class="pcard" onclick="openCredit(9)" aria-label="Legends (pilot)"><div class="part"><img src="media/pasted-1782860039775.png" alt="Legends (pilot)" loading="lazy"><span class="playdot">▶</span></div><div class="pmeta"><b>Legends (pilot)</b><span class="pch">ELLROY STREETER</span><span class="pbits">Guest Star · TNT</span></div></button><button class="pcard" onclick="openCredit(10)" aria-label="Defiance"><div class="part"><img src="media/pasted-1782860089836.png" alt="Defiance" loading="lazy"><span class="playdot">▶</span></div><div class="pmeta"><b>Defiance</b><span class="pch">HUNTER BELL</span><span class="pbits">Guest Star · Syfy</span></div></button><button class="pcard" onclick="openCredit(11)" aria-label="The Mentalist"><div class="part"><img src="media/pasted-1782860426261.png" alt="The Mentalist" loading="lazy"><span class="playdot">▶</span></div><div class="pmeta"><b>The Mentalist</b><span class="pch">LANCE GLADSTONE</span><span class="pbits">Guest Star · CBS</span></div></button><button class="pcard" onclick="openCredit(12)" aria-label="Justified"><div class="part"><img src="media/pasted-1782860362101.png" alt="Justified" loading="lazy"><span class="playdot">▶</span></div><div class="pmeta"><b>Justified</b><span class="pch">TANNER DODD</span><span class="pbits">Recurring Guest Star · FX</span></div></button><button class="pcard" onclick="openCredit(13)" aria-label="True Blood"><div class="part"><img src="media/pasted-1782860315336.png" alt="True Blood" loading="lazy"></div><div class="pmeta"><b>True Blood</b><span class="pch">NATE</span><span class="pbits">Recurring · HBO</span></div></button><button class="pcard" onclick="openCredit(14)" aria-label="Good Christian Belles"><div class="part"><img src="media/pasted-1782861854003.png" alt="Good Christian Belles" loading="lazy"></div><div class="pmeta"><b>Good Christian Belles</b><span class="pch"></span><span class="pbits">Co-Star · ABC</span></div></button><button class="pcard" onclick="openCredit(15)" aria-label="The Tunnel"><div class="part"><img src="media/pasted-1782862426719.png" alt="The Tunnel" loading="lazy"></div><div class="pmeta"><b>The Tunnel</b><span class="pch"></span><span class="pbits">Lead · Commonwealth/KellyCo</span></div></button><button class="pcard" onclick="openCredit(16)" aria-label="Rizzoli &amp; Isles (pilot)"><div class="part"><img src="media/pasted-1782861897230.png" alt="Rizzoli &amp; Isles (pilot)" loading="lazy"></div><div class="pmeta"><b>Rizzoli &amp; Isles (pilot)</b><span class="pch">THE APPRENTICE</span><span class="pbits">Guest Star · TNT</span></div></button><button class="pcard" onclick="openCredit(17)" aria-label="Selfless"><div class="part"><img src="media/pasted-1782859664134.png" alt="Selfless" loading="lazy"><span class="playdot">▶</span></div><div class="pmeta"><b>Selfless</b><span class="pch">ANTON 2</span><span class="pbits">Strong Supporting · Tarsem Singh, Dir.</span></div></button><button class="pcard" onclick="openCredit(18)" aria-label="Hidden Truth"><div class="part"><img src="media/pasted-1782858474180.png" alt="Hidden Truth" loading="lazy"></div><div class="pmeta"><b>Hidden Truth</b><span class="pch">PACE</span><span class="pbits">Lead · Steven R. Monroe, Dir.</span></div></button><button class="pcard" onclick="openCredit(19)" aria-label="A Life Lived"><div class="part"><img src="media/pasted-1782859612032.png" alt="A Life Lived" loading="lazy"></div><div class="pmeta"><b>A Life Lived</b><span class="pch">ALEX</span><span class="pbits">Lead · Riley Wood, Dir.</span></div></button><button class="pcard" onclick="openCredit(20)" aria-label="Bacardi"><div class="part"><img src="media/pasted-1782862683363.png" alt="Bacardi" loading="lazy"></div><div class="pmeta"><b>Bacardi</b><span class="pch">EMILIO BACARDI</span><span class="pbits">Emilio Bacardi · Bacardi Ltd.</span></div></button><button class="pcard" onclick="openCredit(21)" aria-label="Demon Lake"><div class="part"><img src="media/pasted-1782862250813.png" alt="Demon Lake" loading="lazy"><span class="playdot">▶</span></div><div class="pmeta"><b>Demon Lake</b><span class="pch">AUGGIE</span><span class="pbits">Lead · Dragon Eye Films</span></div></button><button class="pcard" onclick="openCredit(22)" aria-label="The Holy Ghost People"><div class="part"><img src="media/pasted-1782860146370.png" alt="The Holy Ghost People" loading="lazy"><span class="playdot">▶</span></div><div class="pmeta"><b>The Holy Ghost People</b><span class="pch"></span><span class="pbits">Lead · Mitchell Altieri, Dir.</span></div></button><button class="pcard" onclick="openCredit(23)" aria-label="Glow"><div class="part"><img src="media/pasted-1782860184185.png" alt="Glow" loading="lazy"><span class="playdot">▶</span></div><div class="pmeta"><b>Glow</b><span class="pch">THORNE</span><span class="pbits">Lead · Douglas Jessup, Dir.</span></div></button><button class="pcard" onclick="openCredit(24)" aria-label="Twist of Fate"><div class="part"><img src="media/pasted-1782862314703.png" alt="Twist of Fate" loading="lazy"></div><div class="pmeta"><b>Twist of Fate</b><span class="pch"></span><span class="pbits">Lead · HD Motion Pictures</span></div></button><button class="pcard" onclick="openCredit(25)" aria-label="2001 Maniacs"><div class="part"><img src="media/pasted-1782860503005.png" alt="2001 Maniacs" loading="lazy"></div><div class="pmeta"><b>2001 Maniacs</b><span class="pch">RUFUS</span><span class="pbits">Lead · Raw Nerve Prod.</span></div></button><button class="pcard" onclick="openCredit(26)" aria-label="The Works"><div class="part"><img src="media/pasted-1782860577159.png" alt="The Works" loading="lazy"></div><div class="pmeta"><b>The Works</b><span class="pch">RICK</span><span class="pbits">Co-Star · Gal Katzir, Dir.</span></div></button><button class="pcard" onclick="openCredit(27)" aria-label="61*"><div class="part"><img src="media/pasted-1782860257491.png" alt="61*" loading="lazy"></div><div class="pmeta"><b>61*</b><span class="pch">JOHNNY BLANCHARD</span><span class="pbits">Co-Star · Billy Crystal, Dir./HBO</span></div></button><button class="pcard" onclick="openCredit(28)" aria-label="Most Likely to Murder"><div class="part"><img src="media/pasted-1782862172616.png" alt="Most Likely to Murder" loading="lazy"></div><div class="pmeta"><b>Most Likely to Murder</b><span class="pch">HARLEN</span><span class="pbits">Feature</span></div></button><button class="pcard" onclick="openCredit(29)" aria-label="Earth Fall"><div class="part"><img src="media/pasted-1782862066449.png" alt="Earth Fall" loading="lazy"><span class="playdot">▶</span></div><div class="pmeta"><b>Earth Fall</b><span class="pch">CARL</span><span class="pbits"></span></div></button><button class="pcard" onclick="openCredit(30)" aria-label="A Green Story"><div class="part"><img src="media/pasted-1782862013464.png" alt="A Green Story" loading="lazy"></div><div class="pmeta"><b>A Green Story</b><span class="pch">THOMAS</span><span class="pbits"></span></div></button><button class="pcard" onclick="openCredit(31)" aria-label="Poolboy: Drowning Out the Fury"><div class="part"><img src="media/pasted-1782861953819.png" alt="Poolboy: Drowning Out the Fury" loading="lazy"></div><div class="pmeta"><b>Poolboy: Drowning Out the Fury</b><span class="pch">PARAMEDIC SIR LARRY HAVERFORD</span><span class="pbits"></span></div></button></div></section>
@@ -376,7 +378,7 @@ const SITE={
   ]
  ],
  "email": "hello@brendanmccarthyactor.com",
- "reel": "",
+ "reel": "media/amr10t20k6rjn-brendan-mccarthy-performance-ree.mp4",
  "reelPoster": "",
  "work": [
   {
@@ -849,6 +851,17 @@ const SITE={
 let WORK=SITE.work;
 
 if(typeof window.srcFor!=='function') window.srcFor=function(p){return p||'';};
+/* Turn a page address into the address that actually embeds. Pasting the link from
+   the browser bar is what anyone would do, so that is what has to work. */
+function embedURL(u){
+ u=String(u||'').trim();
+ var m=u.match(/vimeo\.com\/(?:video\/)?(\d+)/i);
+ if(m) return 'https://player.vimeo.com/video/'+m[1];
+ m=u.match(/youtu\.be\/([A-Za-z0-9_-]{6,})/i) ||
+   u.match(/youtube\.com\/(?:watch\?v=|embed\/|shorts\/)([A-Za-z0-9_-]{6,})/i);
+ if(m) return 'https://www.youtube.com/embed/'+m[1];
+ return u;
+}
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(m){
   return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];});}
 
@@ -882,12 +895,22 @@ function render(){
     } else v=esc(val);
     return '<span class="k">'+esc(f[0])+'</span>'+v; }).join('')+'</div>';
 
- if(S.reel){
+ /* The reel can be a file sitting in the repo, or it can be hosted. A reel of any
+    real length cannot be pushed through GitHub's API from a browser, and squeezing
+    one under the limit costs more in quality than it is worth - so a Vimeo or
+    YouTube link is a first-class option, not a fallback. */
+ var rw=document.getElementById('reelWell'), rs=document.getElementById('reelSoon');
+ if(S.reel && /^https?:/i.test(S.reel)){
+  rw.innerHTML='<div class="rframe"><iframe src="'+esc(embedURL(S.reel))+'" '+
+   'allow="autoplay; fullscreen; picture-in-picture" allowfullscreen '+
+   'referrerpolicy="strict-origin-when-cross-origin" title="Reel"></iframe></div>';
+  rw.style.display=''; rs.style.display='none';
+ } else if(S.reel){
+  rw.innerHTML='<video id="reelVid" controls playsinline preload="metadata"></video>';
   var v=document.getElementById('reelVid');
   v.src=srcFor(S.reel); if(S.reelPoster)v.poster=srcFor(S.reelPoster);
-  document.getElementById('reelWell').style.display='';
-  document.getElementById('reelSoon').style.display='none';
- }
+  rw.style.display=''; rs.style.display='none';
+ } else { rw.style.display='none'; rs.style.display=''; }
 
  document.getElementById('ctWork').textContent='';
  document.getElementById('wall').innerHTML=WORK.map(function(w,i){
@@ -1371,6 +1394,15 @@ var MB=1048576, HARD=100*MB;
 var dirty=false, TAB='who';
 
 function el(id){ return document.getElementById(id); }
+/* What a stored file actually weighs. Guessing at this was the whole problem. */
+function mediaLabel(path){
+ if(!path) return 'none';
+ if(path.indexOf('idb:')!==0) return path;
+ var rec=MEDIA[path.slice(4)];
+ if(!rec) return path+'  (missing)';
+ var mb=rec.blob.size/1048576;
+ return rec.name+'  \u00b7  '+mb.toFixed(1)+' MB'+(mb>72?'  \u00b7  TOO BIG TO PUBLISH':'');
+}
 function mark(){ dirty=true; save(); status(); }
 function status(){
  var s=el('ebstat'); if(!s)return;
@@ -1458,16 +1490,21 @@ async function addVideo(file,label,isReel){
  if(file.size>cap){
   if(typeof ActorCompress!=='object'){ throw new Error('the re-encoder is missing from this page'); }
   busy(true,'Shrinking '+label,'runs in real time',0);
-  /* Work the bitrate back from the file that has to come out the other end. */
+  /* Two numbers, not one. The size that has to come out the other end sets the
+     bitrate; the bitrate then sets the resolution. Spending 0.5 Mbps on 720p asks
+     920,000 pixels to share what barely covers 400,000 - halve the pixels and each
+     one gets twice the bits. A soft 480p reel reads as a compressed file; a broken
+     720p one reads as a bad actor with a bad reel. */
   var secs=await videoSeconds(file);
-  var rate=1.8;
-  if(secs>4){
-   rate=(20*8)/secs;                       // 20 MB of headroom under the 25 MB cap
-   rate=Math.max(0.9,Math.min(isReel?3.2:2.4,rate));
-  }
-  var res=await ActorCompress.process(file,{h:720,mbps:rate,
+  var rate=isReel?2.4:1.8;
+  if(secs>4) rate=Math.max(0.45,Math.min(isReel?3.0:2.4,(21*8)/secs));
+  var h=720;
+  if(rate<0.75) h=432;
+  else if(rate<1.05) h=480;
+  else if(rate<1.6) h=540;
+  var res=await ActorCompress.process(file,{h:h,mbps:rate,
    onProgress:function(p){ busy(true,'Shrinking '+label,
-     Math.round((p||0)*100)+'%  \u00b7 720p, '+rate.toFixed(1)+' Mbps',p); }});
+     Math.round((p||0)*100)+'%   '+h+'p at '+rate.toFixed(2)+' Mbps',p); }});
   busy(false);
   blob=(res&&res.blob)?res.blob:res;
   if(!(blob instanceof Blob)) throw new Error('the re-encoder returned nothing usable');
@@ -1533,11 +1570,25 @@ function draw(){
      '<button class="b bad" onclick="EB.clr(\'sigil\')">Remove</button></div></div></div>';
  }
  else if(TAB==='reel'){
-  h+='<div class="k">'+(SITE.reel?'<div class="st">'+E(SITE.reel)+'</div>':'<div class="st">no reel yet</div>')+
-     '<div class="rowb"><button class="b" onclick="EB.reel()">'+(SITE.reel?'Replace':'Add the reel')+'</button>'+
-     (SITE.reel?'<button class="b bad" onclick="EB.clr(\'reel\')">Remove</button>':'')+'</div></div>'+
-     '<p style="font-size:12.5px;color:var(--grey);line-height:1.55">Anything over 60 MB is '+
-     're-encoded to 1080p on the way in, so it can live on GitHub.</p>';
+  var hosted=SITE.reel&&/^https?:/i.test(SITE.reel);
+  h+='<div class="k"><div class="st">'+
+     (SITE.reel?E(hosted?SITE.reel:mediaLabel(SITE.reel)):'no reel yet')+'</div>'+
+     (SITE.reel?'<div class="rowb"><button class="b bad" onclick="EB.clr(\'reel\')">Remove</button></div>':'')+
+     '</div>';
+  h+='<label>Link to it &mdash; Vimeo or YouTube</label>'+
+     '<input type="text" id="ebreelurl" value="'+E(hosted?SITE.reel:'')+'" '+
+     'placeholder="https://vimeo.com/123456789">'+
+     '<div class="rowb"><button class="b" onclick="EB.reelLink()">Use this link</button></div>'+
+     '<p style="font-size:12.5px;color:var(--grey);line-height:1.55;margin-top:10px">'+
+     'The right choice for anything over a couple of minutes. No size limit, no loss '+
+     'of quality, and it does not weigh on the repository.</p>';
+  h+='<label style="margin-top:20px">Or keep the file in the repository</label>'+
+     '<div class="rowb"><button class="b" onclick="EB.reel()">Choose a file</button></div>'+
+     '<p style="font-size:12.5px;color:var(--grey);line-height:1.55;margin-top:10px">'+
+     'It will be squeezed to about 21 MB whatever its length, dropping resolution as '+
+     'needed so the bitrate is spent on fewer pixels rather than spread too thin. '+
+     'A minute comes out at 720p; five minutes comes out at 432p and looks soft on '+
+     'a big screen.</p>';
  }
  else if(TAB==='work'){
   h+='<div class="rowb"><button class="b" onclick="EB.addWork()">+ Add a project</button></div>';
@@ -1702,6 +1753,13 @@ window.EB={
   try{ SITE.work[i].clip=await addVideo(file,SITE.work[i].t,false); redraw();
    if(then) then(); }
   catch(e){ busy(false); alert(e.message); } },
+ reelLink:function(){
+  var v=((el('ebreelurl')||{}).value||'').trim();
+  if(!v){ alert('Paste the link first.'); return; }
+  if(!/^https?:\/\//i.test(v)){ alert('That does not look like a web address.'); return; }
+  if(SITE.reel&&SITE.reel.indexOf('idb:')===0) delete NEW[SITE.reel];
+  SITE.reel=v; redraw();
+ },
  reel:async function(){ var f=await askFile('video/*'); if(!f.length)return;
   try{ SITE.reel=await addVideo(f[0],'the reel',true); redraw(); }
   catch(e){ busy(false); alert(e.message); } },
@@ -1905,7 +1963,12 @@ async function gh(path,opts){
   body:opts.body?JSON.stringify(opts.body):undefined });
  if(!r.ok){
   var msg=''; try{ msg=(await r.json()).message||''; }catch(e){}
-  if(r.status===401) throw new Error('GitHub refused the token. It may be wrong, or it may have expired.');
+  if(r.status===401) throw new Error(
+    (window.__ghSent>0
+      ? 'GitHub rejected that file. '+window.__ghSent+' file'+(window.__ghSent===1?'':'s')+
+        ' went up fine first, so the token is good - this one is almost certainly too\n'+
+        'large. Re-add it so it gets re-encoded smaller.'
+      : 'GitHub refused the token. It may be wrong, or it may have expired.'));
   if(r.status===403) throw new Error('That token cannot write to this repository.\n\n'+msg);
   if(r.status===404) throw new Error('Cannot find '+REPO.owner+'/'+REPO.repo+'.\n'+
     'Check the name, and that the token was given access to this repository.');
@@ -1928,17 +1991,25 @@ function b64(bytes){
 }
 
 async function publish(){
+ window.__ghSent=0;
  if(!TOKEN){ alert('No token saved yet - put one in the Publish tab first.'); return; }
  var files;
  try{ files=await bakeFiles(); }catch(e){ busy(false); alert(e.message); return; }
  if(!files.length){ busy(false); alert('Nothing to publish.'); return; }
  files=files.filter(function(f){ return f.name!=='UPLOAD-THESE.txt'; });
 
- var big=files.filter(function(f){ return f.data.length>100*1048576; });
+ /* A blob is sent as base64, which is a third bigger than the file. GitHub's 100 MB
+    ceiling applies to what arrives, not to what is on disk - so the real limit is
+    about 72 MB of actual file. Past that the request is dropped before it is even
+    read, which comes back as a 401 and looks exactly like a bad token. It is not. */
+ var LIMIT=24*1048576;
+ var big=files.filter(function(f){ return f.data.length>LIMIT; });
  if(big.length){ busy(false);
-  alert('Past GitHub\'s 100 MB ceiling, so these cannot go up at all:\n\n  '+
-   big.map(function(f){return f.name+'  '+(f.data.length/1048576).toFixed(0)+' MB';}).join('\n  ')+
-   '\n\nNothing was published.'); return; }
+  alert('Too big to publish:\n\n  '+
+   big.map(function(f){return f.name+'   '+(f.data.length/1048576).toFixed(0)+' MB';}).join('\n  ')+
+   '\n\nGitHub will not take a file this size through the API from a browser.\n'+
+   'If it is the reel, use the Vimeo or YouTube link instead \u2014 Reel tab.\n\nNothing was published.');
+  return; }
 
  var total=files.reduce(function(a,f){return a+f.data.length;},0);
  busy(false);
@@ -1959,6 +2030,7 @@ async function publish(){
    var blob=await gh('/git/blobs',{method:'POST',
      body:{content:await b64(f.data),encoding:'base64'}});
    tree.push({path:f.name,mode:'100644',type:'blob',sha:blob.sha});
+   window.__ghSent++;
   }
 
   busy(true,'Publishing','writing the commit',0.92);
