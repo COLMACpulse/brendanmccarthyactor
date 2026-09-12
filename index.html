@@ -311,6 +311,10 @@ footer#ftr{display:block}
 .vdropb.off{border-color:#7d766a;color:#9b958a}
 .vdrop span{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:#8d867a}
 .vbox.over{outline:2px dashed #8fa8c8;outline-offset:10px}
+
+/* A hosted reel keeps the same shape as a self-hosted one. */
+.rframe{position:relative;width:100%;aspect-ratio:16/9;background:var(--black)}
+.rframe iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
 </style></head><body>
 <main class="sheet">
 <div class="stripe"></div>
@@ -848,6 +852,17 @@ const SITE={
 let WORK=SITE.work;
 
 if(typeof window.srcFor!=='function') window.srcFor=function(p){return p||'';};
+/* Turn a page address into the address that actually embeds. Pasting the link from
+   the browser bar is what anyone would do, so that is what has to work. */
+function embedURL(u){
+ u=String(u||'').trim();
+ var m=u.match(/vimeo\.com\/(?:video\/)?(\d+)/i);
+ if(m) return 'https://player.vimeo.com/video/'+m[1];
+ m=u.match(/youtu\.be\/([A-Za-z0-9_-]{6,})/i) ||
+   u.match(/youtube\.com\/(?:watch\?v=|embed\/|shorts\/)([A-Za-z0-9_-]{6,})/i);
+ if(m) return 'https://www.youtube.com/embed/'+m[1];
+ return u;
+}
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(m){
   return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];});}
 
@@ -881,12 +896,22 @@ function render(){
     } else v=esc(val);
     return '<span class="k">'+esc(f[0])+'</span>'+v; }).join('')+'</div>';
 
- if(S.reel){
+ /* The reel can be a file sitting in the repo, or it can be hosted. A reel of any
+    real length cannot be pushed through GitHub's API from a browser, and squeezing
+    one under the limit costs more in quality than it is worth - so a Vimeo or
+    YouTube link is a first-class option, not a fallback. */
+ var rw=document.getElementById('reelWell'), rs=document.getElementById('reelSoon');
+ if(S.reel && /^https?:/i.test(S.reel)){
+  rw.innerHTML='<div class="rframe"><iframe src="'+esc(embedURL(S.reel))+'" '+
+   'allow="autoplay; fullscreen; picture-in-picture" allowfullscreen '+
+   'referrerpolicy="strict-origin-when-cross-origin" title="Reel"></iframe></div>';
+  rw.style.display=''; rs.style.display='none';
+ } else if(S.reel){
+  rw.innerHTML='<video id="reelVid" controls playsinline preload="metadata"></video>';
   var v=document.getElementById('reelVid');
   v.src=srcFor(S.reel); if(S.reelPoster)v.poster=srcFor(S.reelPoster);
-  document.getElementById('reelWell').style.display='';
-  document.getElementById('reelSoon').style.display='none';
- }
+  rw.style.display=''; rs.style.display='none';
+ } else { rw.style.display='none'; rs.style.display=''; }
 
  document.getElementById('ctWork').textContent='';
  document.getElementById('wall').innerHTML=WORK.map(function(w,i){
@@ -1466,16 +1491,21 @@ async function addVideo(file,label,isReel){
  if(file.size>cap){
   if(typeof ActorCompress!=='object'){ throw new Error('the re-encoder is missing from this page'); }
   busy(true,'Shrinking '+label,'runs in real time',0);
-  /* Work the bitrate back from the file that has to come out the other end. */
+  /* Two numbers, not one. The size that has to come out the other end sets the
+     bitrate; the bitrate then sets the resolution. Spending 0.5 Mbps on 720p asks
+     920,000 pixels to share what barely covers 400,000 - halve the pixels and each
+     one gets twice the bits. A soft 480p reel reads as a compressed file; a broken
+     720p one reads as a bad actor with a bad reel. */
   var secs=await videoSeconds(file);
-  var rate=1.8;
-  if(secs>4){
-   rate=(20*8)/secs;                       // 20 MB of headroom under the 25 MB cap
-   rate=Math.max(0.9,Math.min(isReel?3.2:2.4,rate));
-  }
-  var res=await ActorCompress.process(file,{h:720,mbps:rate,
+  var rate=isReel?2.4:1.8;
+  if(secs>4) rate=Math.max(0.45,Math.min(isReel?3.0:2.4,(21*8)/secs));
+  var h=720;
+  if(rate<0.75) h=432;
+  else if(rate<1.05) h=480;
+  else if(rate<1.6) h=540;
+  var res=await ActorCompress.process(file,{h:h,mbps:rate,
    onProgress:function(p){ busy(true,'Shrinking '+label,
-     Math.round((p||0)*100)+'%  \u00b7 720p, '+rate.toFixed(1)+' Mbps',p); }});
+     Math.round((p||0)*100)+'%   '+h+'p at '+rate.toFixed(2)+' Mbps',p); }});
   busy(false);
   blob=(res&&res.blob)?res.blob:res;
   if(!(blob instanceof Blob)) throw new Error('the re-encoder returned nothing usable');
@@ -1541,11 +1571,25 @@ function draw(){
      '<button class="b bad" onclick="EB.clr(\'sigil\')">Remove</button></div></div></div>';
  }
  else if(TAB==='reel'){
-  h+='<div class="k">'+(SITE.reel?'<div class="st">'+E(mediaLabel(SITE.reel))+'</div>':'<div class="st">no reel yet</div>')+
-     '<div class="rowb"><button class="b" onclick="EB.reel()">'+(SITE.reel?'Replace':'Add the reel')+'</button>'+
-     (SITE.reel?'<button class="b bad" onclick="EB.clr(\'reel\')">Remove</button>':'')+'</div></div>'+
-     '<p style="font-size:12.5px;color:var(--grey);line-height:1.55">Anything over 60 MB is '+
-     're-encoded to 1080p on the way in, so it can live on GitHub.</p>';
+  var hosted=SITE.reel&&/^https?:/i.test(SITE.reel);
+  h+='<div class="k"><div class="st">'+
+     (SITE.reel?E(hosted?SITE.reel:mediaLabel(SITE.reel)):'no reel yet')+'</div>'+
+     (SITE.reel?'<div class="rowb"><button class="b bad" onclick="EB.clr(\'reel\')">Remove</button></div>':'')+
+     '</div>';
+  h+='<label>Link to it &mdash; Vimeo or YouTube</label>'+
+     '<input type="text" id="ebreelurl" value="'+E(hosted?SITE.reel:'')+'" '+
+     'placeholder="https://vimeo.com/123456789">'+
+     '<div class="rowb"><button class="b" onclick="EB.reelLink()">Use this link</button></div>'+
+     '<p style="font-size:12.5px;color:var(--grey);line-height:1.55;margin-top:10px">'+
+     'The right choice for anything over a couple of minutes. No size limit, no loss '+
+     'of quality, and it does not weigh on the repository.</p>';
+  h+='<label style="margin-top:20px">Or keep the file in the repository</label>'+
+     '<div class="rowb"><button class="b" onclick="EB.reel()">Choose a file</button></div>'+
+     '<p style="font-size:12.5px;color:var(--grey);line-height:1.55;margin-top:10px">'+
+     'It will be squeezed to about 21 MB whatever its length, dropping resolution as '+
+     'needed so the bitrate is spent on fewer pixels rather than spread too thin. '+
+     'A minute comes out at 720p; five minutes comes out at 432p and looks soft on '+
+     'a big screen.</p>';
  }
  else if(TAB==='work'){
   h+='<div class="rowb"><button class="b" onclick="EB.addWork()">+ Add a project</button></div>';
@@ -1710,6 +1754,13 @@ window.EB={
   try{ SITE.work[i].clip=await addVideo(file,SITE.work[i].t,false); redraw();
    if(then) then(); }
   catch(e){ busy(false); alert(e.message); } },
+ reelLink:function(){
+  var v=((el('ebreelurl')||{}).value||'').trim();
+  if(!v){ alert('Paste the link first.'); return; }
+  if(!/^https?:\/\//i.test(v)){ alert('That does not look like a web address.'); return; }
+  if(SITE.reel&&SITE.reel.indexOf('idb:')===0) delete NEW[SITE.reel];
+  SITE.reel=v; redraw();
+ },
  reel:async function(){ var f=await askFile('video/*'); if(!f.length)return;
   try{ SITE.reel=await addVideo(f[0],'the reel',true); redraw(); }
   catch(e){ busy(false); alert(e.message); } },
@@ -1952,13 +2003,13 @@ async function publish(){
     ceiling applies to what arrives, not to what is on disk - so the real limit is
     about 72 MB of actual file. Past that the request is dropped before it is even
     read, which comes back as a 401 and looks exactly like a bad token. It is not. */
- var LIMIT=72*1048576;
+ var LIMIT=24*1048576;
  var big=files.filter(function(f){ return f.data.length>LIMIT; });
  if(big.length){ busy(false);
   alert('Too big to publish:\n\n  '+
    big.map(function(f){return f.name+'   '+(f.data.length/1048576).toFixed(0)+' MB';}).join('\n  ')+
-   '\n\nA file is sent base64-encoded, which adds a third, so anything over about\n'+
-   '72 MB will not go. Re-add it and it will be re-encoded smaller.\n\nNothing was published.');
+   '\n\nGitHub will not take a file this size through the API from a browser.\n'+
+   'If it is the reel, use the Vimeo or YouTube link instead \u2014 Reel tab.\n\nNothing was published.');
   return; }
 
  var total=files.reduce(function(a,f){return a+f.data.length;},0);
