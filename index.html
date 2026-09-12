@@ -1482,7 +1482,8 @@ async function addVideo(file,label,isReel){
 
 /* ---------- the panel ---------- */
 var TABS=[['who','Header'],['reel','Reel'],['work','Work'],['films','Films'],
-          ['writing','Writing'],['stills','Stills'],['photos','Photos'],['reps','Reps']];
+          ['writing','Writing'],['stills','Stills'],['photos','Photos'],['reps','Reps'],
+          ['pub','Publish']];
 
 function panel(){
  var d=document.createElement('div'); d.id='eb';
@@ -1494,7 +1495,8 @@ function panel(){
     return '<button data-t="'+t[0]+'" onclick="EB.tab(\''+t[0]+'\')">'+t[1]+'</button>';}).join('')+'</div>'+
   '<div id="ebc"></div>'+
   '<div id="ebf"><span class="st" id="ebstat"></span>'+
-   '<button onclick="EB.bake()">Bake</button></div>';
+   '<button onclick="EB.bake()" style="background:transparent;border-color:var(--blue);color:var(--blue)">Bake</button>'+
+   '<button onclick="EB.publish()">Publish</button></div>';
  document.body.appendChild(d);
  var busyEl=document.createElement('div'); busyEl.id='ebbusy';
  busyEl.innerHTML='<b>Working</b><span></span><div class="bar"><i></i></div>';
@@ -1571,6 +1573,27 @@ function draw(){
  }
  else if(TAB==='stills') h+=picList('stills','EB.addStill','EB.delStill','EB.mvStill');
  else if(TAB==='photos') h+=picList('photos','EB.addPhoto','EB.delPhoto','EB.mvPhoto');
+ else if(TAB==='pub'){
+  h+='<p style="font-size:13px;color:var(--grey);line-height:1.6;margin:0 0 4px">'+
+   'Publishing commits straight to <b>'+E(REPO.owner+'/'+REPO.repo)+'</b> on <b>'+E(REPO.branch)+'</b>.'+
+   ' No zip, no dragging. Files go up to 100 MB this way instead of the 25 MB the'+
+   ' upload form allows.</p>';
+  h+='<label>GitHub token</label>'+
+   '<input type="password" id="ebtok" value="'+(TOKEN?'________________':'')+'" '+
+   'placeholder="github_pat_..." autocomplete="off">'+
+   '<div class="rowb">'+
+    '<button class="b" onclick="EB.saveTok()">Save token</button>'+
+    (TOKEN?'<button class="b" onclick="EB.testTok()">Check it works</button>'+
+           '<button class="b bad" onclick="EB.forgetTok()">Forget it</button>':'')+
+   '</div>'+
+   '<p style="font-size:12px;color:var(--grey);line-height:1.6;margin:12px 0 0">'+
+   'It is kept in this browser only. It is never part of the page, so it cannot end'+
+   ' up in a published file. Revoke it any time at GitHub &rarr; Settings &rarr;'+
+   ' Developer settings.</p>';
+  if(TOKEN) h+='<div class="rowb" style="margin-top:16px">'+
+    '<button class="b" style="border-color:var(--salmon);color:var(--salmon)" '+
+    'onclick="EB.publish()">Publish to the live site</button></div>';
+ }
  else if(TAB==='reps'){
   h+='<div class="rowb"><button class="b" onclick="EB.addRep()">+ Add</button></div>';
   h+=(SITE.reps||[]).map(function(r,i){
@@ -1681,7 +1704,25 @@ window.EB={
  reel:async function(){ var f=await askFile('video/*'); if(!f.length)return;
   try{ SITE.reel=await addVideo(f[0],'the reel',true); redraw(); }
   catch(e){ busy(false); alert(e.message); } },
- bake:bake
+ bake:bake,
+ publish:publish,
+ saveTok:async function(){
+  var v=(el('ebtok')||{}).value||'';
+  if(!v||v.indexOf('_')===0||v==='________________'){ alert('Paste the token first.'); return; }
+  TOKEN=v.trim(); await DB.putMeta('ghtoken',TOKEN);
+  draw(); alert('Saved. Press "Check it works" to be sure before relying on it.');
+ },
+ forgetTok:async function(){ TOKEN=null; await DB.putMeta('ghtoken',null); draw();
+  alert('Forgotten. It is still live on GitHub until you revoke it there.'); },
+ testTok:async function(){
+  try{
+   busy(true,'Checking','asking GitHub',0.4);
+   var r=await gh('/git/ref/heads/'+REPO.branch);
+   busy(false);
+   alert('Works.\n\n'+REPO.owner+'/'+REPO.repo+' on '+REPO.branch+
+         ' is at commit '+String(r.object.sha).slice(0,7)+'.');
+  }catch(e){ busy(false); alert(e.message); }
+ }
 };
 
 /* ---------- baking ----------
@@ -1712,8 +1753,11 @@ function slugFile(base,ext){
  return String(base||'file').toLowerCase().replace(/\.[^.]+$/,'')
   .replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,46)+'.'+ext;
 }
-async function bake(){
- busy(true,'Baking','working out what is new',0);
+/* Builds every file the site needs - the public page, the editable one, and any
+   media added since the last time. Both Bake and Publish use this; the only
+   difference between them is where the files go afterwards. */
+async function bakeFiles(){
+ busy(true,'Preparing','working out what is new',0);
  var out=JSON.parse(JSON.stringify(SITE)), files=[], used={}, map={};
  var ids=[];
  /* Every path already on the site is spoken for. Without this a new still called
@@ -1818,6 +1862,12 @@ async function bake(){
   'media/       goes in media/.\n\n'+
   'Your working copy also stays in this browser, so you can keep editing and bake\n'+
   'again whenever. Nothing here throws anything away.\n')});
+ return files;
+}
+
+async function bake(){
+ var files;
+ try{ files=await bakeFiles(); }catch(e){ busy(false); alert(e.message); return; }
  var over=files.filter(function(f){ return f.data.length>25*1048576; });
  var blob=zipOf(files);
  busy(false);
@@ -1834,9 +1884,99 @@ async function bake(){
   'Upload both and commit.');
 }
 
+/* ===== PUBLISHING =====
+   The browser's drag-and-drop upload refuses anything over 25 MB. The API does not:
+   writing through git blobs takes files up to 100 MB, so a 36 MB clip goes up as it
+   is rather than being re-encoded to fit a limit that only exists in the upload form.
+   Everything lands in one commit instead of twenty.
+
+   The token lives in this browser and nowhere else. It is never part of SITE, so it
+   cannot end up in a baked file, and it is never sent as content. */
+var REPO={owner:'COLMACpulse',repo:'brendanmccarthyactor',branch:'main'};
+var TOKEN=null;
+
+async function gh(path,opts){
+ opts=opts||{};
+ var r=await fetch('https://api.github.com/repos/'+REPO.owner+'/'+REPO.repo+path,{
+  method:opts.method||'GET',
+  headers:{'Authorization':'Bearer '+TOKEN,'Accept':'application/vnd.github+json',
+           'X-GitHub-Api-Version':'2022-11-28'},
+  body:opts.body?JSON.stringify(opts.body):undefined });
+ if(!r.ok){
+  var msg=''; try{ msg=(await r.json()).message||''; }catch(e){}
+  if(r.status===401) throw new Error('GitHub refused the token. It may be wrong, or it may have expired.');
+  if(r.status===403) throw new Error('That token cannot write to this repository.\n\n'+msg);
+  if(r.status===404) throw new Error('Cannot find '+REPO.owner+'/'+REPO.repo+'.\n'+
+    'Check the name, and that the token was given access to this repository.');
+  if(r.status===409) throw new Error('Somebody committed to '+REPO.branch+' while this was running.\nTry again.');
+  if(r.status===422) throw new Error('GitHub would not accept that.\n\n'+msg);
+  throw new Error('GitHub said '+r.status+'. '+msg);
+ }
+ return await r.json();
+}
+
+/* Base64 via FileReader - building it by hand from a 40 MB array is slow and holds
+   a second copy in memory the whole time. */
+function b64(bytes){
+ return new Promise(function(res,rej){
+  var fr=new FileReader();
+  fr.onload=function(){ var t=String(fr.result); res(t.slice(t.indexOf(',')+1)); };
+  fr.onerror=function(){ rej(new Error('could not read that file')); };
+  fr.readAsDataURL(new Blob([bytes]));
+ });
+}
+
+async function publish(){
+ if(!TOKEN){ alert('No token saved yet - put one in the Publish tab first.'); return; }
+ var files;
+ try{ files=await bakeFiles(); }catch(e){ busy(false); alert(e.message); return; }
+ if(!files.length){ busy(false); alert('Nothing to publish.'); return; }
+ files=files.filter(function(f){ return f.name!=='UPLOAD-THESE.txt'; });
+
+ var big=files.filter(function(f){ return f.data.length>100*1048576; });
+ if(big.length){ busy(false);
+  alert('Past GitHub\'s 100 MB ceiling, so these cannot go up at all:\n\n  '+
+   big.map(function(f){return f.name+'  '+(f.data.length/1048576).toFixed(0)+' MB';}).join('\n  ')+
+   '\n\nNothing was published.'); return; }
+
+ var total=files.reduce(function(a,f){return a+f.data.length;},0);
+ busy(false);
+ if(!confirm('Publish '+files.length+' file'+(files.length===1?'':'s')+' ('+
+   (total/1048576).toFixed(1)+' MB) to '+REPO.owner+'/'+REPO.repo+'?\n\n'+
+   'It commits straight to '+REPO.branch+'. The site is live a minute or two later.')) return;
+
+ try{
+  busy(true,'Publishing','asking GitHub where things stand',0.02);
+  var ref=await gh('/git/ref/heads/'+REPO.branch);
+  var parent=ref.object.sha;
+  var head=await gh('/git/commits/'+parent);
+
+  var tree=[];
+  for(var i=0;i<files.length;i++){
+   var f=files[i];
+   busy(true,'Publishing',f.name+'   ('+(i+1)+' of '+files.length+')',0.05+0.8*(i/files.length));
+   var blob=await gh('/git/blobs',{method:'POST',
+     body:{content:await b64(f.data),encoding:'base64'}});
+   tree.push({path:f.name,mode:'100644',type:'blob',sha:blob.sha});
+  }
+
+  busy(true,'Publishing','writing the commit',0.92);
+  var t=await gh('/git/trees',{method:'POST',body:{base_tree:head.tree.sha,tree:tree}});
+  var c=await gh('/git/commits',{method:'POST',
+    body:{message:'Site update \u2014 '+new Date().toLocaleString(),tree:t.sha,parents:[parent]}});
+  await gh('/git/refs/heads/'+REPO.branch,{method:'PATCH',body:{sha:c.sha}});
+
+  busy(false);
+  dirty=false; status();
+  alert('Published.\n\n'+files.length+' files in one commit. GitHub Pages takes a\n'+
+        'minute or two, then hard-refresh the site.');
+ }catch(e){ busy(false); alert('Nothing was published.\n\n'+e.message); }
+}
+
 /* ---------- start ---------- */
 (async function(){
  MEDIA=await DB.allMedia();
+ TOKEN=await DB.getMeta('ghtoken');
  var saved=await DB.getMeta('site');
  if(saved && confirm('You have unbaked changes in this browser. Carry on with them?\n\n'+
    'Cancel to throw them away and start from the published page.')){
