@@ -315,6 +315,13 @@ footer#ftr{display:block}
 /* A hosted reel keeps the same shape as a self-hosted one. */
 .rframe{position:relative;width:100%;aspect-ratio:16/9;background:var(--black)}
 .rframe iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+
+/* Scene tabs under a clip. Only drawn when a credit holds more than one. */
+.scenes{display:flex;gap:7px;flex-wrap:wrap;padding:14px 0 0}
+.scn{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+ padding:8px 13px;border:1px solid #4a463e;background:transparent;color:#c9c3b6;cursor:pointer}
+.scn:hover{border-color:#8fa8c8;color:#fff}
+.scn.on{background:#8fa8c8;border-color:#8fa8c8;color:#16161A}
 </style></head><body>
 <main class="sheet">
 <div class="stripe"></div>
@@ -390,7 +397,13 @@ const SITE={
    "d": "BRENDAN McCARTHY",
    "p": "pasted-1782863507297.png",
    "clip": "media/amr2sjb4119dw__GUNMAN_S_HAND_-_REEL.mp4",
-   "note": ""
+   "note": "",
+   "clips": [
+    {
+     "src": "media/amr2sjb4119dw__GUNMAN_S_HAND_-_REEL.mp4",
+     "t": ""
+    }
+   ]
   },
   {
    "t": "Frisco King",
@@ -400,7 +413,8 @@ const SITE={
    "d": "",
    "p": "pasted-1782863080478.png",
    "clip": "",
-   "note": ""
+   "note": "",
+   "clips": []
   },
   {
    "t": "Grotesquerie",
@@ -410,7 +424,13 @@ const SITE={
    "d": "",
    "p": "pasted-1782858289716.png",
    "clip": "media/amr2qn0w3mx5m__GROTESQUERIE.mp4",
-   "note": ""
+   "note": "",
+   "clips": [
+    {
+     "src": "media/amr2qn0w3mx5m__GROTESQUERIE.mp4",
+     "t": ""
+    }
+   ]
   },
   {
    "t": "The Rookie: Feds",
@@ -420,7 +440,13 @@ const SITE={
    "d": "",
    "p": "pasted-1782859268251.png",
    "clip": "media/amr2qoyt8atmi__THE_ROOKIE__FEDS_Scene1.mp4",
-   "note": ""
+   "note": "",
+   "clips": [
+    {
+     "src": "media/amr2qoyt8atmi__THE_ROOKIE__FEDS_Scene1.mp4",
+     "t": ""
+    }
+   ]
   },
   {
    "t": "911 - Lone Star",
@@ -430,7 +456,13 @@ const SITE={
    "d": "",
    "p": "pasted-1782858149095.png",
    "clip": "media/amr2qpwjfer0z__911__LONE_STAR.mp4",
-   "note": ""
+   "note": "",
+   "clips": [
+    {
+     "src": "media/amr2qpwjfer0z__911__LONE_STAR.mp4",
+     "t": ""
+    }
+   ]
   },
   {
    "t": "American Horror Story",
@@ -440,7 +472,13 @@ const SITE={
    "d": "",
    "p": "pasted-1782858219172.png",
    "clip": "media/amr2qqfama8yv__AMERICAN_HORROR_STORY.mp4",
-   "note": ""
+   "note": "",
+   "clips": [
+    {
+     "src": "media/amr2qqfama8yv__AMERICAN_HORROR_STORY.mp4",
+     "t": ""
+    }
+   ]
   },
   {
    "t": "Shooter",
@@ -450,7 +488,13 @@ const SITE={
    "d": "",
    "p": "pasted-1782858345971.png",
    "clip": "media/amr2qr7btojz8__SHOOTER.mp4",
-   "note": ""
+   "note": "",
+   "clips": [
+    {
+     "src": "media/amr2qr7btojz8__SHOOTER.mp4",
+     "t": ""
+    }
+   ]
   },
   {
    "t": "NCIS",
@@ -460,7 +504,13 @@ const SITE={
    "d": "",
    "p": "pasted-1782858398591.png",
    "clip": "media/amr2r3nix9y6r__NCIS.mp4",
-   "note": ""
+   "note": "",
+   "clips": [
+    {
+     "src": "media/amr2r3nix9y6r__NCIS.mp4",
+     "t": ""
+    }
+   ]
   },
   {
    "t": "Chicago PD",
@@ -470,7 +520,13 @@ const SITE={
    "d": "",
    "p": "pasted-1782859984205.png",
    "clip": "media/amr2r4ckyl7ix__CHICAGO_PD.mp4",
-   "note": ""
+   "note": "",
+   "clips": [
+    {
+     "src": "media/amr2r4ckyl7ix__CHICAGO_PD.mp4",
+     "t": ""
+    }
+   ]
   },
   {
    "t": "Legends (pilot)",
@@ -480,7 +536,13 @@ const SITE={
    "d": "",
    "p": "pasted-1782860039775.png",
    "clip": "media/amr2qt3cb0at8__LEGENDS.mp4",
-   "note": ""
+   "note": "",
+   "clips": [
+    {
+     "src": "media/amr2qt3cb0at8__LEGENDS.mp4",
+     "t": ""
+    }
+   ]
   },
   {
    "t": "Defiance",
@@ -490,7 +552,13 @@ const SITE={
    "d": "",
    "p": "pasted-1782860089836.png",
    "clip": "media/amr2qya5twlas__DEFIANCE.mp4",
-   "note": ""
+   "note": "",
+   "clips": [
+    {
+     "src": "media/amr2qya5twlas__DEFIANCE.mp4",
+     "t": ""
+    }
+   ]
   },
   {
    "t": "The Mentalist",
@@ -500,7 +568,13 @@ const SITE={
    "d": "",
    "p": "pasted-1782860426261.png",
    "clip": "media/amr2r36ncur9j__MENTALIST.mp4",
-   "note": ""
+   "note": "",
+   "clips": [
+    {
+     "src": "media/amr2r36ncur9j__MENTALIST.mp4",
+     "t": ""
+    }
+   ]
   },
   {
    "t": "Justified",
@@ -510,7 +584,13 @@ const SITE={
    "d": "",
    "p": "pasted-1782860362101.png",
    "clip": "media/amr2r2y2n0sns__JUSTIFIED.mp4",
-   "note": ""
+   "note": "",
+   "clips": [
+    {
+     "src": "media/amr2r2y2n0sns__JUSTIFIED.mp4",
+     "t": ""
+    }
+   ]
   },
   {
    "t": "True Blood",
@@ -520,7 +600,8 @@ const SITE={
    "d": "",
    "p": "pasted-1782860315336.png",
    "clip": "",
-   "note": ""
+   "note": "",
+   "clips": []
   },
   {
    "t": "Good Christian Belles",
@@ -530,7 +611,8 @@ const SITE={
    "d": "",
    "p": "pasted-1782861854003.png",
    "clip": "",
-   "note": ""
+   "note": "",
+   "clips": []
   },
   {
    "t": "The Tunnel",
@@ -540,7 +622,8 @@ const SITE={
    "d": "",
    "p": "pasted-1782862426719.png",
    "clip": "",
-   "note": ""
+   "note": "",
+   "clips": []
   },
   {
    "t": "Rizzoli & Isles (pilot)",
@@ -550,7 +633,8 @@ const SITE={
    "d": "",
    "p": "pasted-1782861897230.png",
    "clip": "",
-   "note": ""
+   "note": "",
+   "clips": []
   },
   {
    "t": "Selfless",
@@ -560,7 +644,13 @@ const SITE={
    "d": "",
    "p": "pasted-1782859664134.png",
    "clip": "media/amr2r0kbjxqmy__SELFLESS.mp4",
-   "note": ""
+   "note": "",
+   "clips": [
+    {
+     "src": "media/amr2r0kbjxqmy__SELFLESS.mp4",
+     "t": ""
+    }
+   ]
   },
   {
    "t": "Hidden Truth",
@@ -570,7 +660,8 @@ const SITE={
    "d": "",
    "p": "pasted-1782858474180.png",
    "clip": "",
-   "note": ""
+   "note": "",
+   "clips": []
   },
   {
    "t": "A Life Lived",
@@ -580,7 +671,8 @@ const SITE={
    "d": "",
    "p": "pasted-1782859612032.png",
    "clip": "",
-   "note": ""
+   "note": "",
+   "clips": []
   },
   {
    "t": "Bacardi",
@@ -590,7 +682,8 @@ const SITE={
    "d": "",
    "p": "pasted-1782862683363.png",
    "clip": "",
-   "note": ""
+   "note": "",
+   "clips": []
   },
   {
    "t": "Demon Lake",
@@ -600,7 +693,13 @@ const SITE={
    "d": "",
    "p": "pasted-1782862250813.png",
    "clip": "media/amr2r19nzf3hw__DEMON_LAKE.mp4",
-   "note": ""
+   "note": "",
+   "clips": [
+    {
+     "src": "media/amr2r19nzf3hw__DEMON_LAKE.mp4",
+     "t": ""
+    }
+   ]
   },
   {
    "t": "The Holy Ghost People",
@@ -610,7 +709,13 @@ const SITE={
    "d": "",
    "p": "pasted-1782860146370.png",
    "clip": "media/amr2rfzpprski__HOLY_GHOST_PEOPLE.webm",
-   "note": ""
+   "note": "",
+   "clips": [
+    {
+     "src": "media/amr2rfzpprski__HOLY_GHOST_PEOPLE.webm",
+     "t": ""
+    }
+   ]
   },
   {
    "t": "Glow",
@@ -620,7 +725,13 @@ const SITE={
    "d": "",
    "p": "pasted-1782860184185.png",
    "clip": "media/amr2rb47j5ffx__GLOW.webm",
-   "note": ""
+   "note": "",
+   "clips": [
+    {
+     "src": "media/amr2rb47j5ffx__GLOW.webm",
+     "t": ""
+    }
+   ]
   },
   {
    "t": "Twist of Fate",
@@ -630,7 +741,8 @@ const SITE={
    "d": "",
    "p": "pasted-1782862314703.png",
    "clip": "",
-   "note": ""
+   "note": "",
+   "clips": []
   },
   {
    "t": "2001 Maniacs",
@@ -640,7 +752,8 @@ const SITE={
    "d": "",
    "p": "pasted-1782860503005.png",
    "clip": "",
-   "note": ""
+   "note": "",
+   "clips": []
   },
   {
    "t": "The Works",
@@ -650,7 +763,8 @@ const SITE={
    "d": "",
    "p": "pasted-1782860577159.png",
    "clip": "",
-   "note": ""
+   "note": "",
+   "clips": []
   },
   {
    "t": "61*",
@@ -660,7 +774,8 @@ const SITE={
    "d": "",
    "p": "pasted-1782860257491.png",
    "clip": "",
-   "note": ""
+   "note": "",
+   "clips": []
   },
   {
    "t": "Most Likely to Murder",
@@ -670,7 +785,8 @@ const SITE={
    "d": "",
    "p": "pasted-1782862172616.png",
    "clip": "",
-   "note": ""
+   "note": "",
+   "clips": []
   },
   {
    "t": "Earth Fall",
@@ -680,7 +796,13 @@ const SITE={
    "d": "",
    "p": "pasted-1782862066449.png",
    "clip": "media/amr2r8u6agxj2__EARTHFALL.webm",
-   "note": ""
+   "note": "",
+   "clips": [
+    {
+     "src": "media/amr2r8u6agxj2__EARTHFALL.webm",
+     "t": ""
+    }
+   ]
   },
   {
    "t": "A Green Story",
@@ -690,7 +812,8 @@ const SITE={
    "d": "",
    "p": "pasted-1782862013464.png",
    "clip": "",
-   "note": ""
+   "note": "",
+   "clips": []
   },
   {
    "t": "Poolboy: Drowning Out the Fury",
@@ -700,7 +823,8 @@ const SITE={
    "d": "",
    "p": "pasted-1782861953819.png",
    "clip": "",
-   "note": ""
+   "note": "",
+   "clips": []
   }
  ],
  "films": [
@@ -917,7 +1041,7 @@ function render(){
  document.getElementById('wall').innerHTML=WORK.map(function(w,i){
   return '<button class="pcard" onclick="openCredit('+i+')" aria-label="'+esc(w.t)+'">'+
    '<div class="part">'+(w.p?'<img src="'+esc(srcFor(/^(media\/|idb:)/.test(w.p)?w.p:'media/'+w.p))+'" alt="'+esc(w.t)+'" loading="lazy">':'')+
-   (w.clip?'<span class="playdot">&#9654;</span>':'')+'</div>'+
+   ((w.clips&&w.clips.length)||w.clip?'<span class="playdot">&#9654;</span>':'')+'</div>'+
    '<div class="pmeta"><b>'+esc(w.t)+'</b>'+
     '<span class="pch">'+esc(w.ch||'')+'</span>'+
     '<span class="pbits">'+esc([w.r,w.n].filter(Boolean).join(' \u00b7 '))+'</span></div></button>';
@@ -1020,58 +1144,70 @@ function openProject(i){
 }
 window.openProject=openProject;
 
+/* A credit can hold several scenes. Nine minutes off a show is not one clip, it is
+   four - and they belong to the same credit rather than being crammed into a single
+   file or split across fake entries. One older field, clip, is still read so nothing
+   already published disappears. */
+function clipsOf(c){
+ if(c.clips&&c.clips.length) return c.clips;
+ if(c.clip) return [{src:c.clip,t:''}];
+ return [];
+}
+var VCUR=0;
 function openCredit(i){
  const c=WORK[i]; if(!c)return;
  document.getElementById('vch').textContent=c.ch||'';
- document.getElementById('vt').textContent=c.t||'';   // textContent also wipes any script markup a project left behind
+ document.getElementById('vt').textContent=c.t||'';
  document.getElementById('vs').textContent=[c.r,c.n,c.d?'dir. '+c.d:''].filter(Boolean).join(' \u00b7 ');
- /* A clip path can be written into the page before the file is uploaded - that is
-    the point, so footage can go in one at a time whenever there is time for it. Until
-    the file lands the card falls back to its key art and says so, rather than opening
-    onto a black rectangle with no explanation. The play dot goes too, so the page
-    stops promising something it cannot show. */
- var poster=c.p?'<img src="'+srcFor(/^(media\/|idb:)/.test(c.p)?c.p:'media/'+c.p)+'" alt="">':'';
- document.getElementById('vbody').innerHTML = c.clip
-   ? '<video src="'+srcFor(c.clip)+'" controls autoplay playsinline></video>'
-   : (c.p ? poster+'<div class="vnone">No clip on file for this one yet.</div>' : '');
- if(c.clip){
-  /* Files get uploaded to whichever folder was open at the time, and GitHub will not
-     move a video once it is there - the web editor cannot rename a binary. So rather
-     than making that your problem, a clip that is not where the page expects is
-     looked for in the other obvious place before giving up. */
-  var vv=document.getElementById('vbody').querySelector('video');
-  if(vv){
-   var tried=0;
-   var alt=function(p){
-    if(/^media\//.test(p)) return p.slice(6);      // media/x.mp4 -> x.mp4
-    if(!/^https?:/.test(p)) return 'media/'+p;      // x.mp4 -> media/x.mp4
-    return null;
-   };
-   vv.addEventListener('error',function(){
-    var next = tried===0 ? alt(c.clip) : null;
-    tried++;
-    if(next){ vv.src=next; vv.load(); return; }
-    document.getElementById('vbody').innerHTML=
-      poster+'<div class="vnone">This one is not uploaded yet.</div>';
-    var dot=document.querySelectorAll('.pcard')[i];
-    if(dot){ var d=dot.querySelector('.playdot'); if(d)d.style.display='none'; }
-    dropZone(i);
-   });
-  }
- }
- dropZone(i);
- /* Optional context on the credit - what the scene was, who was in it, anything
-    worth knowing. Absent on most, and absent means nothing is drawn. */
+ VCUR=0;
+ paintCredit(i);
  var nt=document.getElementById('vnote');
  nt.textContent=c.note||'';
  nt.style.display=c.note?'':'none';
  document.getElementById('viewer').classList.add('on');
  document.body.style.overflow='hidden';
 }
-/* While editing, the card you are looking at is where you put the clip. Opening a
-   credit, seeing there is nothing there and having to go back out to a panel to fix
-   it is one step too many - the thing is right in front of you, so the control is
-   too. Nothing is drawn unless edit mode is on. */
+function playScene(i,n){ VCUR=n; paintCredit(i); }
+window.playScene=playScene;
+
+function paintCredit(i){
+ var c=WORK[i]; if(!c)return;
+ var list=clipsOf(c), body=document.getElementById('vbody');
+ var poster=c.p?'<img src="'+srcFor(/^(media\/|idb:)/.test(c.p)?c.p:'media/'+c.p)+'" alt="">':'';
+ if(!list.length){
+  body.innerHTML = poster ? poster+'<div class="vnone">No clip on file for this one yet.</div>' : '';
+  dropZone(i); return;
+ }
+ if(VCUR>=list.length) VCUR=0;
+ var cur=list[VCUR];
+ /* A row of scenes only when there is more than one - a single clip needs no menu. */
+ var tabs = list.length>1
+  ? '<div class="scenes">'+list.map(function(x,n){
+      return '<button class="scn'+(n===VCUR?' on':'')+'" onclick="playScene('+i+','+n+')">'+
+             esc(x.t||('Scene '+(n+1)))+'</button>'; }).join('')+'</div>'
+  : '';
+ body.innerHTML='<video src="'+srcFor(cur.src)+'" controls autoplay playsinline></video>'+tabs;
+ var vv=body.querySelector('video');
+ if(vv){
+  var tried=0;
+  var alt=function(p){
+   if(/^media\//.test(p)) return p.slice(6);
+   if(!/^https?:/.test(p)) return 'media/'+p;
+   return null;
+  };
+  vv.addEventListener('error',function(){
+   var next = tried===0 ? alt(cur.src) : null;
+   tried++;
+   if(next){ vv.src=next; vv.load(); return; }
+   body.innerHTML = poster+'<div class="vnone">This one is not uploaded yet.</div>'+tabs;
+   var card=document.querySelectorAll('.pcard')[i];
+   if(card && list.length===1){ var d=card.querySelector('.playdot'); if(d)d.style.display='none'; }
+   dropZone(i);
+  });
+ }
+ dropZone(i);
+}
+
 function dropZone(i){
  if(!window.EB || !window.EB.clip) return;
  var body=document.getElementById('vbody'); if(!body)return;
@@ -1404,7 +1540,14 @@ css.textContent=
  "min-height:38px;padding:9px 13px;border:1px solid var(--blue);background:transparent;color:var(--blue);cursor:pointer}"+
 "#ebtrim .b.go{background:var(--salmon);border-color:var(--salmon);color:#fff}"+
 "#ebtrim .b.bad{border-color:var(--salmon);color:var(--salmon)}"+
-"#ebtrim .b:disabled{opacity:.4;cursor:default}";
+"#ebtrim .b:disabled{opacity:.4;cursor:default}"+
+"#eb .scl{margin:6px 0 2px}"+
+"#eb .scr{display:grid;grid-template-columns:1fr auto;gap:6px 9px;align-items:center;"+
+ "padding:7px 0;border-top:1px solid var(--hair)}"+
+"#eb .scr input{font-size:13px;padding:5px 8px}"+
+"#eb .scr .st{grid-column:1/-1;margin:0;word-break:break-all}"+
+"#eb .scr .scb{display:flex;gap:4px}"+
+"#eb .scr .scb .b{min-height:26px;padding:3px 7px;font-size:9px}";
 document.head.appendChild(css);
 
 var E=function(x){return String(x==null?'':x).replace(/[&<>"]/g,function(m){
@@ -1550,11 +1693,11 @@ function askTrim(file,label,isReel){
    w.querySelector('#tSv').textContent=fmtT(a);
    w.querySelector('#tEv').textContent=fmtT(b);
    var pl=trimPlan(len,isReel);
-   var ok=pl.mb<=22;
+   /* The size is shown, not enforced. What GitHub will actually swallow has moved
+      twice on us, so the number is put in front of him and the choice left his. */
    w.querySelector('#tInfo').innerHTML=
     '<b>'+fmtT(len)+'</b> \u00b7 about <b>'+pl.mb.toFixed(1)+' MB</b> at '+pl.h+'p'+
-    (ok?'':' \u00b7 <span style="color:var(--salmon)">still too long to publish</span>');
-   w.querySelector('#tOK').disabled=!ok;
+    (pl.mb>22?' \u00b7 <span style="color:var(--salmon)">big \u2014 publishing may refuse it</span>':'');
   }
   v.onloadedmetadata=function(){ dur=isFinite(v.duration)?v.duration:0; upd(); };
   S.oninput=upd.bind(S); Eh.oninput=upd.bind(Eh);
@@ -1680,10 +1823,9 @@ function draw(){
     '<div><input type="text" value="'+E(w.t)+'" oninput="EB.setW('+i+',\'t\',this.value)">'+
     '<div class="two"><div>'+ish('Character',w.ch,i,'ch')+'</div><div>'+ish('Role',w.r,i,'r')+'</div>'+
     '<div>'+ish('Network',w.n,i,'n')+'</div><div>'+ish('Director',w.d,i,'d')+'</div></div>'+
-    '<div class="st">'+(w.clip?'clip: '+E(w.clip.split('/').pop()):'no clip')+'</div>'+
+    sceneList(w,i)+
     '<div class="rowb"><button class="b" onclick="EB.poster('+i+')">Poster</button>'+
-    '<button class="b" onclick="EB.clip('+i+')">'+(w.clip?'Replace clip':'Add clip')+'</button>'+
-    (w.clip?'<button class="b" onclick="EB.noclip('+i+')">No clip</button>':'')+
+    '<button class="b" onclick="EB.clip('+i+')">+ Add a scene</button>'+
     '<button class="b" onclick="EB.mv('+i+',-1)">&uarr;</button>'+
     '<button class="b" onclick="EB.mv('+i+',1)">&darr;</button>'+
     '<button class="b bad" onclick="EB.rm('+i+')">Delete</button></div></div></div>';
@@ -1744,6 +1886,23 @@ function draw(){
   }).join('');
  }
  c.innerHTML=h; status();
+}
+/* Every scene on a credit, named and ordered. A clip with no name shows as Scene 1,
+   Scene 2 - which is right far more often than making him type it. */
+function sceneList(w,i){
+ var L=(w.clips&&w.clips.length)?w.clips:(w.clip?[{src:w.clip,t:''}]:[]);
+ if(!L.length) return '<div class="st">no scenes yet</div>';
+ return '<div class="scl">'+L.map(function(x,n){
+  return '<div class="scr">'+
+   '<input type="text" value="'+E(x.t||'')+'" placeholder="Scene '+(n+1)+'" '+
+   'oninput="EB.setScene('+i+','+n+',this.value)">'+
+   '<span class="st">'+E(mediaLabel(x.src))+'</span>'+
+   '<span class="scb">'+
+    (n>0?'<button class="b" onclick="EB.mvScene('+i+','+n+',-1)">&uarr;</button>':'')+
+    (n<L.length-1?'<button class="b" onclick="EB.mvScene('+i+','+n+',1)">&darr;</button>':'')+
+    '<button class="b bad" onclick="EB.rmScene('+i+','+n+')">Remove</button>'+
+   '</span></div>';
+ }).join('')+'</div>';
 }
 function ish(lab,v,i,k){
  return '<label>'+lab+'</label><input type="text" value="'+E(v||'')+'" oninput="EB.setW('+i+',\''+k+'\',this.value)">';
@@ -1809,7 +1968,7 @@ window.EB={
  mvPhoto:function(i,d){ var j=i+d; if(j<0||j>=SITE.photos.length)return;
   var a=SITE.photos,t=a[i]; a[i]=a[j]; a[j]=t; redraw(); },
  clr:function(k){ SITE[k]=''; redraw(); },
- noclip:function(i){ SITE.work[i].clip=''; redraw(); },
+ noclip:function(i){ SITE.work[i].clip=''; SITE.work[i].clips=[]; redraw(); },
  pic:async function(k){ var f=await askFile('image/*'); if(!f.length)return;
   try{ SITE[k]=await addImage(f[0]); redraw(); }catch(e){ alert(e.message); } },
  poster:async function(i){ var f=await askFile('image/*'); if(!f.length)return;
@@ -1828,6 +1987,19 @@ window.EB={
   redraw(); },
  clip:async function(i,then){ var f=await askFile('video/*'); if(!f.length)return;
   await EB.clipFile(i,f[0],then); },
+ setScene:function(i,n,v){ var L=EB._list(i); if(L[n]) L[n].t=v; mark(); },
+ rmScene:function(i,n){ var L=EB._list(i);
+  if(L[n]){ if(L[n].src&&L[n].src.indexOf('idb:')===0) delete NEW[L[n].src]; L.splice(n,1); }
+  SITE.work[i].clip=''; redraw(); },
+ mvScene:function(i,n,d){ var L=EB._list(i), j=n+d;
+  if(j<0||j>=L.length) return;
+  var t=L[n]; L[n]=L[j]; L[j]=t; redraw(); },
+ /* One place that guarantees a credit has a clips array to work with. */
+ _list:function(i){
+  var w=SITE.work[i];
+  if(!w.clips||!w.clips.length) w.clips = w.clip ? [{src:w.clip,t:''}] : [];
+  return w.clips;
+ },
  /* Shared by the button and by dropping a file onto the card. */
  clipFile:async function(i,file,then){
   if(!/^video\//.test(file.type||'') && !/\.(mp4|mov|m4v|webm)$/i.test(file.name||'')){
@@ -1837,7 +2009,11 @@ window.EB={
    var trim=null, secs=await videoSeconds(file);
    /* Anything past two minutes gets the choice. Below that it already fits. */
    if(secs>120) { trim=await askTrim(file,SITE.work[i].t,false); if(trim===null) return; }
-   SITE.work[i].clip=await addVideo(file,SITE.work[i].t,false,trim); redraw();
+   var src=await addVideo(file,SITE.work[i].t,false,trim);
+   var L=EB._list(i);
+   L.push({src:src,t:''});
+   SITE.work[i].clip='';          // the list is the truth now
+   redraw();
    if(then) then(); }
   catch(e){ busy(false); alert(e.message); } },
  reelLink:function(){
