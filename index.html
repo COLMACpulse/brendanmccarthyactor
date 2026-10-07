@@ -1540,6 +1540,8 @@ css.textContent=
 "#ebtrim .tmark input{font-family:var(--mono);font-size:13px;padding:7px 9px;width:100%}"+
 "#ebtrim .b.mk{border-color:var(--ink);color:var(--ink)}"+
 "#ebtrim .thint{font-family:var(--mono);font-size:10px;color:var(--grey);margin-top:10px;line-height:1.7}"+
+"#ebtrim .tsave{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--grey);margin:10px 0 2px;cursor:pointer}"+
+"#ebtrim .tsave input{width:16px;height:16px;accent-color:var(--salmon)}"+
 "#ebtrim .trow{display:grid;grid-template-columns:48px 1fr 56px;gap:10px;align-items:center;margin:0 0 9px}"+
 "#ebtrim .trow span{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--grey)}"+
 "#ebtrim .trow i{font-family:var(--mono);font-size:12px;font-style:normal;text-align:right}"+
@@ -1700,6 +1702,7 @@ function askTrim(file,label,isReel){
       '<input type="text" id="tOutV" value="0:00.00">'+
     '</div>'+
     '<div class="tinfo" id="tInfo"></div>'+
+    '<label class="tsave"><input type="checkbox" id="tSave"> also save a copy to my computer</label>'+
     '<div class="trowb">'+
       '<button class="b" id="tPrev">Play the range</button>'+
       '<button class="b" id="tAll">Whole thing</button>'+
@@ -1830,8 +1833,10 @@ function askTrim(file,label,isReel){
    try{v.pause()}catch(e){} try{URL.revokeObjectURL(url)}catch(e){}
    w.parentNode.removeChild(w); resolve(r);
   }
-  w.querySelector('#tAll').onclick=function(){ done({start:0,end:0}); };
-  w.querySelector('#tOK').onclick=function(){ done({start:IN,end:Math.max(0,dur-OUT)}); };
+  w.querySelector('#tAll').onclick=function(){
+   done({start:0,end:0,save:w.querySelector('#tSave').checked}); };
+  w.querySelector('#tOK').onclick=function(){
+   done({start:IN,end:Math.max(0,dur-OUT),save:w.querySelector('#tSave').checked}); };
   w.querySelector('#tX').onclick=function(){ done(null); };
  });
 }
@@ -1865,6 +1870,18 @@ async function addVideo(file,label,isReel,trim){
  }
  var id=newId(); MEDIA[id]={id:id,blob:blob,name:name};
  await DB.putMedia(id,blob,name);
+ /* A cut he asked to keep. The encoded file already exists here, so handing him a
+    copy costs nothing and saves cutting the same range a second time. */
+ if(trim&&trim.save){
+  try{
+   var a=document.createElement('a');
+   a.href=URL.createObjectURL(blob);
+   a.download=String(label||'clip').toLowerCase().replace(/[^a-z0-9]+/g,'-')
+     .replace(/^-|-$/g,'').slice(0,40)+'-'+fmtT(trim.start||0).replace(/[:.]/g,'')+'.mp4';
+   a.click();
+   setTimeout(function(){ URL.revokeObjectURL(a.href); },6000);
+  }catch(e){}
+ }
  return 'idb:'+id;
 }
 
