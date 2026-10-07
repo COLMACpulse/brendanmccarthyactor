@@ -1,0 +1,24 @@
+This is the page and every image. Your video is already in the repo and
+is not in here - there was no need to move 153 MB around.
+
+Drag index.html, media/ and .nojekyll into the repo and commit.
+Overwrite when it asks. The page will be correct and live.
+
+  index.html   your whole page, editor included.
+               Edit it at brendanmccarthyactor.com/index.html#edit
+  media/       every image the page uses.
+
+WHAT THIS DOES NOT DO
+  It cannot delete anything. Dragging files into GitHub adds and
+  overwrites - it never removes. So the duplicate posters, the old
+  videos at the root and both copies of Brendan_McCarthy_Resume.pdf
+  are still there after this. Removing them needs a delete, and a
+  zip cannot do a delete. See the message this came with.
+
+EDITING, FROM NOW ON
+  One address: index.html#edit - there is no edit.html any more.
+  Change what you like, press Publish. The editor stays in the page,
+  so #edit keeps working after every publish.
+
+  When you are finished and want the editor out of the public page,
+  the Publish tab has "Publish without the editor" at the bottom.
