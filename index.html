@@ -1073,7 +1073,34 @@ function render(){
   '<div class="fline">'+esc(S.footer||'')+
   (S.email?' &nbsp;&middot;&nbsp; <a href="mailto:'+esc(S.email)+'">'+esc(S.email)+'</a>':'')+'</div>';
 }
-render();
+/* ---------- where the content comes from ----------
+   The SITE block above is a seed, not the truth. The truth is site.json, written
+   every time you publish.
+
+   They were the same thing until now, and that cost real work. Every index.html
+   built for you carries whatever your page looked like when it was built, so
+   dragging a new one in to get a new feature silently rolled your content back to
+   that moment. It happened twice in one morning: five photos published at 10:20 and
+   gone by 10:41, published again at 11:09 and gone by 11:33, both times because the
+   next file replaced them with a stale copy of themselves.
+
+   So the page asks site.json first and only falls back to the seed when there is no
+   site.json to read - a fresh checkout, or a copy opened from a hard drive. Code and
+   content can now travel separately, which is the only arrangement where handing you
+   a new build is a safe thing to do. */
+var SITE_READY=(async function(){
+ try{
+  var r=await fetch('site.json?t='+Date.now(),{cache:'no-store'});
+  if(r.ok){
+   var live=await r.json();
+   if(live && typeof live==='object' && live.name){
+    for(var k in SITE) delete SITE[k];
+    for(var k2 in live) SITE[k2]=live[k2];
+   }
+  }
+ }catch(e){ /* no site.json yet, or opened from a file:// path. The seed stands. */ }
+ render();
+})();
 
 /* Opens in the same overlay the credits use. It shows what exists and says so when
    nothing does - a card that opens onto an empty box is worse than a card that does
@@ -2754,6 +2781,10 @@ async function bakeFiles(mode){
     should BE the published page - same paths, no leftover blobs - or every reload
     asks which of two identical versions you want. */
  LASTBAKE={site:out, ids:Object.keys(map).map(function(k){return k.slice(4);})};
+ /* The content, as its own file. This is what the page actually reads on load, and
+    it is the reason a new index.html can no longer overwrite your work. */
+ files.push({name:'site.json',
+   data:new TextEncoder().encode(JSON.stringify(out,null,1))});
  /* Serialise a clone with the editor's own furniture taken out.
     The panel, the progress overlay and the injected stylesheet are added to the page
     at runtime, so by the time we read the DOM they are part of it. Cutting the script
@@ -3076,6 +3107,10 @@ async function publish(mode){
 
 /* ---------- start ---------- */
 (async function(){
+ /* Whatever site.json says has to be in SITE before any of this reads it, or the
+    editor would be editing the seed and the first save would write the stale copy
+    straight back over the real content. */
+ try{ await SITE_READY; }catch(e){}
  MEDIA=await DB.allMedia();
  TOKEN=await DB.getMeta('ghtoken');
  var mm=await DB.getMeta('pubmb'); if(mm>0){ PUBMB=mm; MEASURED=true; }

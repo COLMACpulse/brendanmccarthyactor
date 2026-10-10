@@ -1,0 +1,591 @@
+{
+ "name": "Brendan McCarthy",
+ "lane": "Actor · Writer · Filmmaker",
+ "headshot": "media/headshot1.jpg",
+ "facts": [
+  [
+   "Union",
+   "SAG-AFTRA"
+  ],
+  [
+   "Management",
+   "SK Management"
+  ],
+  [
+   "IMDb",
+   "https://www.imdb.com/name/nm0995100/"
+  ],
+  [
+   "Email",
+   "hello@brendanmccarthyactor.com"
+  ]
+ ],
+ "email": "hello@brendanmccarthyactor.com",
+ "reel": "media/amr10t20k6rjn-brendan-mccarthy-performance-ree.mp4",
+ "reelPoster": "",
+ "work": [
+  {
+   "t": "A GUNMAN'S HAND",
+   "ch": "JOHN WESLEY HARDIN",
+   "r": "LEAD",
+   "n": "NEW SKYLINE ENTERTAINMENT",
+   "d": "BRENDAN McCARTHY",
+   "p": "media/pasted-1782863507297.png",
+   "clip": "media/amr2sjb4119dw__GUNMAN_S_HAND_-_REEL.mp4",
+   "note": "",
+   "clips": [
+    {
+     "src": "media/amr2sjb4119dw__GUNMAN_S_HAND_-_REEL.mp4",
+     "t": ""
+    }
+   ]
+  },
+  {
+   "t": "Frisco King",
+   "ch": "OFFICER RAWLINS",
+   "r": "Guest Star",
+   "n": "Paramount+",
+   "d": "",
+   "p": "media/pasted-1782863080478.png",
+   "clip": "",
+   "note": "",
+   "clips": []
+  },
+  {
+   "t": "Grotesquerie",
+   "ch": "NICK",
+   "r": "Guest Star",
+   "n": "FX",
+   "d": "",
+   "p": "media/pasted-1782858289716.png",
+   "clip": "media/amr2qn0w3mx5m__GROTESQUERIE.mp4",
+   "note": "",
+   "clips": [
+    {
+     "src": "media/amr2qn0w3mx5m__GROTESQUERIE.mp4",
+     "t": ""
+    }
+   ]
+  },
+  {
+   "t": "The Rookie: Feds",
+   "ch": "PAXTON",
+   "r": "Guest Star",
+   "n": "ABC",
+   "d": "",
+   "p": "media/pasted-1782859268251.png",
+   "clip": "media/amr2qoyt8atmi__THE_ROOKIE__FEDS_Scene1.mp4",
+   "note": "",
+   "clips": [
+    {
+     "src": "media/amr2qoyt8atmi__THE_ROOKIE__FEDS_Scene1.mp4",
+     "t": "Scene 1"
+    },
+    {
+     "src": "media/amr2qoeqyuga7__THE_ROOKIE__FEDS_Scene_2.mp4",
+     "t": "Scene 2"
+    }
+   ]
+  },
+  {
+   "t": "911 - Lone Star",
+   "ch": "CRAIG",
+   "r": "Guest Star",
+   "n": "FOX",
+   "d": "",
+   "p": "media/pasted-1782858149095.png",
+   "clip": "media/amr2qpwjfer0z__911__LONE_STAR.mp4",
+   "note": "",
+   "clips": [
+    {
+     "src": "media/amr2qpwjfer0z__911__LONE_STAR.mp4",
+     "t": ""
+    }
+   ]
+  },
+  {
+   "t": "American Horror Story",
+   "ch": "DETECTIVE MONROE",
+   "r": "Guest Star",
+   "n": "FX",
+   "d": "",
+   "p": "media/pasted-1782858219172.png",
+   "clip": "media/amr2qqfama8yv__AMERICAN_HORROR_STORY.mp4",
+   "note": "",
+   "clips": [
+    {
+     "src": "media/amr2qqfama8yv__AMERICAN_HORROR_STORY.mp4",
+     "t": ""
+    }
+   ]
+  },
+  {
+   "t": "Shooter",
+   "ch": "BO WINNICK",
+   "r": "Recurring Guest Star (5 eps)",
+   "n": "USA",
+   "d": "",
+   "p": "media/pasted-1782858345971.png",
+   "clip": "media/amr2qr7btojz8__SHOOTER.mp4",
+   "note": "",
+   "clips": [
+    {
+     "src": "media/amr2qr7btojz8__SHOOTER.mp4",
+     "t": ""
+    }
+   ]
+  },
+  {
+   "t": "NCIS",
+   "ch": "OWEN DIXON",
+   "r": "Guest Star",
+   "n": "CBS",
+   "d": "",
+   "p": "media/pasted-1782858398591.png",
+   "clip": "media/amr2r3nix9y6r__NCIS.mp4",
+   "note": "",
+   "clips": [
+    {
+     "src": "media/amr2r3nix9y6r__NCIS.mp4",
+     "t": ""
+    }
+   ]
+  },
+  {
+   "t": "Chicago PD",
+   "ch": "VINCE PARKER",
+   "r": "Guest Star",
+   "n": "NBC",
+   "d": "",
+   "p": "media/pasted-1782859984205.png",
+   "clip": "media/chicago-pd-153181.mp4",
+   "note": "",
+   "clips": [
+    {
+     "src": "media/chicago-pd-153181.mp4",
+     "t": ""
+    }
+   ]
+  },
+  {
+   "t": "Legends (pilot)",
+   "ch": "ELLROY STREETER",
+   "r": "Guest Star",
+   "n": "TNT",
+   "d": "",
+   "p": "media/pasted-1782860039775.png",
+   "clip": "media/legends.mp4",
+   "note": "",
+   "clips": [
+    {
+     "src": "media/legends.mp4",
+     "t": ""
+    }
+   ]
+  },
+  {
+   "t": "Defiance",
+   "ch": "HUNTER BELL",
+   "r": "Guest Star",
+   "n": "Syfy",
+   "d": "",
+   "p": "media/pasted-1782860089836.png",
+   "clip": "media/amr2qya5twlas__DEFIANCE.mp4",
+   "note": "",
+   "clips": [
+    {
+     "src": "media/amr2qya5twlas__DEFIANCE.mp4",
+     "t": ""
+    }
+   ]
+  },
+  {
+   "t": "The Mentalist",
+   "ch": "LANCE GLADSTONE",
+   "r": "Guest Star",
+   "n": "CBS",
+   "d": "",
+   "p": "media/pasted-1782860426261.png",
+   "clip": "media/the-mentalist-66741-1.mp4",
+   "note": "",
+   "clips": [
+    {
+     "src": "media/the-mentalist-66741-1.mp4",
+     "t": ""
+    }
+   ]
+  },
+  {
+   "t": "Justified",
+   "ch": "TANNER DODD",
+   "r": "Recurring Guest Star",
+   "n": "FX",
+   "d": "",
+   "p": "media/pasted-1782860362101.png",
+   "clip": "media/amr2r2y2n0sns__JUSTIFIED.mp4",
+   "note": "",
+   "clips": [
+    {
+     "src": "media/amr2r2y2n0sns__JUSTIFIED.mp4",
+     "t": ""
+    }
+   ]
+  },
+  {
+   "t": "True Blood",
+   "ch": "NATE",
+   "r": "Recurring",
+   "n": "HBO",
+   "d": "",
+   "p": "media/pasted-1782860315336.png",
+   "clip": "",
+   "note": "",
+   "clips": []
+  },
+  {
+   "t": "Good Christian Belles",
+   "ch": "",
+   "r": "Co-Star",
+   "n": "ABC",
+   "d": "",
+   "p": "media/pasted-1782861854003.png",
+   "clip": "",
+   "note": "",
+   "clips": []
+  },
+  {
+   "t": "Rizzoli & Isles (pilot)",
+   "ch": "THE APPRENTICE",
+   "r": "Guest Star",
+   "n": "TNT",
+   "d": "",
+   "p": "media/pasted-1782861897230.png",
+   "clip": "",
+   "note": "",
+   "clips": []
+  },
+  {
+   "t": "Selfless",
+   "ch": "ANTON 2",
+   "r": "Strong Supporting",
+   "n": "Tarsem Singh, Dir.",
+   "d": "",
+   "p": "media/pasted-1782859664134.png",
+   "clip": "media/amr2r0kbjxqmy__SELFLESS.mp4",
+   "note": "",
+   "clips": [
+    {
+     "src": "media/amr2r0kbjxqmy__SELFLESS.mp4",
+     "t": ""
+    }
+   ]
+  },
+  {
+   "t": "Hidden Truth",
+   "ch": "PACE",
+   "r": "Lead",
+   "n": "Steven R. Monroe, Dir.",
+   "d": "",
+   "p": "media/pasted-1782858474180.png",
+   "clip": "media/hidden-truth-360901.mp4",
+   "note": "",
+   "clips": [
+    {
+     "src": "media/hidden-truth-360901.mp4",
+     "t": ""
+    }
+   ]
+  },
+  {
+   "t": "A Life Lived",
+   "ch": "ALEX",
+   "r": "Lead",
+   "n": "Riley Wood, Dir.",
+   "d": "",
+   "p": "media/pasted-1782859612032.png",
+   "clip": "",
+   "note": "",
+   "clips": []
+  },
+  {
+   "t": "Bacardi",
+   "ch": "EMILIO BACARDI",
+   "r": "Emilio Bacardi",
+   "n": "Bacardi Ltd.",
+   "d": "",
+   "p": "media/pasted-1782862683363.png",
+   "clip": "",
+   "note": "",
+   "clips": []
+  },
+  {
+   "t": "Demon Lake",
+   "ch": "AUGGIE",
+   "r": "Lead",
+   "n": "Dragon Eye Films",
+   "d": "",
+   "p": "media/pasted-1782862250813.png",
+   "clip": "media/amr2r19nzf3hw__DEMON_LAKE.mp4",
+   "note": "",
+   "clips": [
+    {
+     "src": "media/amr2r19nzf3hw__DEMON_LAKE.mp4",
+     "t": ""
+    }
+   ]
+  },
+  {
+   "t": "The Holy Ghost People",
+   "ch": "",
+   "r": "Lead",
+   "n": "Mitchell Altieri, Dir.",
+   "d": "",
+   "p": "media/pasted-1782860146370.png",
+   "clip": "media/amr2rfzpprski__HOLY_GHOST_PEOPLE.webm",
+   "note": "",
+   "clips": [
+    {
+     "src": "media/amr2rfzpprski__HOLY_GHOST_PEOPLE.webm",
+     "t": ""
+    }
+   ]
+  },
+  {
+   "t": "Glow",
+   "ch": "THORNE",
+   "r": "Lead",
+   "n": "Douglas Jessup, Dir.",
+   "d": "",
+   "p": "media/pasted-1782860184185.png",
+   "clip": "media/amr2rb47j5ffx__GLOW.webm",
+   "note": "",
+   "clips": [
+    {
+     "src": "media/amr2rb47j5ffx__GLOW.webm",
+     "t": ""
+    }
+   ]
+  },
+  {
+   "t": "2001 Maniacs",
+   "ch": "RUFUS",
+   "r": "Lead",
+   "n": "Raw Nerve Prod.",
+   "d": "",
+   "p": "media/pasted-1782860503005.png",
+   "clip": "",
+   "note": "",
+   "clips": []
+  },
+  {
+   "t": "61*",
+   "ch": "JOHNNY BLANCHARD",
+   "r": "Co-Star",
+   "n": "Billy Crystal, Dir./HBO",
+   "d": "",
+   "p": "media/pasted-1782860257491.png",
+   "clip": "",
+   "note": "",
+   "clips": []
+  },
+  {
+   "t": "Most Likely to Murder",
+   "ch": "HARLEN",
+   "r": "",
+   "n": "Feature",
+   "d": "",
+   "p": "media/pasted-1782862172616.png",
+   "clip": "",
+   "note": "",
+   "clips": []
+  },
+  {
+   "t": "Earth Fall",
+   "ch": "CARL",
+   "r": "",
+   "n": "",
+   "d": "",
+   "p": "media/pasted-1782862066449.png",
+   "clip": "media/amr2r8u6agxj2__EARTHFALL.webm",
+   "note": "",
+   "clips": [
+    {
+     "src": "media/amr2r8u6agxj2__EARTHFALL.webm",
+     "t": ""
+    }
+   ]
+  },
+  {
+   "t": "A Green Story",
+   "ch": "THOMAS",
+   "r": "",
+   "n": "",
+   "d": "",
+   "p": "media/pasted-1782862013464.png",
+   "clip": "",
+   "note": "",
+   "clips": []
+  },
+  {
+   "t": "Poolboy: Drowning Out the Fury",
+   "ch": "PARAMEDIC SIR LARRY HAVERFORD",
+   "r": "",
+   "n": "",
+   "d": "",
+   "p": "media/pasted-1782861953819.png",
+   "clip": "",
+   "note": "",
+   "clips": []
+  }
+ ],
+ "films": [
+  {
+   "t": "A Gunman's Hand",
+   "s": "John Wesley Hardin",
+   "u": "https://youtu.be/o9ESqePAe1E",
+   "p": "media/gunmans-hand-poster.jpg"
+  },
+  {
+   "t": "The Law of the Land",
+   "s": "Written and directed by Brendan McCarthy",
+   "u": "https://youtu.be/B_b_EheKTU4",
+   "p": "media/law-of-the-land-poster.jpg"
+  }
+ ],
+ "writing": [
+  {
+   "t": "Gone Astray",
+   "s": "",
+   "status": "",
+   "material": "",
+   "p": "media/proj-gone-astray.jpg",
+   "u": "",
+   "bg": "#563e31",
+   "genre": "",
+   "format": "",
+   "comps": ""
+  },
+  {
+   "t": "The Devil's Paintbrush",
+   "s": "",
+   "status": "",
+   "material": "",
+   "p": "media/proj-devils-paintbrush.jpg",
+   "u": "",
+   "bg": "#887a63",
+   "genre": "",
+   "format": "",
+   "comps": ""
+  },
+  {
+   "t": "Just Released",
+   "s": "",
+   "status": "",
+   "material": "",
+   "p": "media/proj-just-released.jpg",
+   "u": "",
+   "bg": "#070604",
+   "genre": "",
+   "format": "",
+   "comps": ""
+  },
+  {
+   "t": "Stingaree",
+   "s": "",
+   "status": "",
+   "material": "",
+   "p": "media/proj-stingaree.jpg",
+   "u": "",
+   "bg": "#000000",
+   "genre": "",
+   "format": "",
+   "comps": ""
+  },
+  {
+   "t": "Swabbies",
+   "s": "",
+   "genre": "",
+   "format": "",
+   "comps": "",
+   "status": "",
+   "material": "",
+   "p": "media/proj-swabbies.jpg",
+   "bg": "#e7caa7",
+   "u": ""
+  },
+  {
+   "t": "Yoga Sucks",
+   "s": "",
+   "genre": "",
+   "format": "",
+   "comps": "",
+   "status": "",
+   "material": "",
+   "p": "media/proj-yoga-sucks.jpg",
+   "bg": "#bc9c68",
+   "u": ""
+  },
+  {
+   "t": "Dead Lift",
+   "s": "",
+   "genre": "",
+   "format": "",
+   "comps": "",
+   "status": "",
+   "material": "",
+   "p": "media/proj-dead-lift.jpg",
+   "bg": "#0c0d0d",
+   "u": ""
+  },
+  {
+   "t": "Buried Peace",
+   "s": "",
+   "genre": "",
+   "format": "",
+   "comps": "",
+   "status": "",
+   "material": "",
+   "p": "media/proj-buried-peace.jpg",
+   "bg": "#f8e5c0",
+   "u": ""
+  }
+ ],
+ "photos": [
+  "media/headshot1.jpg",
+  "media/headshot2.jpg",
+  "media/headshot3.jpg",
+  "media/0c547549-e927-425e-81c7954f031ab4bd.jpg",
+  "media/33c1b2bf-37b7-4b12-a71f907911e7696b.jpg",
+  "media/40a87a8f-f90b-d784-11254bc1546ad189.jpg",
+  "media/headshot7.jpg",
+  "media/headshot8.jpg"
+ ],
+ "footer": "SAG-AFTRA · SK MANAGEMENT",
+ "sigil": "media/sigil.png",
+ "reps": [
+  {
+   "label": "Management",
+   "name": "SK Management",
+   "who": "Sharon King",
+   "phone": "+1 310 980 0234",
+   "email": "skmanagementinc@gmail.com",
+   "place": "Los Angeles, CA",
+   "url": ""
+  },
+  {
+   "label": "Legal",
+   "name": "Yorn, Levine, Barnes, Krintzman, Rubenstein, Kohner, Endlich, Goodell & Gellman",
+   "who": "Gregg Gellman",
+   "phone": "+1 310 319 3968",
+   "email": "",
+   "place": "1999 Avenue of the Stars, 4th Floor, Los Angeles, CA 90067",
+   "url": "bmkylaw.com"
+  }
+ ],
+ "stills": [
+  "media/still-truck.jpg",
+  "media/still-car.jpg",
+  "media/still-western.jpg",
+  "media/still-drive.jpg"
+ ]
+}
