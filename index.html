@@ -339,7 +339,7 @@ footer#ftr{display:block}
 <section class="pad" id="secWriting"><div class="rule"><span class="lbl">Writing</span><span class="ct" id="ctWriting"></span><i></i></div>
  <div id="writing"><div class="projects" style="--pcols:4"><button class="proj" onclick="openProject(0)" aria-label="Gone Astray"><span class="part2" style="background:#563e31"><img src="media/proj-gone-astray.jpg" alt="Gone Astray" loading="lazy"></span></button><button class="proj" onclick="openProject(1)" aria-label="The Devil's Paintbrush"><span class="part2" style="background:#887a63"><img src="media/proj-devils-paintbrush.jpg" alt="The Devil's Paintbrush" loading="lazy"></span></button><button class="proj" onclick="openProject(2)" aria-label="Just Released"><span class="part2" style="background:#070604"><img src="media/proj-just-released.jpg" alt="Just Released" loading="lazy"></span></button><button class="proj" onclick="openProject(3)" aria-label="Stingaree"><span class="part2" style="background:#000000"><img src="media/proj-stingaree.jpg" alt="Stingaree" loading="lazy"></span></button><button class="proj" onclick="openProject(4)" aria-label="Swabbies"><span class="part2" style="background:#e7caa7"><img src="media/proj-swabbies.jpg" alt="Swabbies" loading="lazy"></span></button><button class="proj" onclick="openProject(5)" aria-label="Yoga Sucks"><span class="part2" style="background:#bc9c68"><img src="media/proj-yoga-sucks.jpg" alt="Yoga Sucks" loading="lazy"></span></button><button class="proj" onclick="openProject(6)" aria-label="Dead Lift"><span class="part2" style="background:#0c0d0d"><img src="media/proj-dead-lift.jpg" alt="Dead Lift" loading="lazy"></span></button><button class="proj" onclick="openProject(7)" aria-label="Buried Peace"><span class="part2" style="background:#f8e5c0"><img src="media/proj-buried-peace.jpg" alt="Buried Peace" loading="lazy"></span></button></div></div></section>
 <section class="pad" id="secPhotos"><div class="rule"><span class="lbl">Photographs</span><span class="ct" id="ctPhotos"></span><i></i></div>
- <div class="wall" id="photos" style="grid-template-columns:repeat(auto-fill,minmax(230px,1fr))"><img src="media/headshot1.jpg" alt="Brendan McCarthy" class="photo" loading="lazy"><img src="media/headshot2.jpg" alt="Brendan McCarthy" class="photo" loading="lazy"><img src="media/headshot3.jpg" alt="Brendan McCarthy" class="photo" loading="lazy"><img src="blob:https://colmacpulse.github.io/cd4806ac-1588-46a2-a615-ed9b9638ae0e" alt="Brendan McCarthy" class="photo" loading="lazy"><img src="blob:https://colmacpulse.github.io/1877b278-c92e-49f8-9809-756cbb0da5ed" alt="Brendan McCarthy" class="photo" loading="lazy"><img src="blob:https://colmacpulse.github.io/44bea1a1-9e0e-4951-ab6b-2297097f252c" alt="Brendan McCarthy" class="photo" loading="lazy"><img src="blob:https://colmacpulse.github.io/01926a89-2784-4da8-9327-bbcb8df92fa3" alt="Brendan McCarthy" class="photo" loading="lazy"><img src="blob:https://colmacpulse.github.io/9fc6f356-60b8-4971-863c-84a6ee0984b9" alt="Brendan McCarthy" class="photo" loading="lazy"></div></section>
+ <div class="wall" id="photos" style="grid-template-columns:repeat(auto-fill,minmax(230px,1fr))"><img src="media/headshot1.jpg" alt="Brendan McCarthy" class="photo" loading="lazy"><img src="media/headshot2.jpg" alt="Brendan McCarthy" class="photo" loading="lazy"><img src="media/headshot3.jpg" alt="Brendan McCarthy" class="photo" loading="lazy"></div></section>
 <footer class="pad" id="ftr" style="border-top:1px solid var(--hair);font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--grey)"><div class="reps"><div class="rep"><span class="rk">Management</span><b>SK Management</b><span>Sharon King</span><span><a href="tel:+13109800234">+1 310 980 0234</a></span><span><a href="mailto:skmanagementinc@gmail.com">skmanagementinc@gmail.com</a></span><span>Los Angeles, CA</span></div><div class="rep"><span class="rk">Legal</span><b>Yorn, Levine, Barnes, Krintzman, Rubenstein, Kohner, Endlich, Goodell &amp; Gellman</b><span>Gregg Gellman</span><span><a href="tel:+13103193968">+1 310 319 3968</a></span><span><a href="https://bmkylaw.com" target="_blank" rel="noopener">bmkylaw.com</a></span><span>1999 Avenue of the Stars, 4th Floor, Los Angeles, CA 90067</span></div></div><div class="fline">SAG-AFTRA · SK MANAGEMENT &nbsp;·&nbsp; <a href="mailto:hello@brendanmccarthyactor.com">hello@brendanmccarthyactor.com</a></div></footer>
 </main>
 
@@ -917,12 +917,7 @@ const SITE={
  "photos": [
   "media/headshot1.jpg",
   "media/headshot2.jpg",
-  "media/headshot3.jpg",
-  "media/0c547549-e927-425e-81c7954f031ab4bd.jpg",
-  "media/33c1b2bf-37b7-4b12-a71f907911e7696b.jpg",
-  "media/40a87a8f-f90b-d784-11254bc1546ad189.jpg",
-  "media/headshot7.jpg",
-  "media/headshot8.jpg"
+  "media/headshot3.jpg"
  ],
  "footer": "SAG-AFTRA · SK MANAGEMENT",
  "sigil": "media/sigil.png",
@@ -1602,9 +1597,20 @@ function mediaLabel(path){
 function mark(){ dirty=true; save(); status(); }
 function status(){
  var s=el('ebstat'); if(!s)return;
- var n=Object.keys(MEDIA).length;
- s.textContent=(dirty?'saved in this browser':'no changes yet')+(n?' \u00b7 '+n+' file'+(n===1?'':'s')+' not baked':'');
+ /* Count what publishing would actually send - the media the page points at - not
+    everything ever dropped into this browser. Those two numbers drifted far apart,
+    and the big one is alarming and means nothing. */
+ var used={};
+ (function scan(o){
+  if(Array.isArray(o)) return o.forEach(scan);
+  if(o&&typeof o==='object'){ for(var k in o) scan(o[k]); return; }
+  if(typeof o==='string'&&o.indexOf('idb:')===0 && MEDIA[o.slice(4)]) used[o.slice(4)]=1;
+ })(SITE);
+ var cnt=Object.keys(used).length;
+ s.textContent=(dirty?'saved in this browser':'no changes yet')+
+   (cnt?' \u00b7 '+cnt+' file'+(cnt===1?'':'s')+' to upload':'');
 }
+var LASTBAKE=null;
 var saveT=null;
 function save(){ clearTimeout(saveT); saveT=setTimeout(function(){
  DB.putMeta('site',SITE); DB.putMeta('siteAt',Date.now()); },350); }
@@ -2744,6 +2750,10 @@ async function bakeFiles(mode){
   return o;
  };
  out=swap(out);
+ /* Kept so a successful publish can adopt it. After the upload the browser copy
+    should BE the published page - same paths, no leftover blobs - or every reload
+    asks which of two identical versions you want. */
+ LASTBAKE={site:out, ids:Object.keys(map).map(function(k){return k.slice(4);})};
  /* Serialise a clone with the editor's own furniture taken out.
     The panel, the progress overlay and the injected stylesheet are added to the page
     at runtime, so by the time we read the DOM they are part of it. Cutting the script
@@ -3043,8 +3053,22 @@ async function publish(mode){
     body:{message:'Site update \u2014 '+new Date().toLocaleString(),tree:t.sha,parents:[parent]}});
   await gh('/git/refs/heads/'+REPO.branch,{method:'PATCH',body:{sha:c.sha}});
 
+  /* The upload landed, so the clips that were sitting in this browser are now files
+     on the site. Point the page at them and drop the blobs: keeping both means the
+     upload count never falls, and the next reload finds a browser copy and a
+     published file saying the same thing and asks you to choose between them. */
+  if(LASTBAKE){
+   for(var k in SITE) delete SITE[k];
+   for(var k2 in LASTBAKE.site) SITE[k2]=LASTBAKE.site[k2];
+   for(var z=0;z<LASTBAKE.ids.length;z++){
+    delete MEDIA[LASTBAKE.ids[z]];
+    try{ await DB.delMedia(LASTBAKE.ids[z]); }catch(e){}
+   }
+   await DB.putMeta('site',SITE); await DB.putMeta('siteAt',Date.now());
+   LASTBAKE=null;
+  }
   busy(false);
-  dirty=false; status();
+  dirty=false; render(); draw(); status();
   alert('Published.\n\n'+files.length+' files in one commit. GitHub Pages takes a\n'+
         'minute or two, then hard-refresh the site.');
  }catch(e){ busy(false); alert('Nothing was published.\n\n'+e.message); }
@@ -3060,13 +3084,28 @@ async function publish(mode){
     to "carry on", which is a coin flip - answering it wrong is how a published reel
     goes missing. So both are described before the choice is made. */
  var saved=await DB.getMeta('site');
+ /* Keys come back in whatever order each copy was built in, so they are compared
+    sorted. Two versions that match are not a choice worth interrupting anyone for. */
+ var canon=function(o){
+  return JSON.stringify(o,function(k,v){
+   if(v&&typeof v==='object'&&!Array.isArray(v)){
+    var r={}; Object.keys(v).sort().forEach(function(x){r[x]=v[x];}); return r; }
+   return v; });
+ };
+ if(saved && canon(saved)===canon(SITE)) saved=null;
  if(saved){
   var at=await DB.getMeta('siteAt');
   var when=at?new Date(at).toLocaleString():'an earlier session';
   var sum=function(o){
    var w=(o.work||[]), n=0;
    w.forEach(function(c){ n+=(c.clips&&c.clips.length)?c.clips.length:(c.clip?1:0); });
-   return (o.reel?'reel: yes':'reel: MISSING')+'  ·  '+w.length+' credits  ·  '+n+' clips';
+   /* Every section that can change gets a number. The old line listed reel, credits
+      and clips only - so adding five photos produced two summaries that read exactly
+      alike, and the choice between them decided whether the photos lived. */
+   return [(o.reel?'reel':'NO REEL'), w.length+' credits', n+' clips',
+           (o.photos||[]).length+' photos', (o.stills||[]).length+' stills',
+           (o.writing||[]).length+' writing', (o.films||[]).length+' films'
+          ].join('  ·  ');
   };
   if(confirm('Two versions of your page exist. Pick one.\n\n'+
    'A — the working copy saved in this browser\n'+
