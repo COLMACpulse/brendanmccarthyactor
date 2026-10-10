@@ -339,7 +339,7 @@ footer#ftr{display:block}
 <section class="pad" id="secWriting"><div class="rule"><span class="lbl">Writing</span><span class="ct" id="ctWriting"></span><i></i></div>
  <div id="writing"><div class="projects" style="--pcols:4"><button class="proj" onclick="openProject(0)" aria-label="Gone Astray"><span class="part2" style="background:#563e31"><img src="media/proj-gone-astray.jpg" alt="Gone Astray" loading="lazy"></span></button><button class="proj" onclick="openProject(1)" aria-label="The Devil's Paintbrush"><span class="part2" style="background:#887a63"><img src="media/proj-devils-paintbrush.jpg" alt="The Devil's Paintbrush" loading="lazy"></span></button><button class="proj" onclick="openProject(2)" aria-label="Just Released"><span class="part2" style="background:#070604"><img src="media/proj-just-released.jpg" alt="Just Released" loading="lazy"></span></button><button class="proj" onclick="openProject(3)" aria-label="Stingaree"><span class="part2" style="background:#000000"><img src="media/proj-stingaree.jpg" alt="Stingaree" loading="lazy"></span></button><button class="proj" onclick="openProject(4)" aria-label="Swabbies"><span class="part2" style="background:#e7caa7"><img src="media/proj-swabbies.jpg" alt="Swabbies" loading="lazy"></span></button><button class="proj" onclick="openProject(5)" aria-label="Yoga Sucks"><span class="part2" style="background:#bc9c68"><img src="media/proj-yoga-sucks.jpg" alt="Yoga Sucks" loading="lazy"></span></button><button class="proj" onclick="openProject(6)" aria-label="Dead Lift"><span class="part2" style="background:#0c0d0d"><img src="media/proj-dead-lift.jpg" alt="Dead Lift" loading="lazy"></span></button><button class="proj" onclick="openProject(7)" aria-label="Buried Peace"><span class="part2" style="background:#f8e5c0"><img src="media/proj-buried-peace.jpg" alt="Buried Peace" loading="lazy"></span></button></div></div></section>
 <section class="pad" id="secPhotos"><div class="rule"><span class="lbl">Photographs</span><span class="ct" id="ctPhotos"></span><i></i></div>
- <div class="wall" id="photos" style="grid-template-columns:repeat(auto-fill,minmax(230px,1fr))"><img src="media/headshot1.jpg" alt="Brendan McCarthy" class="photo" loading="lazy"><img src="media/headshot2.jpg" alt="Brendan McCarthy" class="photo" loading="lazy"><img src="media/headshot3.jpg" alt="Brendan McCarthy" class="photo" loading="lazy"></div></section>
+ <div class="wall" id="photos" style="grid-template-columns:repeat(auto-fill,minmax(230px,1fr))"><img src="media/headshot1.jpg" alt="Brendan McCarthy" class="photo" loading="lazy"><img src="media/headshot2.jpg" alt="Brendan McCarthy" class="photo" loading="lazy"><img src="media/headshot3.jpg" alt="Brendan McCarthy" class="photo" loading="lazy"><img src="blob:https://colmacpulse.github.io/9a292068-46b5-49e1-a468-ed0afe5163c9" alt="Brendan McCarthy" class="photo" loading="lazy"><img src="blob:https://colmacpulse.github.io/b7331cab-26a7-42ed-8837-6601e292a18d" alt="Brendan McCarthy" class="photo" loading="lazy"><img src="blob:https://colmacpulse.github.io/c1830b79-29e2-4754-b6fe-f7f41ea57786" alt="Brendan McCarthy" class="photo" loading="lazy"><img src="blob:https://colmacpulse.github.io/62464dfc-455e-4282-9939-7c30f847c1ad" alt="Brendan McCarthy" class="photo" loading="lazy"><img src="blob:https://colmacpulse.github.io/95a06329-70a5-46ff-992f-0af8ec3fc44b" alt="Brendan McCarthy" class="photo" loading="lazy"></div></section>
 <footer class="pad" id="ftr" style="border-top:1px solid var(--hair);font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--grey)"><div class="reps"><div class="rep"><span class="rk">Management</span><b>SK Management</b><span>Sharon King</span><span><a href="tel:+13109800234">+1 310 980 0234</a></span><span><a href="mailto:skmanagementinc@gmail.com">skmanagementinc@gmail.com</a></span><span>Los Angeles, CA</span></div><div class="rep"><span class="rk">Legal</span><b>Yorn, Levine, Barnes, Krintzman, Rubenstein, Kohner, Endlich, Goodell &amp; Gellman</b><span>Gregg Gellman</span><span><a href="tel:+13103193968">+1 310 319 3968</a></span><span><a href="https://bmkylaw.com" target="_blank" rel="noopener">bmkylaw.com</a></span><span>1999 Avenue of the Stars, 4th Floor, Los Angeles, CA 90067</span></div></div><div class="fline">SAG-AFTRA · SK MANAGEMENT &nbsp;·&nbsp; <a href="mailto:hello@brendanmccarthyactor.com">hello@brendanmccarthyactor.com</a></div></footer>
 </main>
 
@@ -395,11 +395,11 @@ const SITE={
    "n": "NEW SKYLINE ENTERTAINMENT",
    "d": "BRENDAN McCARTHY",
    "p": "media/pasted-1782863507297.png",
-   "clip": "media/amr2sjb4119dw__GUNMAN_S_HAND_-_REEL.mp4",
+   "clip": "",
    "note": "",
    "clips": [
     {
-     "src": "media/amr2sjb4119dw__GUNMAN_S_HAND_-_REEL.mp4",
+     "src": "media/gunman-s-hand-reel.mp4",
      "t": ""
     }
    ]
@@ -917,7 +917,12 @@ const SITE={
  "photos": [
   "media/headshot1.jpg",
   "media/headshot2.jpg",
-  "media/headshot3.jpg"
+  "media/headshot3.jpg",
+  "media/0c547549-e927-425e-81c7954f031ab4bd.jpg",
+  "media/33c1b2bf-37b7-4b12-a71f907911e7696b.jpg",
+  "media/40a87a8f-f90b-d784-11254bc1546ad189.jpg",
+  "media/headshot7.jpg",
+  "media/headshot8.jpg"
  ],
  "footer": "SAG-AFTRA · SK MANAGEMENT",
  "sigil": "media/sigil.png",
@@ -1688,22 +1693,9 @@ function fmtT(t){
  t=Math.max(0,Math.round(t||0));
  return Math.floor(t/60)+':'+String(t%60).padStart(2,'0');
 }
-/* The size a clip has to come in under to actually reach the site.
-
-   This was 21 MB, which was a guess, and it was wrong in the worst way: the encoder
-   aimed at 21 MB, hit it, and then publishing refused the result. The refusal arrives
-   as "401 Bad credentials", which sends you off regenerating a token that was never
-   the problem.
-
-   8.5 is not a guess. Everything in this repo that went up through the API is 8.1 MB
-   or smaller; everything larger got there by dragging it into GitHub's web uploader.
-   A 14 MB blob is refused. So the encoder now aims below the line that is known to
-   work, and anything still over it is stopped before the upload rather than after. */
-var PUBMB=8.5;
-
 function trimPlan(secs,isReel){
  var rate=isReel?2.4:1.8;
- if(secs>4) rate=Math.max(0.45,Math.min(isReel?3.0:2.4,(PUBMB*8)/secs));
+ if(secs>4) rate=Math.max(0.45,Math.min(isReel?3.0:2.4,(21*8)/secs));
  var h=720;
  if(rate<0.75)h=432; else if(rate<1.05)h=480; else if(rate<1.6)h=540;
  return {rate:rate,h:h,mb:rate*secs/8};
@@ -1809,7 +1801,7 @@ function askTrim(file,label,isReel){
    var pl=trimPlan(len,isReel);
    w.querySelector('#tInfo').innerHTML=
     '<b>'+tc(len)+'</b> \u00b7 about <b>'+pl.mb.toFixed(1)+' MB</b> at '+pl.h+'p'+
-    (pl.mb>PUBMB?' \u00b7 <span style="color:var(--salmon)">over '+PUBMB+' MB \u2014 too big to publish, cut it shorter</span>':'');
+    (pl.mb>22?' \u00b7 <span style="color:var(--salmon)">big \u2014 publishing may refuse it</span>':'');
   }
   v.addEventListener('loadedmetadata',function(){
    dur=isFinite(v.duration)?v.duration:0; OUT=dur;
@@ -2212,7 +2204,7 @@ function openCutBench(file,title){
 }
 
 async function addVideo(file,label,isReel,trim){
- var cap=PUBMB*MB, blob=file, name=file.name;
+ var cap=21*MB, blob=file, name=file.name;
  var trimmed=!!(trim&&(trim.start||trim.end));
  if(trimmed) cap=-1;                        // a trim always means a re-encode
  if(file.size>cap){
@@ -2860,21 +2852,12 @@ async function publish(mode){
     ceiling applies to what arrives, not to what is on disk - so the real limit is
     about 72 MB of actual file. Past that the request is dropped before it is even
     read, which comes back as a 401 and looks exactly like a bad token. It is not. */
- var LIMIT=Math.round(PUBMB*1.3*1048576);
+ var LIMIT=90*1048576;
  var big=files.filter(function(f){ return f.data.length>LIMIT; });
  if(big.length){ busy(false);
   alert('Too big to publish:\n\n  '+
-   big.map(function(f){return f.name+'   '+(f.data.length/1048576).toFixed(1)+' MB';}).join('\n  ')+
-   '\n\nAnything much over '+PUBMB+' MB comes back from GitHub as\n'+
-   '"401 Bad credentials", which is not what it sounds like \u2014 your\n'+
-   'token is fine. The upload is simply refused at that size.\n\n'+
-   'Two ways round it:\n'+
-   '  \u2022 Cut it shorter in the Cut tab. Twenty good seconds beats\n'+
-   '    two soft minutes, and it will be sharper at that size too.\n'+
-   '  \u2022 Or drag the file straight into GitHub\'s media/ folder on\n'+
-   '    the website, which takes up to 25 MB, then point the credit\n'+
-   '    at media/<the file name>.\n\n'+
-   'Nothing was published.');
+   big.map(function(f){return f.name+'   '+(f.data.length/1048576).toFixed(0)+' MB';}).join('\n  ')+
+   '\n\nThat is past what GitHub accepts at all.\n\nNothing was published.');
   return; }
 
  var total=files.reduce(function(a,f){return a+f.data.length;},0);
