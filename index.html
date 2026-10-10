@@ -1699,7 +1699,8 @@ function fmtT(t){
    or smaller; everything larger got there by dragging it into GitHub's web uploader.
    A 14 MB blob is refused. So the encoder now aims below the line that is known to
    work, and anything still over it is stopped before the upload rather than after. */
-var PUBMB=8.5;
+var PUBMB=8.5;        /* a guess, until the probe in the Publish tab replaces it */
+var MEASURED=false;   /* true once that number came from a real upload, not a hunch */
 
 function trimPlan(secs,isReel){
  var rate=isReel?2.4:1.8;
@@ -2384,6 +2385,15 @@ function draw(){
     '<button class="b" style="border-color:var(--salmon);color:var(--salmon)" '+
     'onclick="EB.publish()">Publish to the live site</button></div>';
   if(TOKEN) h+='<div style="margin-top:28px;border-top:1px solid var(--line);padding-top:18px">'+
+    '<label>How big a file can this actually publish?</label>'+
+    '<p style="font-size:12px;color:var(--grey);line-height:1.6;margin:0 0 12px">'+
+    'Right now clips are encoded to about <b style="color:var(--ink)">'+PUBMB+' MB</b>'+
+    (MEASURED?', measured on this connection.':', which is a guess and probably a low one.')+
+    ' This finds the real number by sending throwaway blocks of random data and'+
+    ' watching where they stop going through. Nothing is committed, nothing lands in'+
+    ' your repo. Once it knows, clips get encoded up to that size instead.</p>'+
+    '<div class="rowb"><button class="b" onclick="EB.probe()">Measure it</button></div></div>';
+  if(TOKEN) h+='<div style="margin-top:28px;border-top:1px solid var(--line);padding-top:18px">'+
     '<label>When the page is finished</label>'+
     '<p style="font-size:12px;color:var(--grey);line-height:1.6;margin:0 0 12px">'+
     'Right now the editor travels with the page, so #edit works at your own address'+
@@ -2640,6 +2650,7 @@ window.EB={
  },
  bakeFiles:bakeFiles,
  publish:function(){ return publish('live'); },
+ probe:probeCeiling,
  publishFinal:function(){ return publish('final'); },
  saveTok:async function(){
   var v=(el('ebtok')||{}).value||'';
@@ -2889,6 +2900,74 @@ function b64(bytes){
  });
 }
 
+/* ---------- find the real ceiling ----------
+   The publish limit has been guessed at three times in this project and been wrong
+   three times. Guessing is the problem: the only evidence available was which files
+   happened to be in the repo, and that is a record of what was tried, not of what
+   is possible.
+
+   So this measures it. It sends throwaway blobs of increasing size to the same
+   endpoint publishing uses, with the same token, over the same connection, and
+   watches where they start failing. A blob that no tree or commit refers to is
+   unreachable and GitHub collects it later - nothing appears in the repo, no commit
+   is made, nothing is published. It is the real request, with nothing at stake.
+
+   Random bytes, because anything compressible would measure the wrong thing. */
+async function probeCeiling(){
+ if(!TOKEN){ alert('Save a token in this tab first.'); return; }
+ var steps=[4,8,12,16,24,32,48,64];
+ if(!confirm('Find out how big a file this connection can actually publish.\n\n'+
+   'Sends throwaway blocks of random data - 4 MB, then 8, 12, 16 and up - to the\n'+
+   'same place a clip goes, and watches where they start being refused.\n\n'+
+   'Nothing is committed and nothing appears in your repo. GitHub discards a block\n'+
+   'that no commit points at.\n\n'+
+   'It will push about 200 MB uphill in the worst case, so it takes a few minutes.\n'+
+   'You only ever have to do this once.')) return;
+
+ var rows=[], best=0, fails=0;
+ for(var i=0;i<steps.length;i++){
+  var mb=steps[i];
+  busy(true,'Testing '+mb+' MB','building the block',0.02+0.9*(i/steps.length));
+  var bytes=new Uint8Array(mb*1048576);
+  /* crypto.getRandomValues caps at 65536 bytes a call, so it is filled in chunks. */
+  for(var o=0;o<bytes.length;o+=65536) crypto.getRandomValues(bytes.subarray(o,Math.min(o+65536,bytes.length)));
+  var body=await b64(bytes);
+  busy(true,'Testing '+mb+' MB',(body.length/1048576).toFixed(1)+' MB on the wire',
+       0.02+0.9*(i/steps.length));
+  var t0=Date.now(), ok=false, note='';
+  try{
+   var r=await fetch('https://api.github.com/repos/'+REPO.owner+'/'+REPO.repo+'/git/blobs',{
+     method:'POST',
+     headers:{'Authorization':'Bearer '+TOKEN,'Accept':'application/vnd.github+json',
+              'X-GitHub-Api-Version':'2022-11-28'},
+     body:JSON.stringify({content:body,encoding:'base64'})});
+   ok=r.ok; note=ok?'':(r.status+' '+r.statusText);
+   if(!ok){ try{ var j=JSON.parse(await r.text()); if(j.message) note+=' - '+j.message; }catch(e){} }
+  }catch(e){ ok=false; note='never reached GitHub: '+e.message; }
+  var secs=Math.round((Date.now()-t0)/100)/10;
+  rows.push(mb+' MB'+(ok?'   went through in '+secs+'s':'   REFUSED: '+note));
+  if(ok){ best=mb; fails=0; } else { fails++; if(fails>=2) break; }
+ }
+ busy(false);
+
+ if(best){
+  /* A little under the last size that worked, because the last size that worked is
+     the edge and nobody wants to publish at the edge. */
+  var keep=Math.max(4,Math.floor(best*0.85*10)/10);
+  await DB.putMeta('pubmb',keep);
+  PUBMB=keep; MEASURED=true;
+ }
+ alert('Results\n\n  '+rows.join('\n  ')+'\n\n'+
+  (best
+   ? 'Biggest that went through: '+best+' MB.\n\n'+
+     'Clips will now be encoded to about '+PUBMB+' MB and publishing will accept\n'+
+     'anything up to that. Re-cut anything that was squeezed down under the old\n'+
+     'guess and it will come back sharper.'
+   : 'Nothing went through at all, not even 4 MB. That is not a size problem -\n'+
+     'check the token with "Check it works" above.'));
+ draw();
+}
+
 async function publish(mode){
  window.__ghSent=0;
  if(!TOKEN){ alert('No token saved yet - put one in the Publish tab first.'); return; }
@@ -2937,8 +3016,18 @@ async function publish(mode){
   for(var i=0;i<files.length;i++){
    var f=files[i];
    busy(true,'Publishing',f.name+'   ('+(i+1)+' of '+files.length+')',0.05+0.8*(i/files.length));
-   var blob=await gh('/git/blobs',{method:'POST',
-     body:{content:await b64(f.data),encoding:'base64'}});
+   /* One refused blob should not throw away a publish that is most of the way
+      done. A big upload can die for reasons that have nothing to do with the file -
+      a dropped connection, a blip at GitHub's end - and the second attempt usually
+      lands. Three tries, then it is genuinely the file. */
+   var body=await b64(f.data), blob=null, lastErr=null;
+   for(var attempt=1; attempt<=3 && !blob; attempt++){
+    if(attempt>1) busy(true,'Publishing',f.name+'   retry '+(attempt-1)+' of 2',
+                       0.05+0.8*(i/files.length));
+    try{ blob=await gh('/git/blobs',{method:'POST',body:{content:body,encoding:'base64'}}); }
+    catch(e){ lastErr=e; if(attempt<3) await new Promise(function(r){setTimeout(r,1500*attempt);}); }
+   }
+   if(!blob) throw lastErr;
    tree.push({path:f.name,mode:'100644',type:'blob',sha:blob.sha});
    window.__ghSent++;
   }
@@ -2960,6 +3049,7 @@ async function publish(mode){
 (async function(){
  MEDIA=await DB.allMedia();
  TOKEN=await DB.getMeta('ghtoken');
+ var mm=await DB.getMeta('pubmb'); if(mm>0){ PUBMB=mm; MEASURED=true; }
  /* Two versions of the page can exist at once: the one in the file you opened, and
     the working copy this browser saved last time. The old prompt just asked whether
     to "carry on", which is a coin flip - answering it wrong is how a published reel
