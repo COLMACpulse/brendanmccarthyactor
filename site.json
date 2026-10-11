@@ -25,6 +25,22 @@
  "reelPoster": "",
  "work": [
   {
+   "t": "THE LAW OF THE LAND",
+   "ch": "LEAD",
+   "r": "STANTON CONNERS",
+   "n": "NewSkyline Entertainment ",
+   "d": "Brendan McCarthy",
+   "p": "media/law-poster.jpg",
+   "clip": "",
+   "note": "",
+   "clips": [
+    {
+     "src": "media/lawofthelandtrim.mp4",
+     "t": ""
+    }
+   ]
+  },
+  {
    "t": "A GUNMAN'S HAND",
    "ch": "JOHN WESLEY HARDIN",
    "r": "LEAD",
