@@ -3031,24 +3031,41 @@ async function publish(mode){
     GitHub three times running. Known good is 8.1 MB, known bad is 10.3 MB, so the
     guard now sits on the target itself and the retry no longer burns three uploads
     discovering what the guard already knew. */
+ /* One clip that is too big used to refuse the whole publish. That is the wrong
+    trade: seven good files sit in the browser, hostage to the eighth, and the only
+    way out is deleting work. So the big ones are set aside and everything else goes.
+
+    The page keeps pointing at the file it would have had. The card for it shows
+    "This one is not uploaded yet" until the file turns up at that exact path - so
+    dragging it into media/ on github.com later, under that name, is all it takes.
+    Nothing is lost and nothing has to be deleted to get unstuck. */
  var LIMIT=Math.round(PUBMB*1048576);
  var big=files.filter(function(f){ return f.data.length>LIMIT; });
- if(big.length){ busy(false);
-  alert('Too big to publish:\n\n  '+
+ if(big.length){
+  var rest=files.filter(function(f){ return f.data.length<=LIMIT; });
+  busy(false);
+  if(!rest.length){
+   alert('Nothing can go up.\n\n  '+
+    big.map(function(f){return f.name+'   '+(f.data.length/1048576).toFixed(1)+' MB';}).join('\n  ')+
+    '\n\nEverything waiting is over '+PUBMB+' MB, which GitHub refuses.');
+   return; }
+  if(!confirm('These are too big for GitHub to accept:\n\n  '+
    big.map(function(f){return f.name+'   '+(f.data.length/1048576).toFixed(1)+' MB';}).join('\n  ')+
-   '\n\nAnything much over '+PUBMB+' MB comes back from GitHub as\n'+
-   '"401 Bad credentials", which is not what it sounds like \u2014 your\n'+
-   'token is fine. The upload is simply refused at that size.\n\n'+
-   'For a long scene, the best answer is NOT to chop it into pieces -\n'+
-   'three tabs for one continuous scene is worse than one clip.\n\n'+
-   '  \u2022 Upload it yourself at full quality, no re-encode:\n'+
-   '    github.com \u2192 your repo \u2192 media \u2192 Add file \u2192 Upload files.\n'+
-   '    That route takes 25 MB. Then come back to the credit and press\n'+
-   '    LINK A FILE IN MEDIA/ and type the file name.\n\n'+
-   '  \u2022 Or trim the head and tail in the Cut tab. Most reel clips carry\n'+
-   '    a few seconds of fat at each end, and losing it is usually enough.\n\n'+
-   'Nothing was published.');
-  return; }
+   '\n\nPublish the other '+rest.length+' now and leave '+
+   (big.length===1?'that one':'those')+' behind?\n\n'+
+   'Nothing is deleted. '+(big.length===1?'Its card':'Their cards')+' will say "not uploaded'+
+   ' yet" until you\nput the file in media/ yourself:\n\n'+
+   '  github.com \u2192 your repo \u2192 media \u2192 Add file \u2192 Upload files\n'+
+   '  (that route takes 25 MB, and does not re-encode anything)\n\n'+
+   'Upload it under exactly '+(big.length===1?'this name':'these names')+' and the card lights up on its own:\n  '+
+   big.map(function(f){return f.name;}).join('\n  '))) return;
+  /* Keep the blobs for the skipped ones. The clip is still only in this browser,
+     and throwing it away because it could not be uploaded is how work disappears. */
+  var keepIds={};
+  big.forEach(function(f){ keepIds[f.name]=1; });
+  if(LASTBAKE) LASTBAKE.skipped=big.map(function(f){return f.name;});
+  files=rest;
+ }
 
  var total=files.reduce(function(a,f){return a+f.data.length;},0);
  busy(false);
@@ -3095,12 +3112,21 @@ async function publish(mode){
      on the site. Point the page at them and drop the blobs: keeping both means the
      upload count never falls, and the next reload finds a browser copy and a
      published file saying the same thing and asks you to choose between them. */
+  /* Read before the adoption below clears LASTBAKE, or the one thing the person
+     most needs to know - which clip did not make it - is silently dropped. */
+  var left=(LASTBAKE&&LASTBAKE.skipped)||[];
   if(LASTBAKE){
    for(var k in SITE) delete SITE[k];
    for(var k2 in LASTBAKE.site) SITE[k2]=LASTBAKE.site[k2];
+   /* Only forget the blobs that actually made it up. A skipped clip is still only
+      here, so dropping it would destroy the one copy that exists. */
+   var sk=LASTBAKE.skipped||[];
    for(var z=0;z<LASTBAKE.ids.length;z++){
-    delete MEDIA[LASTBAKE.ids[z]];
-    try{ await DB.delMedia(LASTBAKE.ids[z]); }catch(e){}
+    var id=LASTBAKE.ids[z];
+    var rec=MEDIA[id];
+    if(rec && sk.some(function(nm){ return nm.indexOf(slugFile(rec.name,(rec.name.split('.').pop()||'bin').toLowerCase()))>=0; })) continue;
+    delete MEDIA[id];
+    try{ await DB.delMedia(id); }catch(e){}
    }
    await DB.putMeta('site',SITE); await DB.putMeta('siteAt',Date.now());
    LASTBAKE=null;
@@ -3108,7 +3134,10 @@ async function publish(mode){
   busy(false);
   dirty=false; render(); draw(); status();
   alert('Published.\n\n'+files.length+' files in one commit. GitHub Pages takes a\n'+
-        'minute or two, then hard-refresh the site.');
+        'minute or two, then hard-refresh the site.'+
+        (left.length?'\n\nLeft behind, too big:\n  '+left.join('\n  ')+
+         '\n\nUpload '+(left.length===1?'it':'them')+' into media/ on github.com under'+
+         ' exactly that name\nand the card picks it up with no further work.':''));
  }catch(e){ busy(false); alert('Nothing was published.\n\n'+e.message); }
 }
 
