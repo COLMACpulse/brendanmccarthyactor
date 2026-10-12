@@ -471,7 +471,12 @@
    "p": "media/pasted-1782861953819.png",
    "clip": "",
    "note": "",
-   "clips": []
+   "clips": [
+    {
+     "src": "media/poolboy.mp4",
+     "t": ""
+    }
+   ]
   }
  ],
  "films": [
