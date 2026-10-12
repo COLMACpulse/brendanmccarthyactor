@@ -254,12 +254,28 @@
    "n": "FX",
    "d": "",
    "p": "media/pasted-1782860362101.png",
-   "clip": "media/amr2r2y2n0sns__JUSTIFIED.mp4",
+   "clip": "",
    "note": "",
    "clips": [
     {
-     "src": "media/amr2r2y2n0sns__JUSTIFIED.mp4",
-     "t": ""
+     "src": "media/scene-1.mp4",
+     "t": "Scene 1"
+    },
+    {
+     "src": "media/scene-2.mp4",
+     "t": "Scene 2"
+    },
+    {
+     "src": "media/scene-3.mp4",
+     "t": "Scene 3"
+    },
+    {
+     "src": "media/scene-4.mp4",
+     "t": "Scene 4"
+    },
+    {
+     "src": "media/scene-5.mp4",
+     "t": "Scene 5"
     }
    ]
   },
