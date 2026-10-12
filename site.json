@@ -283,7 +283,12 @@
    "p": "media/pasted-1782861897230.png",
    "clip": "",
    "note": "",
-   "clips": []
+   "clips": [
+    {
+     "src": "media/rizzoli-isles.mp4",
+     "t": ""
+    }
+   ]
   },
   {
    "t": "Selfless",
