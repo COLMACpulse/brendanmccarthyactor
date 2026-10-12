@@ -406,7 +406,12 @@
    "p": "media/pasted-1782860503005.png",
    "clip": "",
    "note": "",
-   "clips": []
+   "clips": [
+    {
+     "src": "media/2001-maniacs.mp4",
+     "t": ""
+    }
+   ]
   },
   {
    "t": "61*",
