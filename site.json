@@ -25,54 +25,6 @@
  "reelPoster": "",
  "work": [
   {
-   "t": "HELLEN KELLER VS. NIGHT WOLVES",
-   "ch": "SUPPORTING",
-   "r": "MATTHEW ",
-   "n": "",
-   "d": "ROSS PATTERSON ",
-   "p": "media/hkvsnw.png",
-   "clip": "",
-   "note": "",
-   "clips": [
-    {
-     "src": "media/helen-keller-vs-nightwolves-217608.mp4",
-     "t": ""
-    }
-   ]
-  },
-  {
-   "t": "THE LAW OF THE LAND",
-   "ch": "LEAD",
-   "r": "STANTON CONNERS",
-   "n": "NewSkyline Entertainment ",
-   "d": "Brendan McCarthy",
-   "p": "media/law-poster.jpg",
-   "clip": "",
-   "note": "",
-   "clips": [
-    {
-     "src": "media/lawofthelandtrim.mp4",
-     "t": ""
-    }
-   ]
-  },
-  {
-   "t": "A GUNMAN'S HAND",
-   "ch": "JOHN WESLEY HARDIN",
-   "r": "LEAD",
-   "n": "NEW SKYLINE ENTERTAINMENT",
-   "d": "BRENDAN McCARTHY",
-   "p": "media/pasted-1782863507297.png",
-   "clip": "",
-   "note": "",
-   "clips": [
-    {
-     "src": "media/gunman-s-hand-reel.mp4",
-     "t": ""
-    }
-   ]
-  },
-  {
    "t": "Frisco King",
    "ch": "OFFICER RAWLINS",
    "r": "Guest Star",
@@ -100,6 +52,22 @@
    ]
   },
   {
+   "t": "THE LAW OF THE LAND",
+   "ch": "LEAD",
+   "r": "STANTON CONNERS",
+   "n": "NewSkyline Entertainment ",
+   "d": "Brendan McCarthy",
+   "p": "media/law-poster.jpg",
+   "clip": "",
+   "note": "",
+   "clips": [
+    {
+     "src": "media/lawofthelandtrim.mp4",
+     "t": ""
+    }
+   ]
+  },
+  {
    "t": "The Rookie: Feds",
    "ch": "PAXTON",
    "r": "Guest Star",
@@ -116,6 +84,22 @@
     {
      "src": "media/amr2qoeqyuga7__THE_ROOKIE__FEDS_Scene_2.mp4",
      "t": "Scene 2"
+    }
+   ]
+  },
+  {
+   "t": "A GUNMAN'S HAND",
+   "ch": "JOHN WESLEY HARDIN",
+   "r": "LEAD",
+   "n": "NEW SKYLINE ENTERTAINMENT",
+   "d": "BRENDAN McCARTHY",
+   "p": "media/pasted-1782863507297.png",
+   "clip": "",
+   "note": "",
+   "clips": [
+    {
+     "src": "media/gunman-s-hand-reel.mp4",
+     "t": ""
     }
    ]
   },
@@ -147,6 +131,22 @@
    "clips": [
     {
      "src": "media/amr2qqfama8yv__AMERICAN_HORROR_STORY.mp4",
+     "t": ""
+    }
+   ]
+  },
+  {
+   "t": "HELLEN KELLER VS. NIGHT WOLVES",
+   "ch": "SUPPORTING",
+   "r": "MATTHEW ",
+   "n": "",
+   "d": "ROSS PATTERSON ",
+   "p": "media/hkvsnw.png",
+   "clip": "",
+   "note": "",
+   "clips": [
+    {
+     "src": "media/helen-keller-vs-nightwolves-217608.mp4",
      "t": ""
     }
    ]
